@@ -1,7 +1,7 @@
 # SPEC — istok_ui
 
 Fonte da verdade do projeto: objetivo, decisões, status e critérios de aceite. Quem altera uma decisão ou conclui
-uma entrega atualiza este arquivo **no mesmo PR**. O fluxo de trabalho entre os agentes está em [AGENTS.md](AGENTS.md).
+uma entrega atualiza este arquivo **no mesmo PR**. Regras, comandos e definição de pronto estão em [AGENTS.md](AGENTS.md).
 
 ## 1. Objetivo e escopo
 
@@ -13,7 +13,7 @@ precisa ser previsível, tipada e bem documentada.
 
 - Componentes de UI acessíveis (WCAG AA), com variantes, tema claro/escuro e tokens trocáveis por projeto.
 - Documentação viva (Storybook) e vitrine com todos os componentes (playground).
-- Pacote npm ESM com tipos, publicado por CI.
+- Pacote npm público (`istok-ui`), ESM com tipos, publicado por CI.
 
 **Não faz parte do escopo**
 
@@ -39,8 +39,8 @@ precisa ser previsível, tipada e bem documentada.
 | Docs                 | Storybook 10 (um componente por vez) + playground (vitrine com tudo)                            | Storybook para ajustar cada componente; playground para ver a lib inteira de uma vez |
 | Testes               | Vitest 5 em browser mode (Chromium/Playwright); stories viram testes com axe                    | Navegador real, sem simular DOM; acessibilidade checada em todo PR                   |
 | CI                   | GitHub Actions em todo PR e push na `main`                                                      | Mesmas verificações para todo mundo                                                  |
-| Conta GitHub         | `temperopropaganda` é conta de **usuário** (não org); repo privado                              | —                                                                                    |
-| Registry             | ⚠️ **Em aberto** — ver seção 7                                                                  | —                                                                                    |
+| Conta GitHub         | `temperopropaganda` é conta de **usuário** (não org); repo privado por enquanto                 | Visibilidade decidida na Fase 8 (ver seção 7)                                        |
+| Registry             | **npm público**, pacote `istok-ui` (decidido em 2026-10-02)                                     | Instala sem token nem `.npmrc`; o nome estava livre no npm                           |
 
 ## 3. Arquitetura e estrutura
 
@@ -67,8 +67,8 @@ scripts/test-consumer.mjs  empacota a lib, instala no app de exemplo e confere o
 
 **API pública**
 
-- Componentes e `cn()` exportados por `@temperopropaganda/istok-ui` (ESM + `.d.ts`).
-- `@temperopropaganda/istok-ui/theme.css`: o projeto consumidor faz `@import "tailwindcss";` e depois importa o tema.
+- Componentes e `cn()` exportados por `istok-ui` (ESM + `.d.ts`).
+- `istok-ui/theme.css`: o projeto consumidor faz `@import "tailwindcss";` e depois `@import "istok-ui/theme.css";`.
 - Dark mode pela classe `dark` no `<html>`. Marca trocada sobrescrevendo as variáveis CSS (`--primary`, `--radius`…).
 
 **Fluxo de uma classe CSS:** o componente usa classes literais com tokens (`bg-primary`) → o build publica o JS em
@@ -86,18 +86,18 @@ scripts/test-consumer.mjs  empacota a lib, instala no app de exemplo e confere o
 
 ## 5. Status das fases
 
-| Fase | Entrega                                                   | Status         |
-| ---- | --------------------------------------------------------- | -------------- |
-| 1    | Ambiente (Vite, TS strict, Tailwind, ESLint, Prettier)    | ✅ Concluída   |
-| 2    | Build da biblioteca (ESM, `.d.ts`, `exports`, `cn()`)     | ✅ Concluída   |
-| 3    | Tokens, tema e dark mode (`theme.css`)                    | ✅ Concluída   |
-| —    | Ambiente do editor (`.vscode/`, `npm run check`)          | ✅ Concluída   |
-| 4    | Storybook, testes no navegador, teste de consumo, CI      | ✅ Concluída   |
-| —    | Fluxo de agentes (este SPEC + AGENTS.md)                  | 🔄 Em revisão  |
-| 5    | Button + playground como vitrine + testes E2E             | ⏭️ **Próxima** |
-| 6    | Componentes da v0.1                                       | Pendente       |
-| 7    | Testes finais (cobertura, cross-browser, tamanho)         | Pendente       |
-| 8    | Release (publicação, Storybook online, guia para agentes) | Pendente       |
+| Fase | Entrega                                                          | Status                |
+| ---- | ---------------------------------------------------------------- | --------------------- |
+| 1    | Ambiente (Vite, TS strict, Tailwind, ESLint, Prettier)           | ✅ Concluída          |
+| 2    | Build da biblioteca (ESM, `.d.ts`, `exports`, `cn()`)            | ✅ Concluída          |
+| 3    | Tokens, tema e dark mode (`theme.css`)                           | ✅ Concluída          |
+| —    | Ambiente do editor (`.vscode/`, `npm run check`)                 | ✅ Concluída          |
+| 4    | Storybook, testes no navegador, teste de consumo, CI             | ✅ Concluída          |
+| —    | SPEC + AGENTS.md; pacote renomeado para `istok-ui` (npm público) | 🔄 Em revisão (PR #5) |
+| 5    | Button + playground como vitrine + testes E2E                    | ⏭️ **Próxima**        |
+| 6    | Componentes da v0.1                                              | Pendente              |
+| 7    | Testes finais (cobertura, cross-browser, tamanho)                | Pendente              |
+| 8    | Release (publicação, Storybook online, guia para agentes)        | Pendente              |
 
 ### Concluído (resumo)
 
@@ -113,7 +113,7 @@ scripts/test-consumer.mjs  empacota a lib, instala no app de exemplo e confere o
 
 ### ⏭️ Próxima entrega — Fase 5: Button, vitrine e E2E
 
-> Rascunho de escopo. O **Software Engineer** detalha os critérios de aceite antes de liberar para o Developer.
+> Rascunho de escopo. Os critérios de aceite detalhados são fechados com o humano antes de começar.
 
 1. **Button** (`src/components/button/`), partindo do Button do shadcn:
    - Dependências novas: `radix-ui` (Slot para `asChild`) e `class-variance-authority`.
@@ -143,8 +143,9 @@ scripts/test-consumer.mjs  empacota a lib, instala no app de exemplo e confere o
 - **Fase 7 — Testes finais:** cobertura mínima global de 80% como threshold no Vitest; Firefox e WebKit no browser
   mode; `size-limit` por componente; auditoria manual de teclado e leitor de tela (Orca) nos overlays; regressão
   visual opcional.
-- **Fase 8 — Release:** Changesets (versão + CHANGELOG); workflow de publicação; Storybook online; guia de uso para
-  agentes dentro do pacote (componentes, props, exemplos); publicar `v0.1.0` e usar num projeto real.
+- **Fase 8 — Release:** Changesets (versão + CHANGELOG); workflow de publicação no npm via GitHub Actions
+  (trusted publishing, sem token salvo); Storybook online; guia de uso para agentes dentro do pacote (componentes,
+  props, exemplos); publicar `v0.1.0` e usar num projeto real.
 
 ## 6. Critérios de aceite
 
@@ -158,7 +159,7 @@ scripts/test-consumer.mjs  empacota a lib, instala no app de exemplo e confere o
 6. `npm run test:e2e` passa (a partir da Fase 5).
 7. Código novo coberto por testes (`npm run test:coverage`): ≥ 80% de linhas nos arquivos novos.
 8. SPEC.md (status) e README atualizados quando a entrega muda comportamento, scripts ou decisões.
-9. Nenhuma dependência nova sem justificativa na seção 2; nada de `.maestri/`, `TASKS.md` ou `REVIEW.md` no PR.
+9. Nenhuma dependência nova sem justificativa na seção 2; nada de arquivos locais (`.claude/`, `.maestri/`) no PR.
 10. CI verde no PR.
 
 ### Checklist de componente pronto
@@ -182,10 +183,11 @@ scripts/test-consumer.mjs  empacota a lib, instala no app de exemplo e confere o
 
 ## 7. Decisões em aberto
 
-| Decisão                 | Opções                                                                                                                                      | Recomendação                                                                                              | Dono   |
-| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | ------ |
-| Registry e visibilidade | (a) GitHub Packages `@temperopropaganda/istok-ui`, repo privado, token para instalar; (b) npm público `istok-ui` (nome livre), repo público | **(b)**: instala sem token, Storybook grátis no GitHub Pages, CI ilimitado. O usuário aceitou ser público | Humano |
-| Hospedagem do Storybook | GitHub Pages (exige repo público ou GitHub Pro); Vercel/Netlify/Chromatic (grátis, serviço externo)                                         | Depende da decisão acima                                                                                  | Humano |
+| Decisão                 | Opções                                                                             | Recomendação                                             | Dono   |
+| ----------------------- | ---------------------------------------------------------------------------------- | -------------------------------------------------------- | ------ |
+| Visibilidade do repo    | Público ou privado. O pacote no npm é público de qualquer forma                    | Público: CI ilimitado e Storybook grátis no GitHub Pages | Humano |
+| Hospedagem do Storybook | GitHub Pages (exige repo público ou GitHub Pro); Vercel/Netlify/Chromatic (grátis) | GitHub Pages, se o repo for público                      | Humano |
 
-Enquanto não houver decisão, o pacote continua como `@temperopropaganda/istok-ui` com `publishConfig` no GitHub
-Packages. Nada é publicado antes da Fase 8.
+**Ações do humano antes da Fase 8:** criar a conta no npm (ou usar a da empresa) e configurar o trusted publishing do
+pacote `istok-ui` apontando para este repositório. Nada é publicado antes da Fase 8; até lá o nome não está
+reservado.

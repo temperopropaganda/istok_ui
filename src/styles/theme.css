@@ -2,7 +2,7 @@
  * Tema da istok_ui.
  *
  * Uso no projeto (depois de `@import "tailwindcss";`):
- *   @import "@temperopropaganda/istok-ui/theme.css";
+ *   @import "istok-ui/theme.css";
  *
  * Para trocar a marca, sobrescreva as variáveis de :root / .dark no CSS do projeto.
  * Os nomes seguem o padrão do shadcn/ui, então temas gerados para ele funcionam aqui.

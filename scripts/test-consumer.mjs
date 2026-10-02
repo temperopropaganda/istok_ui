@@ -8,7 +8,7 @@ import { fileURLToPath } from "node:url";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
 const app = join(root, "examples/consumer-app");
-const pkgDir = join(app, "node_modules/@temperopropaganda/istok-ui");
+const pkgDir = join(app, "node_modules/istok-ui");
 
 const run = (args, cwd, options = {}) =>
   execFileSync("npm", args, {
@@ -68,7 +68,7 @@ try {
     [
       "--input-type=module",
       "-e",
-      'import { cn } from "@temperopropaganda/istok-ui"; process.stdout.write(cn("px-2 py-1", "px-4"));',
+      'import { cn } from "istok-ui"; process.stdout.write(cn("px-2 py-1", "px-4"));',
     ],
     { cwd: app, encoding: "utf8" },
   );

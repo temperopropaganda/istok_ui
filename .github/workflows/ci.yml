@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            examples/consumer-app/package-lock.json
+
+      - run: npm ci
+
+      - name: Typecheck, lint, formatação, build e validação do pacote
+        run: npm run check
+
+      - name: Instalar Chromium (Playwright)
+        run: npx playwright install --with-deps chromium
+
+      - name: Testes (unitários + stories com a11y)
+        run: npm test
+
+      - name: Build do Storybook
+        run: npm run storybook:build
+
+      - name: Teste de consumo (tarball num app Vite + Tailwind)
+        run: npm run test:consumer

@@ -1,0 +1,47 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+<Meta title="Introdução" />
+
+# istok_ui
+
+Biblioteca de componentes React + TypeScript, estilizada com Tailwind CSS 4. Os componentes partem do
+[shadcn/ui](https://ui.shadcn.com), com comportamento e acessibilidade do [Radix UI](https://www.radix-ui.com).
+
+## Instalação
+
+O pacote é publicado no GitHub Packages como `@temperopropaganda/istok-ui`. Crie um `.npmrc` na raiz do projeto
+(com um token do GitHub com escopo `read:packages` em `GITHUB_TOKEN`):
+
+```
+@temperopropaganda:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}
+```
+
+```bash
+npm install @temperopropaganda/istok-ui
+```
+
+## Configuração
+
+No CSS principal do projeto, importe o tema logo depois do Tailwind. É só isso: o tema já faz o Tailwind do projeto
+gerar as classes usadas pelos componentes.
+
+```css
+@import "tailwindcss";
+@import "@temperopropaganda/istok-ui/theme.css";
+```
+
+## Tema
+
+Os tokens viram utilitários do Tailwind (`bg-primary`, `text-muted-foreground`, `rounded-lg`…). Veja todos em
+**Fundamentos › Tokens**. Para trocar a marca, sobrescreva as variáveis no CSS do projeto:
+
+```css
+:root {
+  --primary: oklch(0.55 0.2 260);
+  --radius: 0.5rem;
+}
+```
+
+Para o tema escuro, adicione a classe `dark` no `<html>`. Use o seletor de tema na barra do Storybook para ver os
+componentes nos dois temas.

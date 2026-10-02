@@ -69,36 +69,62 @@ Cada cor de fundo tem um par `*-foreground` para o texto por cima, com contraste
 
 ```bash
 npm install
-npm run dev
+npx playwright install chromium   # navegador usado pelos testes (uma vez por máquina)
+npm run storybook
 ```
 
-O `dev` abre o playground (`playground/`), um app de teste rápido que usa os componentes direto de `src/`.
+O Storybook (http://localhost:6006) é o ambiente principal: documentação, stories de cada componente e alternância entre tema claro e escuro. O `npm run dev` abre o playground (`playground/`), um app livre para testes rápidos.
 
 ### VS Code
 
 O repositório já traz as configurações em `.vscode/`. Ao abrir o projeto:
 
-1. Instale as extensões recomendadas (ESLint, Prettier, Tailwind CSS IntelliSense, EditorConfig).
+1. Instale as extensões recomendadas (ESLint, Prettier, Tailwind CSS IntelliSense, EditorConfig, Vitest).
 2. Aceite usar a versão do TypeScript do workspace quando o VS Code perguntar (ou `TypeScript: Select TypeScript Version` → `Use Workspace Version`).
 
 ### Scripts
 
-| Script                 | O que faz                                                             |
-| ---------------------- | --------------------------------------------------------------------- |
-| `npm run dev`          | Sobe o playground com hot reload                                      |
-| `npm run build`        | Checa os tipos e gera a biblioteca (JS + `.d.ts`) em `dist/`          |
-| `npm run typecheck`    | Checa os tipos com o TypeScript                                       |
-| `npm run lint`         | Roda o ESLint (`lint:fix` corrige o que for possível)                 |
-| `npm run lint:package` | Valida o pacote publicado (publint + arethetypeswrong)                |
-| `npm run format`       | Formata o código com o Prettier                                       |
-| `npm run format:check` | Verifica a formatação sem alterar arquivos                            |
-| `npm run check`        | Roda todas as verificações acima + build (o mesmo que o CI vai rodar) |
+| Script                    | O que faz                                                                            |
+| ------------------------- | ------------------------------------------------------------------------------------ |
+| `npm run storybook`       | Sobe o Storybook em http://localhost:6006                                            |
+| `npm run storybook:build` | Gera o Storybook estático em `storybook-static/`                                     |
+| `npm run dev`             | Sobe o playground com hot reload                                                     |
+| `npm run build`           | Checa os tipos e gera a biblioteca (JS + `.d.ts` + `theme.css`) em `dist/`           |
+| `npm test`                | Roda os testes unitários e as stories (com checagem de acessibilidade) no Chromium   |
+| `npm run test:watch`      | Testes em modo watch                                                                 |
+| `npm run test:coverage`   | Testes com relatório de cobertura                                                    |
+| `npm run test:consumer`   | Empacota a lib, instala em `examples/consumer-app` e confere o build                 |
+| `npm run typecheck`       | Checa os tipos com o TypeScript                                                      |
+| `npm run lint`            | Roda o ESLint, falhando com qualquer warning (`lint:fix` corrige o que for possível) |
+| `npm run lint:package`    | Valida o pacote publicado (publint + arethetypeswrong)                               |
+| `npm run format`          | Formata o código com o Prettier                                                      |
+| `npm run format:check`    | Verifica a formatação sem alterar arquivos                                           |
+| `npm run check`           | typecheck + lint + format:check + build + lint:package                               |
+
+O CI (`.github/workflows/ci.yml`) roda `check`, `test`, `storybook:build` e `test:consumer` em todo PR.
+
+### Testes
+
+- **Unitários e de componente:** `*.test.ts(x)` ao lado do código, rodando no Chromium real via Vitest browser mode.
+- **Stories:** cada story em `*.stories.tsx` vira um teste que renderiza o componente e roda o axe. Qualquer violação de acessibilidade falha o teste, inclusive contraste de cor.
+- **Consumo:** `npm run test:consumer` simula um projeto real instalando o pacote.
 
 ### Estrutura
 
 ```
-src/          código da biblioteca (src/index.ts é a API pública)
-src/styles/   theme.css com os tokens (publicado cru em dist/theme.css)
-playground/   app de desenvolvimento, não vai pro pacote publicado
-docs/         roadmap e decisões do projeto (docs/roadmap.md)
+src/                  código da biblioteca (src/index.ts é a API pública)
+src/styles/           theme.css com os tokens (publicado cru em dist/theme.css)
+.storybook/           configuração do Storybook
+docs/                 páginas MDX do Storybook + roadmap e decisões (docs/roadmap.md)
+examples/consumer-app app de teste de consumo (usado pelo test:consumer)
+scripts/              scripts de manutenção
+playground/           app de desenvolvimento, não vai pro pacote publicado
 ```
+
+### Problemas comuns
+
+**O VS Code mostra erros que o `npm run lint` não mostra** (por exemplo, "Unsafe assignment of an error typed value"):
+o servidor do ESLint não percebe pacotes instalados depois que ele iniciou. Rode `ESLint: Restart ESLint Server`
+(ou `Developer: Reload Window`) depois de um `npm install` com dependências novas.
+
+**Os testes não encontram o navegador:** rode `npx playwright install chromium`.

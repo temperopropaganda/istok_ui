@@ -25,5 +25,5 @@
     "noFallthroughCasesInSwitch": true,
     "erasableSyntaxOnly": true
   },
-  "include": ["src", "playground"]
+  "include": ["src", "playground", ".storybook/preview.tsx"]
 }

@@ -2,11 +2,13 @@ import js from "@eslint/js";
 import { defineConfig, globalIgnores } from "eslint/config";
 import jsxA11y from "eslint-plugin-jsx-a11y-x";
 import reactHooks from "eslint-plugin-react-hooks";
+import storybook from "eslint-plugin-storybook";
 import globals from "globals";
 import tseslint from "typescript-eslint";
 
 export default defineConfig([
-  globalIgnores(["dist", "coverage", "storybook-static"]),
+  // examples/ tem package.json e tsconfig próprios e é checado pelo `test:consumer`.
+  globalIgnores(["dist", "coverage", "storybook-static", "examples"]),
   {
     files: ["**/*.{ts,tsx}"],
     extends: [
@@ -23,8 +25,9 @@ export default defineConfig([
       },
     },
   },
+  storybook.configs["flat/recommended"],
   {
-    files: ["**/*.js"],
+    files: ["**/*.{js,mjs}"],
     extends: [js.configs.recommended],
     languageOptions: {
       globals: globals.node,

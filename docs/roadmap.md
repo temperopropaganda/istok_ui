@@ -38,15 +38,16 @@ Pacote `@temperopropaganda/istok-ui`, build ESM com `preserveModules`, `.d.ts`, 
 
 `.vscode/` com TypeScript do projeto, Prettier como formatador único e CSS em modo Tailwind. Lint falha com qualquer warning. Script `npm run check` roda todas as verificações.
 
-### Fase 4 — Storybook, testes e CI
+### ✅ Fase 4 — Storybook, testes e CI
 
-- Storybook 10 (`@storybook/react-vite`) com addons de docs, a11y, themes (alternar claro/escuro) e Vitest.
-- Página de tokens migra do playground para o Storybook (`docs/tokens.mdx`).
-- Vitest em **browser mode** (Chromium via Playwright) para tudo: testes de componente e stories rodam num navegador real, sem polyfills de jsdom que os componentes Radix exigiriam.
-- Testing Library + user-event; checagem de a11y (axe) em todas as stories.
-- **Teste de consumo automatizado** (antes era da Fase 7): `examples/consumer-app` instala o tarball e builda. Fizemos isso manualmente nas Fases 2 e 3; vira script e roda no CI.
-- **CI no GitHub Actions** em todo PR: `npm run check` + testes + teste de consumo.
-- Pronto quando: um componente de exemplo tem story + teste, e o CI roda verde no PR.
+- Storybook 10 com addons de docs, a11y, themes (seletor claro/escuro) e Vitest. Páginas MDX em `docs/` (Introdução).
+- Tokens viraram stories (`src/styles/theme.stories.tsx`, em **Fundamentos › Tokens**), nos temas claro e escuro. Por serem stories, o axe confere o contraste de todos os pares em todo PR.
+- Vitest 5 em **browser mode** (Chromium via Playwright) em dois projetos: `unit` (`*.test.ts(x)`) e `storybook` (cada story é um teste com axe; violação falha).
+- Para testes de componente, `vitest-browser-react` + `page`/`userEvent` do Vitest no lugar da Testing Library (é o caminho nativo do browser mode, sem simular DOM).
+- **Teste de consumo automatizado** (`npm run test:consumer`): empacota, instala em `examples/consumer-app`, roda `tsc` (com `skipLibCheck: false`) e `vite build`, e confere tokens, dark mode, `@source` e runtime.
+- **CI** (`.github/workflows/ci.yml`) em todo PR e push na `main`: `check`, `test`, `storybook:build` e `test:consumer`.
+- Verificado que os testes pegam problemas reais: imagem sem `alt`, contraste baixo entre tokens e `@source` removido fazem o teste falhar.
+- Descoberta: o axe **não consegue avaliar** as cores neutras da paleta padrão do Tailwind (`neutral-300` etc.); com os tokens do tema ele avalia. Daí a regra "só tokens" no checklist.
 
 ### Fase 5 — Button (componente de referência)
 
@@ -88,6 +89,7 @@ Um PR por grupo, todos partindo do shadcn quando existir equivalente:
 - [ ] Props estendem as do elemento nativo; `className` mesclado com `cn()`
 - [ ] Variantes com `cva` e valores padrão
 - [ ] Classes do Tailwind sempre literais (nada de `bg-${cor}`)
+- [ ] Cores só dos tokens do tema (`bg-primary`, `text-muted-foreground`…), nunca da paleta crua (`neutral-500`)
 - [ ] Imports internos com extensão `.ts`/`.tsx`
 - [ ] `ref` funcionando
 - [ ] Teclado e ARIA seguindo o WAI-ARIA APG
@@ -95,5 +97,5 @@ Um PR por grupo, todos partindo do shadcn quando existir equivalente:
 - [ ] Funciona em claro e escuro
 - [ ] JSDoc nas props (aparece no editor, no Storybook e no guia para agentes)
 - [ ] Story com todas as variantes + autodocs
-- [ ] Testes de comportamento e a11y passando
+- [ ] Testes de comportamento (`*.test.tsx`) e a11y das stories passando
 - [ ] Exportado em `src/index.ts`

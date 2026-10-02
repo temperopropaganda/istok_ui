@@ -34,3 +34,7 @@ storybook-static
 
 # Maestri (canvas de agentes, local)
 .maestri
+
+# Arquivos de trabalho dos agentes (ver AGENTS.md)
+TASKS.md
+REVIEW.md

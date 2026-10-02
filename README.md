@@ -2,6 +2,9 @@
 
 Biblioteca de componentes React + TypeScript, estilizada com Tailwind CSS.
 
+- **[SPEC.md](SPEC.md):** objetivo, decisões, status das fases e critérios de aceite (fonte da verdade).
+- **[AGENTS.md](AGENTS.md):** fluxo de trabalho dos agentes (Software Engineer, Developer, Test & Code Review).
+
 ## Usando nos projetos
 
 O pacote é publicado no GitHub Packages como `@temperopropaganda/istok-ui` (uso interno).
@@ -115,7 +118,7 @@ O CI (`.github/workflows/ci.yml`) roda `check`, `test`, `storybook:build` e `tes
 src/                  código da biblioteca (src/index.ts é a API pública)
 src/styles/           theme.css com os tokens (publicado cru em dist/theme.css)
 .storybook/           configuração do Storybook
-docs/                 páginas MDX do Storybook + roadmap e decisões (docs/roadmap.md)
+docs/                 páginas MDX do Storybook
 examples/consumer-app app de teste de consumo (usado pelo test:consumer)
 scripts/              scripts de manutenção
 playground/           app de desenvolvimento, não vai pro pacote publicado

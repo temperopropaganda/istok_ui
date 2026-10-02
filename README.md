@@ -74,17 +74,25 @@ npm run dev
 
 O `dev` abre o playground (`playground/`), um app de teste rápido que usa os componentes direto de `src/`.
 
+### VS Code
+
+O repositório já traz as configurações em `.vscode/`. Ao abrir o projeto:
+
+1. Instale as extensões recomendadas (ESLint, Prettier, Tailwind CSS IntelliSense, EditorConfig).
+2. Aceite usar a versão do TypeScript do workspace quando o VS Code perguntar (ou `TypeScript: Select TypeScript Version` → `Use Workspace Version`).
+
 ### Scripts
 
-| Script                 | O que faz                                                    |
-| ---------------------- | ------------------------------------------------------------ |
-| `npm run dev`          | Sobe o playground com hot reload                             |
-| `npm run build`        | Checa os tipos e gera a biblioteca (JS + `.d.ts`) em `dist/` |
-| `npm run typecheck`    | Checa os tipos com o TypeScript                              |
-| `npm run lint`         | Roda o ESLint (`lint:fix` corrige o que for possível)        |
-| `npm run lint:package` | Valida o pacote publicado (publint + arethetypeswrong)       |
-| `npm run format`       | Formata o código com o Prettier                              |
-| `npm run format:check` | Verifica a formatação sem alterar arquivos                   |
+| Script                 | O que faz                                                             |
+| ---------------------- | --------------------------------------------------------------------- |
+| `npm run dev`          | Sobe o playground com hot reload                                      |
+| `npm run build`        | Checa os tipos e gera a biblioteca (JS + `.d.ts`) em `dist/`          |
+| `npm run typecheck`    | Checa os tipos com o TypeScript                                       |
+| `npm run lint`         | Roda o ESLint (`lint:fix` corrige o que for possível)                 |
+| `npm run lint:package` | Valida o pacote publicado (publint + arethetypeswrong)                |
+| `npm run format`       | Formata o código com o Prettier                                       |
+| `npm run format:check` | Verifica a formatação sem alterar arquivos                            |
+| `npm run check`        | Roda todas as verificações acima + build (o mesmo que o CI vai rodar) |
 
 ### Estrutura
 
@@ -92,4 +100,5 @@ O `dev` abre o playground (`playground/`), um app de teste rápido que usa os co
 src/          código da biblioteca (src/index.ts é a API pública)
 src/styles/   theme.css com os tokens (publicado cru em dist/theme.css)
 playground/   app de desenvolvimento, não vai pro pacote publicado
+docs/         roadmap e decisões do projeto (docs/roadmap.md)
 ```

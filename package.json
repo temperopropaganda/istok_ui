@@ -29,12 +29,13 @@
     "dev": "vite",
     "build": "tsc -b && vite build && tsc -p tsconfig.build.json",
     "typecheck": "tsc -b",
-    "lint": "eslint .",
+    "lint": "eslint . --max-warnings 0",
     "lint:fix": "eslint . --fix",
     "lint:package": "publint --strict && attw --pack . --profile esm-only --exclude-entrypoints ./theme.css",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "prepack": "npm run build"
+    "prepack": "npm run build",
+    "check": "npm run typecheck && npm run lint && npm run format:check && npm run build && npm run lint:package"
   },
   "dependencies": {
     "clsx": "^2.1.1",

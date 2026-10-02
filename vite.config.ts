@@ -1,4 +1,5 @@
 import { readFile } from "node:fs/promises";
+import { fileURLToPath } from "node:url";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig, type Plugin } from "vite";
@@ -9,14 +10,18 @@ const externalDeps = [...Object.keys(pkg.dependencies), ...Object.keys(pkg.peerD
 
 // Publica o theme.css cru em dist/: quem compila é o Tailwind do projeto consumidor.
 function copyThemeCss(): Plugin {
+  const themePath = fileURLToPath(new URL("./src/styles/theme.css", import.meta.url));
   return {
     name: "istok:copy-theme-css",
     apply: "build",
+    buildStart() {
+      this.addWatchFile(themePath);
+    },
     async generateBundle() {
       this.emitFile({
         type: "asset",
         fileName: "theme.css",
-        source: await readFile("src/styles/theme.css", "utf8"),
+        source: await readFile(themePath, "utf8"),
       });
     },
   };

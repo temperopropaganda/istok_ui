@@ -13,7 +13,8 @@ function copyThemeCss(): Plugin {
   const themePath = fileURLToPath(new URL("./src/styles/theme.css", import.meta.url));
   return {
     name: "istok:copy-theme-css",
-    apply: "build",
+    // Só no build da lib (o Storybook reaproveita esta config sem o modo biblioteca).
+    apply: (config, { command }) => command === "build" && config.build?.lib !== undefined,
     buildStart() {
       this.addWatchFile(themePath);
     },

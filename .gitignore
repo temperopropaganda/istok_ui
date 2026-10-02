@@ -28,3 +28,6 @@ storybook-static
 
 # Config local do Claude
 .claude
+
+# Storybook
+*storybook.log

@@ -1,0 +1,18 @@
+{
+  // Usa o TypeScript do projeto (node_modules), não o embutido no VS Code nem o de extensões.
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+
+  // Prettier é o único formatador; o ESLint corrige o que der ao salvar.
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+
+  // CSS com diretivas do Tailwind 4 (@theme, @source, @custom-variant).
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+  "tailwindCSS.classFunctions": ["cn", "cva"]
+}

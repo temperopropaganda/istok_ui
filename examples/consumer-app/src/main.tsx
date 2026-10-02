@@ -1,4 +1,4 @@
-import { cn } from "istok-ui";
+import { Button, cn } from "istok-ui";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
@@ -7,9 +7,8 @@ import "./index.css";
 function App() {
   return (
     <main className={cn("bg-background p-8 text-foreground", "dark:bg-card")}>
-      <button type="button" className="rounded-lg bg-primary px-4 py-2 text-primary-foreground">
-        istok_ui
-      </button>
+      <p className="rounded-lg bg-primary p-4 text-primary-foreground">istok_ui</p>
+      <Button variant="outline">Salvar</Button>
     </main>
   );
 }

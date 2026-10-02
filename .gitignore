@@ -1,0 +1,29 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Dependências e builds
+node_modules
+dist
+coverage
+storybook-static
+*.tsbuildinfo
+*.tgz
+
+# Ambiente
+.env
+.env.*
+!.env.example
+*.local
+
+# Editores e SO
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.sw?
+
+# Config local do Claude
+.claude

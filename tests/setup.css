@@ -1,0 +1,3 @@
+/* Estilos reais nos testes de componente: medidas e cores batem com o que o usuário vê. */
+@import "tailwindcss";
+@import "../src/styles/theme.css";

@@ -6,7 +6,7 @@ test.describe("Vitrine (playground)", () => {
   });
 
   test("mostra todas as seções", async ({ page }) => {
-    for (const name of ["Tokens", "Button"]) {
+    for (const name of ["Tokens", "Avatar", "Badge", "Button", "Card", "Separator", "Skeleton"]) {
       await expect(page.getByRole("region", { name })).toBeVisible();
     }
   });

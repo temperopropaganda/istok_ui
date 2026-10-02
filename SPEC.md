@@ -24,23 +24,25 @@ precisa ser previsível, tipada e bem documentada.
 
 ## 2. Stack e decisões
 
-| Tema                 | Decisão                                                                                         | Motivo                                                                               |
-| -------------------- | ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
-| Stack                | React 19 + TypeScript 6 + Vite 8 + Tailwind CSS 4                                               | Mesma stack dos projetos consumidores                                                |
-| TypeScript           | 6.0 (não 7)                                                                                     | O `typescript-eslint` só suporta até a 6.0. Código testado e compatível com a 7.0    |
-| Lint                 | ESLint 10 (`strictTypeChecked`, react-hooks, `eslint-plugin-jsx-a11y-x`, storybook), 0 warnings | O `eslint-plugin-jsx-a11y` original não suporta ESLint 10; o fork é do es-tooling    |
-| Formatação           | Prettier padrão + ordenação de classes do Tailwind (também em `cn()`/`cva()`)                   | Padrão do time                                                                       |
-| React                | `peerDependencies: ^19`, sem `forwardRef`                                                       | Projetos sempre no latest; no 19 o `ref` chega como prop                             |
-| Base dos componentes | Radix UI (comportamento/a11y) + código do shadcn/ui como ponto de partida                       | O shadcn já é Radix + Tailwind + cva; partimos de código testado e com API conhecida |
-| Estilos              | `theme.css` com tokens + `@source` embutido; sem CSS pré-compilado                              | Projetos já têm Tailwind; um único `@import` resolve tokens e classes da lib         |
-| Tokens               | Nomes do shadcn/ui + `success`/`warning`; pares `*-foreground` com contraste WCAG AA            | Temas do shadcn funcionam direto; acessível por padrão                               |
-| Build                | Só ESM, `preserveModules`, sem minificação; `.d.ts` via `tsc` (`tsconfig.build.json`)           | Tree-shaking real e código legível nos projetos                                      |
-| Imports internos     | Sempre com extensão `.ts`/`.tsx`                                                                | Os `.d.ts` precisam funcionar em resolução `nodenext`; o build falha se faltar       |
-| Docs                 | Storybook 10 (um componente por vez) + playground (vitrine com tudo)                            | Storybook para ajustar cada componente; playground para ver a lib inteira de uma vez |
-| Testes               | Vitest 5 em browser mode (Chromium/Playwright); stories viram testes com axe                    | Navegador real, sem simular DOM; acessibilidade checada em todo PR                   |
-| CI                   | GitHub Actions em todo PR e push na `main`                                                      | Mesmas verificações para todo mundo                                                  |
-| Conta GitHub         | `temperopropaganda` é conta de **usuário** (não org); repo privado por enquanto                 | Visibilidade decidida na Fase 8 (ver seção 7)                                        |
-| Registry             | **npm público**, pacote `istok-ui` (decidido em 2026-10-02)                                     | Instala sem token nem `.npmrc`; o nome estava livre no npm                           |
+| Tema                    | Decisão                                                                                         | Motivo                                                                                                                              |
+| ----------------------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| Stack                   | React 19 + TypeScript 6 + Vite 8 + Tailwind CSS 4                                               | Mesma stack dos projetos consumidores                                                                                               |
+| TypeScript              | 6.0 (não 7)                                                                                     | O `typescript-eslint` só suporta até a 6.0. Código testado e compatível com a 7.0                                                   |
+| Lint                    | ESLint 10 (`strictTypeChecked`, react-hooks, `eslint-plugin-jsx-a11y-x`, storybook), 0 warnings | O `eslint-plugin-jsx-a11y` original não suporta ESLint 10; o fork é do es-tooling                                                   |
+| Formatação              | Prettier padrão + ordenação de classes do Tailwind (também em `cn()`/`cva()`)                   | Padrão do time                                                                                                                      |
+| React                   | `peerDependencies: ^19`, sem `forwardRef`                                                       | Projetos sempre no latest; no 19 o `ref` chega como prop                                                                            |
+| Base dos componentes    | Radix UI (comportamento/a11y) + código do shadcn/ui como ponto de partida                       | O shadcn já é Radix + Tailwind + cva; partimos de código testado e com API conhecida                                                |
+| Estilos                 | `theme.css` com tokens + `@source` embutido; sem CSS pré-compilado                              | Projetos já têm Tailwind; um único `@import` resolve tokens e classes da lib                                                        |
+| Tokens                  | Nomes do shadcn/ui + `success`/`warning`; pares `*-foreground` com contraste WCAG AA            | Temas do shadcn funcionam direto; acessível por padrão                                                                              |
+| Build                   | Só ESM, `preserveModules`, sem minificação; `.d.ts` via `tsc` (`tsconfig.build.json`)           | Tree-shaking real e código legível nos projetos                                                                                     |
+| Imports internos        | Sempre com extensão `.ts`/`.tsx`                                                                | Os `.d.ts` precisam funcionar em resolução `nodenext`; o build falha se faltar                                                      |
+| Docs                    | Storybook 10 (um componente por vez) + playground (vitrine com tudo)                            | Storybook para ajustar cada componente; playground para ver a lib inteira de uma vez                                                |
+| Testes                  | Vitest 5 em browser mode (Chromium/Playwright); stories viram testes com axe                    | Navegador real, sem simular DOM; acessibilidade checada em todo PR                                                                  |
+| E2E                     | Playwright Test + `@axe-core/playwright` contra o playground (`e2e/`)                           | Testa a lib como o usuário usa: teclado, tema, console limpo e axe na página inteira                                                |
+| Dependências de runtime | `clsx`, `tailwind-merge`, `radix-ui`, `class-variance-authority`                                | `cn()`; Radix para comportamento/a11y (`sideEffects: false`, tree-shaking verificado no `test:consumer`); variantes tipadas com cva |
+| CI                      | GitHub Actions em todo PR e push na `main`                                                      | Mesmas verificações para todo mundo                                                                                                 |
+| Conta GitHub            | `temperopropaganda` é conta de **usuário** (não org); repo **público** desde 2026-10-02         | CI ilimitado e Storybook grátis no GitHub Pages (Fase 8)                                                                            |
+| Registry                | **npm público**, pacote `istok-ui` (decidido em 2026-10-02)                                     | Instala sem token nem `.npmrc`; o nome estava livre no npm                                                                          |
 
 ## 3. Arquitetura e estrutura
 
@@ -86,18 +88,18 @@ scripts/test-consumer.mjs  empacota a lib, instala no app de exemplo e confere o
 
 ## 5. Status das fases
 
-| Fase | Entrega                                                          | Status                |
-| ---- | ---------------------------------------------------------------- | --------------------- |
-| 1    | Ambiente (Vite, TS strict, Tailwind, ESLint, Prettier)           | ✅ Concluída          |
-| 2    | Build da biblioteca (ESM, `.d.ts`, `exports`, `cn()`)            | ✅ Concluída          |
-| 3    | Tokens, tema e dark mode (`theme.css`)                           | ✅ Concluída          |
-| —    | Ambiente do editor (`.vscode/`, `npm run check`)                 | ✅ Concluída          |
-| 4    | Storybook, testes no navegador, teste de consumo, CI             | ✅ Concluída          |
-| —    | SPEC + AGENTS.md; pacote renomeado para `istok-ui` (npm público) | 🔄 Em revisão (PR #5) |
-| 5    | Button + playground como vitrine + testes E2E                    | ⏭️ **Próxima**        |
-| 6    | Componentes da v0.1                                              | Pendente              |
-| 7    | Testes finais (cobertura, cross-browser, tamanho)                | Pendente              |
-| 8    | Release (publicação, Storybook online, guia para agentes)        | Pendente              |
+| Fase | Entrega                                                   | Status         |
+| ---- | --------------------------------------------------------- | -------------- |
+| 1    | Ambiente (Vite, TS strict, Tailwind, ESLint, Prettier)    | ✅ Concluída   |
+| 2    | Build da biblioteca (ESM, `.d.ts`, `exports`, `cn()`)     | ✅ Concluída   |
+| 3    | Tokens, tema e dark mode (`theme.css`)                    | ✅ Concluída   |
+| —    | Ambiente do editor (`.vscode/`, `npm run check`)          | ✅ Concluída   |
+| 4    | Storybook, testes no navegador, teste de consumo, CI      | ✅ Concluída   |
+| —    | SPEC + AGENTS.md; pacote `istok-ui` no npm público        | ✅ Concluída   |
+| 5    | Button + playground como vitrine + testes E2E             | 🔄 Em revisão  |
+| 6    | Componentes da v0.1                                       | ⏭️ **Próxima** |
+| 7    | Testes finais (cobertura, cross-browser, tamanho)         | Pendente       |
+| 8    | Release (publicação, Storybook online, guia para agentes) | Pendente       |
 
 ### Concluído (resumo)
 
@@ -110,35 +112,28 @@ scripts/test-consumer.mjs  empacota a lib, instala no app de exemplo e confere o
 - **Fase 4:** Storybook 10 (Introdução + Tokens); Vitest 5 browser mode com projetos `unit` e `storybook` (axe);
   `npm run test:consumer`; CI com `check`, `test`, `storybook:build`, `test:consumer`. Descoberta: o axe não avalia
   as cores neutras da paleta crua do Tailwind, só os tokens (daí a regra "só tokens").
+- **Docs e registry:** `SPEC.md` como fonte da verdade e `AGENTS.md` com regras e definição de pronto; pacote
+  renomeado para `istok-ui` no npm público; repo público.
+- **Fase 5:** `Button` (6 variantes, tamanhos `sm`/`md`/`lg`/`icon`, `asChild`, `type="button"` por padrão,
+  JSDoc nas props); playground virou a vitrine (cabeçalho com navegação e tema escuro, uma seção por componente);
+  Playwright Test com `@axe-core/playwright` (`npm run test:e2e`, no CI); `test:consumer` passou a usar o Button
+  e a verificar tree-shaking do Radix.
 
-### ⏭️ Próxima entrega — Fase 5: Button, vitrine e E2E
+### ⏭️ Próxima entrega — Fase 6: componentes da v0.1
 
-> Rascunho de escopo. Os critérios de aceite detalhados são fechados com o humano antes de começar.
+> Rascunho de escopo. Os critérios de aceite detalhados de cada grupo são fechados com o humano antes de começar.
 
-1. **Button** (`src/components/button/`), partindo do Button do shadcn:
-   - Dependências novas: `radix-ui` (Slot para `asChild`) e `class-variance-authority`.
-   - Variantes: `default`, `secondary`, `outline`, `ghost`, `link`, `destructive`.
-   - Tamanhos: `sm`, `md` (padrão), `lg`, `icon`.
-   - `asChild` para renderizar como `<a>`/`Link` mantendo o visual.
-   - Segue o checklist da seção 6 à risca: vira o molde dos próximos componentes.
-2. **Playground como vitrine:** reorganizar `playground/` numa página com uma seção por componente mostrando todas as
-   variações e estados, com alternância claro/escuro. A página de tokens atual vira a primeira seção.
-3. **Testes E2E:** configurar Playwright Test (`e2e/`, `npm run test:e2e`) rodando contra o playground, e adicionar ao
-   CI. Primeiro fluxo: Button em todas as variantes, clique, teclado (Tab/Enter/Espaço), `disabled`, tema escuro,
-   console sem erros.
-4. Atualizar este SPEC (status) e o README.
+Um PR por grupo, do mais simples ao mais complexo, todos partindo do shadcn quando houver equivalente e seguindo o
+padrão do Button (`src/components/button/`) e o checklist da seção 6:
+
+| Ordem | Grupo      | Componentes                                                 | Observação                                            |
+| ----- | ---------- | ----------------------------------------------------------- | ----------------------------------------------------- |
+| 1     | Exibição   | Card, Badge, Separator, Avatar, Skeleton                    | Sem comportamento: consolida o padrão visual          |
+| 2     | Feedback   | Alert, Spinner                                              | Spinner habilita `loading` no Button                  |
+| 3     | Formulário | Label, Input, Textarea, Field, Checkbox, RadioGroup, Switch | Estados `invalid`/`disabled`, Field liga label + erro |
+| 4     | Overlay    | Dialog, Tooltip                                             | Foco preso, Esc, portal: E2E obrigatório              |
 
 ### Pendente
-
-- **Fase 6 — Componentes da v0.1** (um PR por grupo, partindo do shadcn quando houver equivalente):
-
-  | Grupo      | Componentes                                                  |
-  | ---------- | ------------------------------------------------------------ |
-  | Formulário | Input, Textarea, Label, Field, Checkbox, RadioGroup, Switch  |
-  | Feedback   | Alert, Badge, Spinner, Skeleton                              |
-  | Exibição   | Card, Avatar, Separator                                      |
-  | Overlay    | Dialog, Tooltip                                              |
-  | Ações      | IconButton (se não for coberto pelo `size="icon"` do Button) |
 
 - **Fase 7 — Testes finais:** cobertura mínima global de 80% como threshold no Vitest; Firefox e WebKit no browser
   mode; `size-limit` por componente; auditoria manual de teclado e leitor de tela (Orca) nos overlays; regressão
@@ -183,11 +178,11 @@ scripts/test-consumer.mjs  empacota a lib, instala no app de exemplo e confere o
 
 ## 7. Decisões em aberto
 
-| Decisão                 | Opções                                                                             | Recomendação                                             | Dono   |
-| ----------------------- | ---------------------------------------------------------------------------------- | -------------------------------------------------------- | ------ |
-| Visibilidade do repo    | Público ou privado. O pacote no npm é público de qualquer forma                    | Público: CI ilimitado e Storybook grátis no GitHub Pages | Humano |
-| Hospedagem do Storybook | GitHub Pages (exige repo público ou GitHub Pro); Vercel/Netlify/Chromatic (grátis) | GitHub Pages, se o repo for público                      | Humano |
+Nenhuma decisão em aberto bloqueia a Fase 6.
 
-**Ações do humano antes da Fase 8:** criar a conta no npm (ou usar a da empresa) e configurar o trusted publishing do
-pacote `istok-ui` apontando para este repositório. Nada é publicado antes da Fase 8; até lá o nome não está
-reservado.
+| Decisão                 | Plano                                                                                       | Quando |
+| ----------------------- | ------------------------------------------------------------------------------------------- | ------ |
+| Hospedagem do Storybook | GitHub Pages (o repo já é público)                                                          | Fase 8 |
+| Publicação no npm       | Workflow no GitHub Actions com trusted publishing (sem token salvo); conta no npm já criada | Fase 8 |
+
+Nada é publicado antes da Fase 8; até lá o nome `istok-ui` não está reservado.

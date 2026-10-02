@@ -42,10 +42,13 @@
     "test:coverage": "vitest run --coverage",
     "storybook": "storybook dev -p 6006",
     "storybook:build": "storybook build",
-    "test:consumer": "node scripts/test-consumer.mjs"
+    "test:consumer": "node scripts/test-consumer.mjs",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
+    "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "radix-ui": "^1.6.7",
     "tailwind-merge": "^3.7.0"
   },
   "peerDependencies": {
@@ -55,7 +58,9 @@
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.5",
+    "@axe-core/playwright": "^4.13.0",
     "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.63.0",
     "@storybook/addon-a11y": "^10.6.1",
     "@storybook/addon-docs": "^10.6.1",
     "@storybook/addon-themes": "^10.6.1",

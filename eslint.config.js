@@ -8,7 +8,14 @@ import tseslint from "typescript-eslint";
 
 export default defineConfig([
   // examples/ tem package.json e tsconfig próprios e é checado pelo `test:consumer`.
-  globalIgnores(["dist", "coverage", "storybook-static", "examples"]),
+  globalIgnores([
+    "dist",
+    "coverage",
+    "storybook-static",
+    "examples",
+    "test-results",
+    "playwright-report",
+  ]),
   {
     files: ["**/*.{ts,tsx}"],
     extends: [
@@ -23,6 +30,13 @@ export default defineConfig([
         projectService: true,
         tsconfigRootDir: import.meta.dirname,
       },
+    },
+  },
+  {
+    // E2E não tem React: o `use()` das fixtures do Playwright não é hook.
+    files: ["e2e/**"],
+    rules: {
+      "react-hooks/rules-of-hooks": "off",
     },
   },
   storybook.configs["flat/recommended"],

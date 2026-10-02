@@ -34,3 +34,9 @@ storybook-static
 
 # Maestri (canvas de agentes, local)
 .maestri
+
+# Playwright e prints de falha do Vitest
+test-results
+playwright-report
+blob-report
+.vitest

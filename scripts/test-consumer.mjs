@@ -72,6 +72,12 @@ try {
     otherRadix.every((name) => !js.includes(name)),
     "tree-shaking: outros componentes do Radix fora do bundle",
   );
+  // Idem para os componentes da própria lib: o app só importa Button e cn.
+  const otherSlots = ["card", "badge", "avatar", "separator", "skeleton"];
+  check(
+    otherSlots.every((slot) => !new RegExp(`"data-slot":["\`]${slot}["\`]`).test(js)),
+    "tree-shaking: componentes não importados da lib fora do bundle",
+  );
 
   const output = execFileSync(
     process.execPath,

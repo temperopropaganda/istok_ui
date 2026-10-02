@@ -26,6 +26,24 @@ O pacote é publicado no npm como `istok-ui` (a partir da `v0.1.0`).
 
 Requer React 19 e Tailwind CSS 4 no projeto.
 
+### Componentes
+
+```tsx
+import { Button } from "istok-ui";
+
+<Button>Salvar</Button>
+<Button variant="outline" size="sm">Cancelar</Button>
+<Button asChild variant="link">
+  <a href="/ajuda">Ajuda</a>
+</Button>
+```
+
+| Componente | Variações                                                                                               |
+| ---------- | ------------------------------------------------------------------------------------------------------- |
+| `Button`   | `variant`: default, secondary, outline, ghost, link, destructive · `size`: sm, md, lg, icon · `asChild` |
+
+A documentação de cada componente (props, exemplos, estados) está no Storybook.
+
 ### Tema
 
 Os tokens viram utilitários do Tailwind: `bg-primary`, `text-muted-foreground`, `border-border`, `rounded-lg`…
@@ -68,7 +86,7 @@ npx playwright install chromium   # navegador usado pelos testes (uma vez por m�
 npm run storybook
 ```
 
-O Storybook (http://localhost:6006) é o ambiente principal: documentação, stories de cada componente e alternância entre tema claro e escuro. O `npm run dev` abre o playground (`playground/`), um app livre para testes rápidos.
+O Storybook (http://localhost:6006) é o ambiente principal: documentação, stories de cada componente e alternância entre tema claro e escuro. O `npm run dev` abre o playground (`playground/`), a vitrine com **todos** os componentes e variações numa página só.
 
 ### VS Code
 
@@ -79,30 +97,32 @@ O repositório já traz as configurações em `.vscode/`. Ao abrir o projeto:
 
 ### Scripts
 
-| Script                    | O que faz                                                                            |
-| ------------------------- | ------------------------------------------------------------------------------------ |
-| `npm run storybook`       | Sobe o Storybook em http://localhost:6006                                            |
-| `npm run storybook:build` | Gera o Storybook estático em `storybook-static/`                                     |
-| `npm run dev`             | Sobe o playground com hot reload                                                     |
-| `npm run build`           | Checa os tipos e gera a biblioteca (JS + `.d.ts` + `theme.css`) em `dist/`           |
-| `npm test`                | Roda os testes unitários e as stories (com checagem de acessibilidade) no Chromium   |
-| `npm run test:watch`      | Testes em modo watch                                                                 |
-| `npm run test:coverage`   | Testes com relatório de cobertura                                                    |
-| `npm run test:consumer`   | Empacota a lib, instala em `examples/consumer-app` e confere o build                 |
-| `npm run typecheck`       | Checa os tipos com o TypeScript                                                      |
-| `npm run lint`            | Roda o ESLint, falhando com qualquer warning (`lint:fix` corrige o que for possível) |
-| `npm run lint:package`    | Valida o pacote publicado (publint + arethetypeswrong)                               |
-| `npm run format`          | Formata o código com o Prettier                                                      |
-| `npm run format:check`    | Verifica a formatação sem alterar arquivos                                           |
-| `npm run check`           | typecheck + lint + format:check + build + lint:package                               |
+| Script                    | O que faz                                                                             |
+| ------------------------- | ------------------------------------------------------------------------------------- |
+| `npm run storybook`       | Sobe o Storybook em http://localhost:6006                                             |
+| `npm run storybook:build` | Gera o Storybook estático em `storybook-static/`                                      |
+| `npm run dev`             | Sobe o playground com hot reload                                                      |
+| `npm run build`           | Checa os tipos e gera a biblioteca (JS + `.d.ts` + `theme.css`) em `dist/`            |
+| `npm test`                | Roda os testes unitários e as stories (com checagem de acessibilidade) no Chromium    |
+| `npm run test:watch`      | Testes em modo watch                                                                  |
+| `npm run test:coverage`   | Testes com relatório de cobertura                                                     |
+| `npm run test:e2e`        | Testes E2E (Playwright) no playground: teclado, tema, console e axe na página inteira |
+| `npm run test:consumer`   | Empacota a lib, instala em `examples/consumer-app` e confere o build                  |
+| `npm run typecheck`       | Checa os tipos com o TypeScript                                                       |
+| `npm run lint`            | Roda o ESLint, falhando com qualquer warning (`lint:fix` corrige o que for possível)  |
+| `npm run lint:package`    | Valida o pacote publicado (publint + arethetypeswrong)                                |
+| `npm run format`          | Formata o código com o Prettier                                                       |
+| `npm run format:check`    | Verifica a formatação sem alterar arquivos                                            |
+| `npm run check`           | typecheck + lint + format:check + build + lint:package                                |
 
-O CI (`.github/workflows/ci.yml`) roda `check`, `test`, `storybook:build` e `test:consumer` em todo PR.
+O CI (`.github/workflows/ci.yml`) roda `check`, `test`, `test:e2e`, `storybook:build` e `test:consumer` em todo PR.
 
 ### Testes
 
 - **Unitários e de componente:** `*.test.ts(x)` ao lado do código, rodando no Chromium real via Vitest browser mode.
 - **Stories:** cada story em `*.stories.tsx` vira um teste que renderiza o componente e roda o axe. Qualquer violação de acessibilidade falha o teste, inclusive contraste de cor.
-- **Consumo:** `npm run test:consumer` simula um projeto real instalando o pacote.
+- **E2E:** `e2e/*.spec.ts` (Playwright) usa a vitrine como um usuário: clique, teclado, tema escuro, console sem erros e axe na página inteira.
+- **Consumo:** `npm run test:consumer` simula um projeto real instalando o pacote (inclui tree-shaking).
 
 ### Estrutura
 
@@ -113,7 +133,8 @@ src/styles/           theme.css com os tokens (publicado cru em dist/theme.css)
 docs/                 páginas MDX do Storybook
 examples/consumer-app app de teste de consumo (usado pelo test:consumer)
 scripts/              scripts de manutenção
-playground/           app de desenvolvimento, não vai pro pacote publicado
+playground/           vitrine com todos os componentes (não vai pro pacote publicado)
+e2e/                  testes E2E com Playwright, rodando contra o playground
 ```
 
 ### Problemas comuns

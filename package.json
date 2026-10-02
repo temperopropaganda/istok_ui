@@ -22,6 +22,7 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
+    "./theme.css": "./dist/theme.css",
     "./package.json": "./package.json"
   },
   "scripts": {
@@ -30,7 +31,7 @@
     "typecheck": "tsc -b",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "lint:package": "publint --strict && attw --pack . --profile esm-only",
+    "lint:package": "publint --strict && attw --pack . --profile esm-only --exclude-entrypoints ./theme.css",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "prepack": "npm run build"

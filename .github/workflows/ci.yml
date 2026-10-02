@@ -38,6 +38,9 @@ jobs:
       - name: Testes (unitários + stories com a11y)
         run: npm test
 
+      - name: Testes E2E (Playwright no playground)
+        run: npm run test:e2e
+
       - name: Build do Storybook
         run: npm run storybook:build
 

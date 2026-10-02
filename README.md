@@ -2,29 +2,24 @@
 
 Biblioteca de componentes React + TypeScript, estilizada com Tailwind CSS.
 
+- **[SPEC.md](SPEC.md):** objetivo, decisões, status das fases e critérios de aceite (fonte da verdade).
+- **[AGENTS.md](AGENTS.md):** regras, comandos e convenções para agentes de IA (e pessoas) que trabalham no código.
+
 ## Usando nos projetos
 
-O pacote é publicado no GitHub Packages como `@temperopropaganda/istok-ui` (uso interno).
+O pacote é publicado no npm como `istok-ui` (a partir da `v0.1.0`).
 
-1. Gere um token do GitHub com o escopo `read:packages` e exporte como `GITHUB_TOKEN`.
-2. Crie um `.npmrc` na raiz do projeto:
-
-   ```
-   @temperopropaganda:registry=https://npm.pkg.github.com
-   //npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}
-   ```
-
-3. Instale:
+1. Instale:
 
    ```bash
-   npm install @temperopropaganda/istok-ui
+   npm install istok-ui
    ```
 
-4. Importe o tema no CSS principal do projeto, logo depois do Tailwind:
+2. Importe o tema no CSS principal do projeto, logo depois do Tailwind:
 
    ```css
    @import "tailwindcss";
-   @import "@temperopropaganda/istok-ui/theme.css";
+   @import "istok-ui/theme.css";
    ```
 
    Só isso: o `theme.css` já faz o Tailwind do projeto gerar as classes usadas pelos componentes.
@@ -115,7 +110,7 @@ O CI (`.github/workflows/ci.yml`) roda `check`, `test`, `storybook:build` e `tes
 src/                  código da biblioteca (src/index.ts é a API pública)
 src/styles/           theme.css com os tokens (publicado cru em dist/theme.css)
 .storybook/           configuração do Storybook
-docs/                 páginas MDX do Storybook + roadmap e decisões (docs/roadmap.md)
+docs/                 páginas MDX do Storybook
 examples/consumer-app app de teste de consumo (usado pelo test:consumer)
 scripts/              scripts de manutenção
 playground/           app de desenvolvimento, não vai pro pacote publicado

@@ -31,3 +31,6 @@ storybook-static
 
 # Storybook
 *storybook.log
+
+# Maestri (canvas de agentes, local)
+.maestri

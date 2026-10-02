@@ -38,9 +38,14 @@ import { Button } from "istok-ui";
 </Button>
 ```
 
-| Componente | Variações                                                                                               |
-| ---------- | ------------------------------------------------------------------------------------------------------- |
-| `Button`   | `variant`: default, secondary, outline, ghost, link, destructive · `size`: sm, md, lg, icon · `asChild` |
+| Componente                                                                                      | Variações                                                                                               |
+| ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `Avatar`, `AvatarImage`, `AvatarFallback`                                                       | `size`: sm, md, lg · fallback com iniciais quando não há foto                                           |
+| `Badge`                                                                                         | `variant`: default, secondary, outline, destructive, success, warning · `asChild`                       |
+| `Button`                                                                                        | `variant`: default, secondary, outline, ghost, link, destructive · `size`: sm, md, lg, icon · `asChild` |
+| `Card`, `CardHeader`, `CardTitle`, `CardDescription`, `CardAction`, `CardContent`, `CardFooter` | Peças combináveis · `CardTitle` é `<h3>` (`asChild` troca o nível) · `Card asChild`                     |
+| `Separator`                                                                                     | `orientation`: horizontal, vertical · `decorative`                                                      |
+| `Skeleton`                                                                                      | Tamanho por classes · decorativo, respeita redução de movimento                                         |
 
 A documentação de cada componente (props, exemplos, estados) está no Storybook.
 
@@ -135,6 +140,7 @@ examples/consumer-app app de teste de consumo (usado pelo test:consumer)
 scripts/              scripts de manutenção
 playground/           vitrine com todos os componentes (não vai pro pacote publicado)
 e2e/                  testes E2E com Playwright, rodando contra o playground
+tests/                setup dos testes de componente (carrega Tailwind + tema)
 ```
 
 ### Problemas comuns

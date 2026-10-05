@@ -4,6 +4,7 @@ import { expect, openPage, setTheme, test } from "./fixtures.ts";
 const pages = [
   { id: "", label: "Visão geral", title: "istok_ui" },
   { id: "tokens", label: "Tokens" },
+  { id: "accordion", label: "Accordion" },
   { id: "alert", label: "Alert" },
   { id: "alert-dialog", label: "AlertDialog" },
   { id: "avatar", label: "Avatar" },
@@ -15,6 +16,8 @@ const pages = [
   { id: "field", label: "Field" },
   { id: "input", label: "Input" },
   { id: "label", label: "Label" },
+  { id: "news-card", label: "NewsCard" },
+  { id: "product-card", label: "ProductCard" },
   { id: "radio-group", label: "RadioGroup" },
   { id: "separator", label: "Separator" },
   { id: "skeleton", label: "Skeleton" },
@@ -49,7 +52,7 @@ test.describe("Vitrine (playground)", () => {
 
     await page
       .getByRole("navigation", { name: "Navegação" })
-      .getByRole("link", { name: "Card" })
+      .getByRole("link", { name: "Card", exact: true })
       .click();
     await expect(page.getByRole("heading", { level: 1, name: "Card" })).toBeFocused();
     expect(await page.evaluate(() => window.scrollY)).toBe(0);

@@ -5,9 +5,16 @@ import { AvatarSection } from "./sections/avatar.tsx";
 import { BadgeSection } from "./sections/badge.tsx";
 import { ButtonSection } from "./sections/button.tsx";
 import { CardSection } from "./sections/card.tsx";
+import { CheckboxSection } from "./sections/checkbox.tsx";
+import { FieldSection } from "./sections/field.tsx";
+import { InputSection } from "./sections/input.tsx";
+import { LabelSection } from "./sections/label.tsx";
+import { RadioGroupSection } from "./sections/radio-group.tsx";
 import { SeparatorSection } from "./sections/separator.tsx";
 import { SkeletonSection } from "./sections/skeleton.tsx";
 import { SpinnerSection } from "./sections/spinner.tsx";
+import { SwitchSection } from "./sections/switch.tsx";
+import { TextareaSection } from "./sections/textarea.tsx";
 import { TokensSection } from "./sections/tokens.tsx";
 
 // Vitrine: todos os componentes da lib numa página só. Componente novo = seção nova aqui
@@ -19,9 +26,16 @@ const sections = [
   { id: "badge", label: "Badge", Component: BadgeSection },
   { id: "button", label: "Button", Component: ButtonSection },
   { id: "card", label: "Card", Component: CardSection },
+  { id: "checkbox", label: "Checkbox", Component: CheckboxSection },
+  { id: "field", label: "Field", Component: FieldSection },
+  { id: "input", label: "Input", Component: InputSection },
+  { id: "label", label: "Label", Component: LabelSection },
+  { id: "radio-group", label: "RadioGroup", Component: RadioGroupSection },
   { id: "separator", label: "Separator", Component: SeparatorSection },
   { id: "skeleton", label: "Skeleton", Component: SkeletonSection },
   { id: "spinner", label: "Spinner", Component: SpinnerSection },
+  { id: "switch", label: "Switch", Component: SwitchSection },
+  { id: "textarea", label: "Textarea", Component: TextareaSection },
 ];
 
 export function App() {

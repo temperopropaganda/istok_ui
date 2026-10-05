@@ -14,7 +14,7 @@ import {
   Input,
   type DialogContentProps,
 } from "../../src/index.ts";
-import { Example, Section } from "../section.tsx";
+import { Example } from "../section.tsx";
 
 const sizes: NonNullable<DialogContentProps["size"]>[] = ["sm", "md", "lg"];
 
@@ -64,11 +64,7 @@ function EditProfile() {
 
 export function DialogSection() {
   return (
-    <Section
-      id="dialog"
-      title="Dialog"
-      description="Modal: prende o foco, fecha com Esc, clique fora ou X, e devolve o foco a quem abriu."
-    >
+    <>
       <Example label="Com formulário">
         <EditProfile />
       </Example>
@@ -111,6 +107,6 @@ export function DialogSection() {
           </DialogContent>
         </Dialog>
       </Example>
-    </Section>
+    </>
   );
 }

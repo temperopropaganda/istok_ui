@@ -171,7 +171,7 @@ npx playwright install firefox webkit   # opcional: para o npm run test:browsers
 npm run storybook
 ```
 
-O Storybook (http://localhost:6006) é o ambiente principal: documentação, stories de cada componente e alternância entre tema claro e escuro. O `npm run dev` abre o playground (`playground/`), a vitrine com **todos** os componentes e variações numa página só.
+O Storybook (http://localhost:6006) é o ambiente principal: documentação, stories de cada componente e alternância entre tema claro e escuro. O `npm run dev` abre o playground (`playground/`), a vitrine no estilo da documentação do shadcn: sidebar à esquerda, uma página por componente com todas as variações, e tema escuro por padrão (botão sol/lua no topo).
 
 ### VS Code
 
@@ -182,25 +182,25 @@ O repositório já traz as configurações em `.vscode/`. Ao abrir o projeto:
 
 ### Scripts
 
-| Script                    | O que faz                                                                             |
-| ------------------------- | ------------------------------------------------------------------------------------- |
-| `npm run storybook`       | Sobe o Storybook em http://localhost:6006                                             |
-| `npm run storybook:build` | Gera o Storybook estático em `storybook-static/`                                      |
-| `npm run dev`             | Sobe o playground com hot reload                                                      |
-| `npm run build`           | Checa os tipos e gera a biblioteca (JS + `.d.ts` + `theme.css`) em `dist/`            |
-| `npm test`                | Roda os testes unitários e as stories (com checagem de acessibilidade) no Chromium    |
-| `npm run test:browsers`   | Mesmos testes e os E2E no Firefox e no WebKit (no CI roda em todo PR)                 |
-| `npm run test:watch`      | Testes em modo watch                                                                  |
-| `npm run test:coverage`   | Testes com relatório de cobertura (falha abaixo de 90%)                               |
-| `npm run test:e2e`        | Testes E2E (Playwright) no playground: teclado, tema, console e axe na página inteira |
-| `npm run size`            | Confere o tamanho de cada componente contra os limites do `.size-limit.json`          |
-| `npm run test:consumer`   | Empacota a lib, instala em `examples/consumer-app` e confere o build                  |
-| `npm run typecheck`       | Checa os tipos com o TypeScript                                                       |
-| `npm run lint`            | Roda o ESLint, falhando com qualquer warning (`lint:fix` corrige o que for possível)  |
-| `npm run lint:package`    | Valida o pacote publicado (publint + arethetypeswrong)                                |
-| `npm run format`          | Formata o código com o Prettier                                                       |
-| `npm run format:check`    | Verifica a formatação sem alterar arquivos                                            |
-| `npm run check`           | typecheck + lint + format:check + build + size + lint:package                         |
+| Script                    | O que faz                                                                            |
+| ------------------------- | ------------------------------------------------------------------------------------ |
+| `npm run storybook`       | Sobe o Storybook em http://localhost:6006                                            |
+| `npm run storybook:build` | Gera o Storybook estático em `storybook-static/`                                     |
+| `npm run dev`             | Sobe o playground com hot reload                                                     |
+| `npm run build`           | Checa os tipos e gera a biblioteca (JS + `.d.ts` + `theme.css`) em `dist/`           |
+| `npm test`                | Roda os testes unitários e as stories (com checagem de acessibilidade) no Chromium   |
+| `npm run test:browsers`   | Mesmos testes e os E2E no Firefox e no WebKit (no CI roda em todo PR)                |
+| `npm run test:watch`      | Testes em modo watch                                                                 |
+| `npm run test:coverage`   | Testes com relatório de cobertura (falha abaixo de 90%)                              |
+| `npm run test:e2e`        | Testes E2E (Playwright) no playground: navegação, teclado, tema, console e axe       |
+| `npm run size`            | Confere o tamanho de cada componente contra os limites do `.size-limit.json`         |
+| `npm run test:consumer`   | Empacota a lib, instala em `examples/consumer-app` e confere o build                 |
+| `npm run typecheck`       | Checa os tipos com o TypeScript                                                      |
+| `npm run lint`            | Roda o ESLint, falhando com qualquer warning (`lint:fix` corrige o que for possível) |
+| `npm run lint:package`    | Valida o pacote publicado (publint + arethetypeswrong)                               |
+| `npm run format`          | Formata o código com o Prettier                                                      |
+| `npm run format:check`    | Verifica a formatação sem alterar arquivos                                           |
+| `npm run check`           | typecheck + lint + format:check + build + size + lint:package                        |
 
 O CI (`.github/workflows/ci.yml`) roda `check`, `test:coverage`, `test:e2e`, `test:browsers`, `storybook:build` e
 `test:consumer` em todo PR, com Chromium, Firefox e WebKit.
@@ -209,7 +209,7 @@ O CI (`.github/workflows/ci.yml`) roda `check`, `test:coverage`, `test:e2e`, `te
 
 - **Unitários e de componente:** `*.test.ts(x)` ao lado do código, rodando no Chromium real via Vitest browser mode.
 - **Stories:** cada story em `*.stories.tsx` vira um teste que renderiza o componente e roda o axe. Qualquer violação de acessibilidade falha o teste, inclusive contraste de cor.
-- **E2E:** `e2e/*.spec.ts` (Playwright) usa a vitrine como um usuário: clique, teclado, tema escuro, console sem erros e axe na página inteira.
+- **E2E:** `e2e/*.spec.ts` (Playwright) usa a vitrine como um usuário: navegação pela sidebar, clique, teclado, os dois temas, console sem erros e axe em cada página.
 - **Consumo:** `npm run test:consumer` simula um projeto real instalando o pacote (inclui tree-shaking).
 - **Navegadores:** local, os testes usam o Chromium; o CI roda também Firefox e WebKit (`npm run test:browsers`).
 - **Tamanho:** `npm run size` mede cada componente (brotli, com as dependências) e falha acima do limite.
@@ -224,7 +224,7 @@ src/styles/           theme.css com os tokens (publicado cru em dist/theme.css)
 docs/                 páginas MDX do Storybook e roteiro de auditoria com leitor de tela
 examples/consumer-app app de teste de consumo (usado pelo test:consumer)
 scripts/              scripts de manutenção
-playground/           vitrine com todos os componentes (não vai pro pacote publicado)
+playground/           vitrine com sidebar e uma página por componente (não vai pro pacote)
 e2e/                  testes E2E com Playwright, rodando contra o playground
 tests/                setup dos testes de componente (carrega Tailwind + tema)
 ```

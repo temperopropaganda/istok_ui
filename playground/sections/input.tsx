@@ -1,15 +1,11 @@
 import { Button, Input, type InputProps } from "../../src/index.ts";
-import { Example, Section } from "../section.tsx";
+import { Example } from "../section.tsx";
 
 const sizes: NonNullable<InputProps["size"]>[] = ["sm", "md", "lg"];
 
 export function InputSection() {
   return (
-    <Section
-      id="input"
-      title="Input"
-      description="Campo de texto nativo. Alturas iguais às do Button para alinhar na mesma linha."
-    >
+    <>
       <Example label="Tamanhos">
         <div className="grid w-full max-w-md gap-3">
           {sizes.map((size) => (
@@ -39,6 +35,6 @@ export function InputSection() {
           <Input type="file" aria-label="Arquivo" />
         </div>
       </Example>
-    </Section>
+    </>
   );
 }

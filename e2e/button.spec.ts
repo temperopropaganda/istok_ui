@@ -1,19 +1,16 @@
 import type { Page } from "@playwright/test";
-import { enableDarkTheme, expect, test } from "./fixtures.ts";
+import { expect, expectThemeChange, openPage, test } from "./fixtures.ts";
 
 const variants = ["default", "secondary", "outline", "ghost", "link", "destructive"];
 
 test.describe("Button", () => {
-  test.beforeEach(async ({ page }) => {
-    await page.goto("/");
-  });
-
   const section = (page: Page) => page.getByRole("region", { name: "Button" });
   const group = (page: Page, name: string) =>
     section(page).getByRole("group", { name, exact: true });
   const clicks = (page: Page) => page.getByTestId("button-clicks");
 
   test("mostra todas as variantes, habilitadas e desabilitadas", async ({ page }) => {
+    await openPage(page, "button");
     for (const name of variants) {
       await expect(
         group(page, "Variantes").getByRole("button", { name, exact: true }),
@@ -25,6 +22,7 @@ test.describe("Button", () => {
   });
 
   test("clique dispara a ação", async ({ page }) => {
+    await openPage(page, "button");
     await group(page, "Variantes").getByRole("button", { name: "default" }).click();
     await group(page, "Tamanhos").getByRole("button", { name: "Tamanho lg" }).click();
 
@@ -32,6 +30,7 @@ test.describe("Button", () => {
   });
 
   test("funciona só com teclado: Tab, foco visível, Espaço e Enter", async ({ page }) => {
+    await openPage(page, "button");
     // Clicar no título define o ponto de partida da navegação por Tab.
     await group(page, "Variantes").getByRole("heading", { name: "Variantes" }).click();
     await page.keyboard.press("Tab");
@@ -51,6 +50,7 @@ test.describe("Button", () => {
   });
 
   test("botões desabilitados ficam fora do Tab e não disparam a ação", async ({ page }) => {
+    await openPage(page, "button");
     // Do último botão habilitado antes dos desabilitados, o Tab pula direto para os botões em
     // loading (que continuam focáveis).
     await group(page, "Com ícone").getByRole("button", { name: "Adicionar" }).last().focus();
@@ -64,28 +64,28 @@ test.describe("Button", () => {
   });
 
   test("botão só com ícone tem nome acessível", async ({ page }) => {
+    await openPage(page, "button");
     const iconButton = group(page, "Com ícone").getByRole("button", { name: "Adicionar" }).last();
     await expect(iconButton).toHaveAttribute("aria-label", "Adicionar");
     await expect(iconButton).toHaveText("");
   });
 
   test("asChild renderiza um link funcional com visual de botão", async ({ page }) => {
+    await openPage(page, "button");
     const link = group(page, "Como link (asChild)").getByRole("link", {
       name: "Ir para os tokens",
     });
     await expect(link).toHaveAttribute("data-slot", "button");
 
     await link.click();
-    await expect(page).toHaveURL(/#tokens$/);
+    await expect(page).toHaveURL(/#\/tokens$/);
+    await expect(page.getByRole("heading", { level: 1, name: "Tokens" })).toBeVisible();
   });
 
-  test("cores mudam no tema escuro", async ({ page }) => {
+  test("cores mudam entre o tema claro e o escuro", async ({ page }) => {
+    await openPage(page, "button");
     const button = group(page, "Variantes").getByRole("button", { name: "default" });
-    const lightBackground = await button.evaluate(
-      (element) => getComputedStyle(element).backgroundColor,
-    );
 
-    await enableDarkTheme(page);
-    await expect(button).not.toHaveCSS("background-color", lightBackground);
+    await expectThemeChange(page, button, "background-color");
   });
 });

@@ -5,7 +5,7 @@ import {
   RadioGroup,
   RadioGroupItem,
 } from "../../src/index.ts";
-import { Example, Section } from "../section.tsx";
+import { Example } from "../section.tsx";
 
 const plans = [
   { value: "mensal", label: "Mensal", description: "R$ 49 por mês" },
@@ -15,11 +15,7 @@ const plans = [
 
 export function RadioGroupSection() {
   return (
-    <Section
-      id="radio-group"
-      title="RadioGroup"
-      description="Opções exclusivas. Tab entra pela opção marcada; as setas trocam."
-    >
+    <>
       <Example label="Vertical, com descrição">
         <Field className="max-w-md">
           <FieldLabel>Plano</FieldLabel>
@@ -64,6 +60,6 @@ export function RadioGroupSection() {
           </RadioGroup>
         </Field>
       </Example>
-    </Section>
+    </>
   );
 }

@@ -1,9 +1,9 @@
 import { Separator } from "../../src/index.ts";
-import { Example, Section } from "../section.tsx";
+import { Example } from "../section.tsx";
 
 export function SeparatorSection() {
   return (
-    <Section id="separator" title="Separator" description="Linha entre conteúdos.">
+    <>
       <Example label="Horizontal">
         <div className="w-full max-w-sm text-sm">
           <p className="font-medium">istok_ui</p>
@@ -21,6 +21,6 @@ export function SeparatorSection() {
           <span>Tokens</span>
         </div>
       </Example>
-    </Section>
+    </>
   );
 }

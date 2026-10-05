@@ -40,7 +40,8 @@ Siga o **checklist de componente pronto** (SPEC, seção 6). Os pontos que mais 
 
 - Classes do Tailwind **literais** e **só com tokens** (`bg-primary`, nunca `bg-${cor}` nem `bg-neutral-500`).
 - Imports internos **com extensão** (`./button.tsx`); o build falha sem ela.
-- Componente novo entra em `src/index.ts`, no Storybook **e** no playground.
+- Componente novo entra em `src/index.ts`, no Storybook **e** no playground (seção em `playground/sections/`,
+  entrada em `playground/pages.ts` e na lista `views` de `playground/app.tsx`).
 - Copie o estilo dos arquivos existentes (`src/lib/cn.ts`, `src/lib/cn.test.ts`, `src/styles/theme.stories.tsx`).
 - Commits em [Conventional Commits](https://www.conventionalcommits.org) (`feat:`, `fix:`, `chore:`, `test:`…).
 - PRs em português, com as seções **O que muda**, **Como foi testado** (comandos e resultados reais) e **Pontos de
@@ -66,7 +67,8 @@ Uma entrega só vai para PR quando tudo abaixo passa:
 
 **Fluxo no navegador** — teste o que foi feito como um usuário:
 
-- Cada componente novo aparece no playground com todas as variações e estados, nos temas claro e escuro.
+- Cada componente novo tem sua página no playground (sidebar) com todas as variações e estados, nos temas claro
+  e escuro.
 - Dá para usar **só com teclado**: Tab chega no elemento, o foco é visível, Enter/Espaço/setas fazem o que o WAI-ARIA
   APG define para aquele padrão.
 - Estados `disabled`/`invalid` não respondem a interação e são anunciados (atributos ARIA corretos).

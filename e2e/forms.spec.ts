@@ -1,5 +1,5 @@
 import type { Page } from "@playwright/test";
-import { enableDarkTheme, expect, test } from "./fixtures.ts";
+import { expect, expectThemeChange, openPage, test } from "./fixtures.ts";
 
 const section = (page: Page, name: string) => page.getByRole("region", { name });
 const group = (page: Page, sectionName: string, name: string) =>
@@ -14,13 +14,10 @@ async function holdKey(page: Page, key: string) {
 }
 
 test.describe("Componentes de formulário", () => {
-  test.beforeEach(async ({ page }) => {
-    await page.goto("/");
-  });
-
   test("cadastro: envio vazio mostra os erros e leva o foco ao primeiro campo", async ({
     page,
   }) => {
+    await openPage(page, "field");
     const form = page.getByRole("form", { name: "Cadastro" });
     await form.getByRole("button", { name: "Criar conta" }).click();
 
@@ -47,6 +44,7 @@ test.describe("Componentes de formulário", () => {
   });
 
   test("cadastro: preenchido e enviado só com teclado", async ({ page }) => {
+    await openPage(page, "field");
     const form = page.getByRole("form", { name: "Cadastro" });
 
     await form.getByRole("textbox", { name: "Nome" }).focus();
@@ -90,6 +88,7 @@ test.describe("Componentes de formulário", () => {
   });
 
   test("Field: rótulo, descrição, obrigatório e desabilitado", async ({ page }) => {
+    await openPage(page, "field");
     const fields = group(page, "Field", "Vertical");
 
     await expect(
@@ -110,6 +109,7 @@ test.describe("Componentes de formulário", () => {
   });
 
   test("FieldSet: grupo nomeado pela legenda, com descrição", async ({ page }) => {
+    await openPage(page, "field");
     const fieldset = group(page, "Field", "Grupo (FieldSet)").getByRole("group", {
       name: "Notificações",
     });
@@ -119,6 +119,7 @@ test.describe("Componentes de formulário", () => {
   });
 
   test("Checkbox: Espaço alterna e 'selecionar todas' fica indeterminado", async ({ page }) => {
+    await openPage(page, "checkbox");
     const list = group(page, "Checkbox", "Selecionar todos");
     const all = list.getByRole("checkbox", { name: "Selecionar todas" });
 
@@ -137,6 +138,7 @@ test.describe("Componentes de formulário", () => {
   test("RadioGroup: setas trocam a opção e Tab entra no próximo grupo pela marcada", async ({
     page,
   }) => {
+    await openPage(page, "radio-group");
     const plans = group(page, "RadioGroup", "Vertical, com descrição");
     const yearly = plans.getByRole("radio", { name: "Anual" });
 
@@ -165,6 +167,7 @@ test.describe("Componentes de formulário", () => {
     page,
     browserName,
   }) => {
+    await openPage(page, "radio-group");
     // O Radix tira o grupo da ordem de Tab num estado do React, aplicado numa microtask. O Firefox
     // do Playwright despacha a tecla de dentro de JavaScript e só roda a microtask depois de mover o
     // foco, então aqui o foco "volta" para o grupo. Com teclado de verdade a microtask roda antes
@@ -183,6 +186,7 @@ test.describe("Componentes de formulário", () => {
   });
 
   test("Switch: Espaço liga e desliga", async ({ page }) => {
+    await openPage(page, "switch");
     const toggle = group(page, "Switch", "Estados").getByRole("switch", { name: "Desligado" });
 
     await toggle.focus();
@@ -196,6 +200,7 @@ test.describe("Componentes de formulário", () => {
   });
 
   test("Input: alturas iguais às do Button no mesmo tamanho", async ({ page }) => {
+    await openPage(page, "input");
     const sizes = group(page, "Input", "Tamanhos");
 
     for (const [size, pixels] of [
@@ -211,25 +216,26 @@ test.describe("Componentes de formulário", () => {
   });
 
   test("Label: clicar no rótulo foca o campo", async ({ page }) => {
+    await openPage(page, "label");
     const example = group(page, "Label", "Com campo");
 
     await example.getByText("Nome completo").click();
     await expect(example.getByRole("textbox", { name: "Nome completo" })).toBeFocused();
   });
 
-  test("controles mudam de cor no tema escuro", async ({ page }) => {
-    const input = group(page, "Input", "Estados").getByRole("textbox", { name: "Normal" });
-    const checkbox = group(page, "Checkbox", "Estados").getByRole("checkbox", {
-      name: "Marcado",
-      exact: true,
-    });
-    const before = await Promise.all([
-      input.evaluate((element) => getComputedStyle(element).borderTopColor),
-      checkbox.evaluate((element) => getComputedStyle(element).backgroundColor),
-    ]);
+  test("controles mudam de cor entre os temas", async ({ page }) => {
+    await openPage(page, "input");
+    await expectThemeChange(
+      page,
+      group(page, "Input", "Estados").getByRole("textbox", { name: "Normal" }),
+      "border-top-color",
+    );
 
-    await enableDarkTheme(page);
-    await expect(input).not.toHaveCSS("border-top-color", before[0]);
-    await expect(checkbox).not.toHaveCSS("background-color", before[1]);
+    await openPage(page, "checkbox");
+    await expectThemeChange(
+      page,
+      group(page, "Checkbox", "Estados").getByRole("checkbox", { name: "Marcado", exact: true }),
+      "background-color",
+    );
   });
 });

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Alert, AlertDescription, AlertTitle, Button } from "../../src/index.ts";
 import { CheckIcon, ErrorIcon, InfoIcon, WarningIcon } from "../icons.tsx";
-import { Example, Section } from "../section.tsx";
+import { Example } from "../section.tsx";
 
 const examples = [
   {
@@ -55,11 +55,7 @@ export function AlertSection() {
   };
 
   return (
-    <Section
-      id="alert"
-      title="Alert"
-      description="Mensagem em destaque. default e success são role=status; warning e destructive são role=alert."
-    >
+    <>
       <Example label="Variantes">
         <div className="grid w-full gap-3 md:grid-cols-2">
           {examples.map(({ variant, Icon, title, description }) => (
@@ -116,6 +112,6 @@ export function AlertSection() {
           </div>
         </div>
       </Example>
-    </Section>
+    </>
   );
 }

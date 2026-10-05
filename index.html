@@ -1,9 +1,19 @@
 <!doctype html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>istok_ui · playground</title>
+    <script>
+      // Tema escuro por padrão; o claro só se a pessoa já escolheu (aplicado antes de pintar a página).
+      try {
+        if (localStorage.getItem("istok-ui:tema") === "claro") {
+          document.documentElement.classList.remove("dark");
+        }
+      } catch {
+        // Sem armazenamento: fica no escuro.
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

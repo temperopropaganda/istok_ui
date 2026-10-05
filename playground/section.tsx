@@ -1,21 +1,28 @@
 import { useId, type ReactNode } from "react";
 
-interface SectionProps {
+interface PageViewProps {
   id: string;
   title: string;
   description?: string;
   children: ReactNode;
 }
 
-/** Seção da vitrine: um componente (ou fundamento) com todas as variações. */
-export function Section({ id, title, description, children }: SectionProps) {
+/**
+ * Tela da vitrine: título (`<h1>`, que recebe o foco ao trocar de página), descrição e exemplos.
+ * É uma região nomeada pelo título, para os testes e leitores de tela acharem a página.
+ */
+export function PageView({ id, title, description, children }: PageViewProps) {
   return (
-    <section id={id} aria-labelledby={`${id}-titulo`} className="scroll-mt-20 space-y-4">
-      <header>
-        <h2 id={`${id}-titulo`} className="text-xl font-semibold">
+    <section aria-labelledby={`${id || "inicio"}-titulo`} className="space-y-10">
+      <header className="space-y-2">
+        <h1
+          id={`${id || "inicio"}-titulo`}
+          tabIndex={-1}
+          className="text-3xl font-bold tracking-tight outline-none"
+        >
           {title}
-        </h2>
-        {description && <p className="mt-1 text-sm text-muted-foreground">{description}</p>}
+        </h1>
+        {description && <p className="text-lg text-muted-foreground">{description}</p>}
       </header>
       {children}
     </section>
@@ -27,15 +34,15 @@ interface ExampleProps {
   children: ReactNode;
 }
 
-/** Linha rotulada dentro de uma seção (ex.: "Tamanhos", "Desabilitado"). */
+/** Exemplo rotulado dentro de uma página (ex.: "Tamanhos", "Desabilitado"), num quadro de prévia. */
 export function Example({ label, children }: ExampleProps) {
   const labelId = useId();
   return (
-    <div role="group" aria-labelledby={labelId} className="space-y-2">
-      <h3 id={labelId} className="text-sm font-medium text-muted-foreground">
+    <div role="group" aria-labelledby={labelId} className="space-y-3">
+      <h2 id={labelId} className="text-base font-semibold">
         {label}
-      </h3>
-      <div className="flex flex-wrap items-center gap-3">{children}</div>
+      </h2>
+      <div className="flex flex-wrap items-center gap-3 rounded-lg border p-6">{children}</div>
     </div>
   );
 }

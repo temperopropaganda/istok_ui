@@ -1,5 +1,5 @@
 import AxeBuilder from "@axe-core/playwright";
-import { test as base, expect, type Page } from "@playwright/test";
+import { test as base, expect, type Locator, type Page } from "@playwright/test";
 
 /**
  * `test` com duas garantias automáticas em todo teste E2E:
@@ -29,6 +29,17 @@ export const test = base.extend<{
   ],
   checkA11y: async ({ page }, use) => {
     await use(async (include) => {
+      // Espera as animações finitas (ex.: entrada de um modal) terminarem: no meio delas o
+      // conteúdo está semitransparente e o axe mede um contraste que ninguém vê parado. As
+      // infinitas (Spinner, Skeleton) ficam de fora, senão a espera nunca acaba.
+      await page.evaluate(() =>
+        Promise.all(
+          document
+            .getAnimations()
+            .filter((animation) => animation.effect?.getComputedTiming().iterations !== Infinity)
+            .map((animation) => animation.finished.catch(() => undefined)),
+        ),
+      );
       const builder = new AxeBuilder({ page });
       if (include) builder.include(include);
       const results = await builder.analyze();
@@ -46,10 +57,29 @@ export const test = base.extend<{
 
 export { expect };
 
-/** Liga o tema escuro pelo botão do cabeçalho da vitrine. */
-export async function enableDarkTheme(page: Page) {
+/** Abre a página de um componente na vitrine (rota `#/<id>`; vazio = página inicial). */
+export async function openPage(page: Page, id: string) {
+  await page.goto(`/#/${id}`);
+  await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+}
+
+/** Escolhe o tema pelo botão do cabeçalho (o padrão da vitrine é o escuro). */
+export async function setTheme(page: Page, theme: "claro" | "escuro") {
   const toggle = page.getByRole("button", { name: "Tema escuro" });
-  await toggle.click();
-  await expect(toggle).toHaveAttribute("aria-pressed", "true");
-  await expect(page.locator("html")).toHaveClass(/\bdark\b/);
+  const dark = String(theme === "escuro");
+  if ((await toggle.getAttribute("aria-pressed")) !== dark) await toggle.click();
+  await expect(toggle).toHaveAttribute("aria-pressed", dark);
+  if (theme === "escuro") await expect(page.locator("html")).toHaveClass(/\bdark\b/);
+  else await expect(page.locator("html")).not.toHaveClass(/\bdark\b/);
+}
+
+/** Confere que a propriedade CSS do elemento muda entre o tema claro e o escuro. */
+export async function expectThemeChange(page: Page, locator: Locator, property: string) {
+  await setTheme(page, "claro");
+  const light = await locator.evaluate(
+    (element, name) => getComputedStyle(element).getPropertyValue(name),
+    property,
+  );
+  await setTheme(page, "escuro");
+  await expect(locator).not.toHaveCSS(property, light);
 }

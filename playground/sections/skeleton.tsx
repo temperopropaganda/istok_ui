@@ -1,16 +1,12 @@
 import { useState } from "react";
 import { Avatar, AvatarFallback, Button, Skeleton } from "../../src/index.ts";
-import { Example, Section } from "../section.tsx";
+import { Example } from "../section.tsx";
 
 export function SkeletonSection() {
   const [loading, setLoading] = useState(true);
 
   return (
-    <Section
-      id="skeleton"
-      title="Skeleton"
-      description="Bloco de carregamento no formato do conteúdo. Decorativo: o contêiner usa aria-busy."
-    >
+    <>
       <Button
         variant="outline"
         size="sm"
@@ -45,6 +41,6 @@ export function SkeletonSection() {
           )}
         </div>
       </Example>
-    </Section>
+    </>
   );
 }

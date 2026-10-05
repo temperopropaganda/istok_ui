@@ -1,16 +1,13 @@
 import type { Page } from "@playwright/test";
-import { enableDarkTheme, expect, test } from "./fixtures.ts";
+import { expect, expectThemeChange, openPage, test } from "./fixtures.ts";
 
 const section = (page: Page, name: string) => page.getByRole("region", { name });
 const group = (page: Page, sectionName: string, name: string) =>
   section(page, sectionName).getByRole("group", { name, exact: true });
 
 test.describe("Componentes de feedback", () => {
-  test.beforeEach(async ({ page }) => {
-    await page.goto("/");
-  });
-
   test("Alert: default e success são status; warning e destructive são alert", async ({ page }) => {
+    await openPage(page, "alert");
     const variants = group(page, "Alert", "Variantes");
 
     await expect(variants.getByRole("status")).toHaveCount(2);
@@ -22,6 +19,7 @@ test.describe("Componentes de feedback", () => {
   test("Alert: ação com loading termina num alerta de sucesso, só com teclado", async ({
     page,
   }) => {
+    await openPage(page, "alert");
     const flow = group(page, "Alert", "Depois de uma ação");
     const result = page.getByTestId("alert-result");
     const send = flow.getByRole("button", { name: "Enviar pedido" });
@@ -44,6 +42,7 @@ test.describe("Componentes de feedback", () => {
   });
 
   test("Alert: falha aparece como role=alert", async ({ page }) => {
+    await openPage(page, "alert");
     await group(page, "Alert", "Depois de uma ação")
       .getByRole("button", { name: "Enviar com erro" })
       .click();
@@ -54,6 +53,7 @@ test.describe("Componentes de feedback", () => {
   });
 
   test("Button loading: focável, mas não dispara a ação", async ({ page }) => {
+    await openPage(page, "button");
     const loading = group(page, "Button", "Carregando");
     const first = loading.getByRole("button", { name: "default" });
 
@@ -72,6 +72,7 @@ test.describe("Componentes de feedback", () => {
   });
 
   test("Button loading: o Spinner substitui o ícone sem mudar o tamanho", async ({ page }) => {
+    await openPage(page, "button");
     const normal = group(page, "Button", "Com ícone").getByRole("button", { name: "Adicionar" });
     const loading = group(page, "Button", "Carregando").getByRole("button", { name: "Adicionar" });
 
@@ -90,6 +91,7 @@ test.describe("Componentes de feedback", () => {
   });
 
   test("Spinner: tamanhos 16/24/32px e texto para leitores de tela", async ({ page }) => {
+    await openPage(page, "spinner");
     const sizes = group(page, "Spinner", "Tamanhos").getByRole("status");
 
     await expect(sizes).toHaveCount(3);
@@ -101,6 +103,7 @@ test.describe("Componentes de feedback", () => {
   });
 
   test("Spinner: gira, e mais devagar com redução de movimento", async ({ page }) => {
+    await openPage(page, "spinner");
     const svg = group(page, "Spinner", "Tamanhos").locator("svg").first();
 
     await expect(svg).toHaveCSS("animation-name", "spin");
@@ -111,16 +114,19 @@ test.describe("Componentes de feedback", () => {
     await expect(svg).toHaveCSS("animation-duration", "2s");
   });
 
-  test("componentes de feedback mudam de cor no tema escuro", async ({ page }) => {
-    const alert = group(page, "Alert", "Variantes").getByRole("alert").last();
-    const spinner = group(page, "Spinner", "Tamanhos").getByRole("status").first();
-    const before = await Promise.all([
-      alert.evaluate((element) => getComputedStyle(element).backgroundColor),
-      spinner.evaluate((element) => getComputedStyle(element).color),
-    ]);
+  test("componentes de feedback mudam de cor entre os temas", async ({ page }) => {
+    await openPage(page, "alert");
+    await expectThemeChange(
+      page,
+      group(page, "Alert", "Variantes").getByRole("alert").last(),
+      "background-color",
+    );
 
-    await enableDarkTheme(page);
-    await expect(alert).not.toHaveCSS("background-color", before[0]);
-    await expect(spinner).not.toHaveCSS("color", before[1]);
+    await openPage(page, "spinner");
+    await expectThemeChange(
+      page,
+      group(page, "Spinner", "Tamanhos").getByRole("status").first(),
+      "color",
+    );
   });
 });

@@ -13,9 +13,16 @@ test.describe("Vitrine (playground)", () => {
       "Badge",
       "Button",
       "Card",
+      "Checkbox",
+      "Field",
+      "Input",
+      "Label",
+      "RadioGroup",
       "Separator",
       "Skeleton",
       "Spinner",
+      "Switch",
+      "Textarea",
     ];
     for (const name of sections) {
       await expect(page.getByRole("region", { name })).toBeVisible();

@@ -67,7 +67,15 @@ try {
 
   check(/"data-slot":["`]button["`]/.test(js), "Button da lib está no bundle do app");
   // Importar só o Button não pode arrastar outros componentes do Radix (tree-shaking).
-  const otherRadix = ["DialogContent", "PopoverContent", "DropdownMenuContent", "TooltipContent"];
+  const otherRadix = [
+    "DialogContent",
+    "PopoverContent",
+    "DropdownMenuContent",
+    "TooltipContent",
+    "CheckboxIndicator",
+    "RadioGroupItem",
+    "SwitchThumb",
+  ];
   check(
     otherRadix.every((name) => !js.includes(name)),
     "tree-shaking: outros componentes do Radix fora do bundle",
@@ -75,7 +83,21 @@ try {
   // Idem para os componentes da própria lib: o app só importa Button e cn (o Spinner vem junto,
   // porque o Button usa no estado `loading`).
   check(/"data-slot":["`]spinner["`]/.test(js), "Spinner usado pelo Button está no bundle");
-  const otherSlots = ["alert", "card", "badge", "avatar", "separator", "skeleton"];
+  const otherSlots = [
+    "alert",
+    "card",
+    "badge",
+    "avatar",
+    "separator",
+    "skeleton",
+    "field",
+    "input",
+    "textarea",
+    "checkbox",
+    "radio-group",
+    "switch",
+    "label",
+  ];
   check(
     otherSlots.every((slot) => !new RegExp(`"data-slot":["\`]${slot}["\`]`).test(js)),
     "tree-shaking: componentes não importados da lib fora do bundle",

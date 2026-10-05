@@ -16,7 +16,17 @@ export interface SeparatorProps extends ComponentProps<typeof SeparatorPrimitive
   decorative?: boolean;
 }
 
-/** Linha que separa conteúdos. Baseado no Separator do shadcn/ui (Radix). */
+/**
+ * Linha que separa conteúdos. Baseado no Separator do shadcn/ui (Radix).
+ *
+ * @example
+ * ```tsx
+ * <Separator />
+ * <div className="flex h-5 items-center gap-3">
+ *   Docs <Separator orientation="vertical" /> Blog
+ * </div>
+ * ```
+ */
 export function Separator({
   className,
   orientation = "horizontal",

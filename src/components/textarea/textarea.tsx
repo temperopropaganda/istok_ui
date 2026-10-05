@@ -15,6 +15,14 @@ export interface TextareaProps extends ComponentProps<"textarea"> {
  * Campo de texto com várias linhas (`<textarea>` nativo). Cresce com o conteúdo; limite com
  * classes (ex.: `max-h-48`). Dentro de um `Field`, recebe `id`, descrição, erro, `required` e
  * `disabled` sozinho.
+ *
+ * @example
+ * ```tsx
+ * <Field>
+ *   <FieldLabel>Mensagem</FieldLabel>
+ *   <Textarea name="mensagem" />
+ * </Field>
+ * ```
  */
 export function Textarea({ className, size, ...props }: TextareaProps) {
   const fieldProps = useFieldControl(props);

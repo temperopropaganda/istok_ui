@@ -11,6 +11,14 @@ export type SwitchProps = ComponentProps<typeof SwitchPrimitive.Root>;
  * ligado.
  *
  * Use num `Field orientation="horizontal"` com `FieldLabel` ao lado.
+ *
+ * @example
+ * ```tsx
+ * <Field orientation="horizontal">
+ *   <Switch name="notificacoes" />
+ *   <FieldLabel>Notificações por e-mail</FieldLabel>
+ * </Field>
+ * ```
  */
 export function Switch({ className, ...props }: SwitchProps) {
   const fieldProps = useFieldControl(props);

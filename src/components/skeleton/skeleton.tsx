@@ -8,6 +8,15 @@ import { cn } from "../../lib/cn.ts";
  * É decorativo (`aria-hidden`). Para leitores de tela, marque o contêiner com `aria-busy="true"` e
  * inclua um texto escondido: `<span className="sr-only">Carregando…</span>`. A animação só roda
  * para quem não pediu redução de movimento no sistema.
+ *
+ * @example
+ * ```tsx
+ * <div aria-busy="true" className="space-y-2">
+ *   <span className="sr-only">Carregando…</span>
+ *   <Skeleton className="h-4 w-48" />
+ *   <Skeleton className="h-4 w-32" />
+ * </div>
+ * ```
  */
 export function Skeleton({ className, ...props }: ComponentProps<"div">) {
   return (

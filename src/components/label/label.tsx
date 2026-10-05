@@ -9,6 +9,12 @@ export type LabelProps = ComponentProps<typeof LabelPrimitive.Root>;
  * controle. Dentro de um `Field`, prefira o `FieldLabel`, que se liga sozinho.
  *
  * Com o controle desabilitado logo antes (classe `peer`), o rótulo fica na cor de apoio.
+ *
+ * @example
+ * ```tsx
+ * <Label htmlFor="cupom">Cupom</Label>
+ * <Input id="cupom" />
+ * ```
  */
 export function Label({ className, ...props }: LabelProps) {
   return (

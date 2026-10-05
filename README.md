@@ -4,6 +4,10 @@ Biblioteca de componentes React + TypeScript, estilizada com Tailwind CSS.
 
 - **[SPEC.md](SPEC.md):** objetivo, decisões, status das fases e critérios de aceite (fonte da verdade).
 - **[AGENTS.md](AGENTS.md):** regras, comandos e convenções para agentes de IA (e pessoas) que trabalham no código.
+- **[Guia para agentes](docs/guia-para-agentes.md):** API de cada componente (props, padrões, exemplos), gerada do
+  código e publicada junto no pacote.
+- **Online:** [Storybook](https://temperopropaganda.github.io/istok_ui/) e
+  [playground](https://temperopropaganda.github.io/istok_ui/playground/) (GitHub Pages).
 
 ## Usando nos projetos
 
@@ -124,7 +128,11 @@ import {
 | `Textarea`                                                                                                                                                                                  | `size`: sm, md, lg · cresce com o conteúdo                                                                          |
 | `Tooltip`, `TooltipTrigger`, `TooltipContent`, `TooltipProvider`                                                                                                                            | `side`: top, right, bottom, left · 300ms · Provider opcional                                                        |
 
-A documentação de cada componente (props, exemplos, estados) está no Storybook.
+A documentação de cada componente (props, exemplos, estados) está no
+[Storybook](https://temperopropaganda.github.io/istok_ui/).
+
+**Para agentes de IA:** o pacote traz `docs/guia-para-agentes.md` (em `node_modules/istok-ui/docs/`), com a API de
+todos os componentes, exemplos, tokens e regras de uso. Leia antes de montar telas com a lib.
 
 ### Tema
 
@@ -182,25 +190,28 @@ O repositório já traz as configurações em `.vscode/`. Ao abrir o projeto:
 
 ### Scripts
 
-| Script                    | O que faz                                                                            |
-| ------------------------- | ------------------------------------------------------------------------------------ |
-| `npm run storybook`       | Sobe o Storybook em http://localhost:6006                                            |
-| `npm run storybook:build` | Gera o Storybook estático em `storybook-static/`                                     |
-| `npm run dev`             | Sobe o playground com hot reload                                                     |
-| `npm run build`           | Checa os tipos e gera a biblioteca (JS + `.d.ts` + `theme.css`) em `dist/`           |
-| `npm test`                | Roda os testes unitários e as stories (com checagem de acessibilidade) no Chromium   |
-| `npm run test:browsers`   | Mesmos testes e os E2E no Firefox e no WebKit (no CI roda em todo PR)                |
-| `npm run test:watch`      | Testes em modo watch                                                                 |
-| `npm run test:coverage`   | Testes com relatório de cobertura (falha abaixo de 90%)                              |
-| `npm run test:e2e`        | Testes E2E (Playwright) no playground: navegação, teclado, tema, console e axe       |
-| `npm run size`            | Confere o tamanho de cada componente contra os limites do `.size-limit.json`         |
-| `npm run test:consumer`   | Empacota a lib, instala em `examples/consumer-app` e confere o build                 |
-| `npm run typecheck`       | Checa os tipos com o TypeScript                                                      |
-| `npm run lint`            | Roda o ESLint, falhando com qualquer warning (`lint:fix` corrige o que for possível) |
-| `npm run lint:package`    | Valida o pacote publicado (publint + arethetypeswrong)                               |
-| `npm run format`          | Formata o código com o Prettier                                                      |
-| `npm run format:check`    | Verifica a formatação sem alterar arquivos                                           |
-| `npm run check`           | typecheck + lint + format:check + build + size + lint:package                        |
+| Script                     | O que faz                                                                            |
+| -------------------------- | ------------------------------------------------------------------------------------ |
+| `npm run storybook`        | Sobe o Storybook em http://localhost:6006                                            |
+| `npm run storybook:build`  | Gera o Storybook estático em `storybook-static/`                                     |
+| `npm run playground:build` | Gera o playground estático em `playground-dist/` (para o GitHub Pages)               |
+| `npm run dev`              | Sobe o playground com hot reload                                                     |
+| `npm run build`            | Checa os tipos e gera a biblioteca (JS + `.d.ts` + `theme.css`) em `dist/`           |
+| `npm test`                 | Roda os testes unitários e as stories (com checagem de acessibilidade) no Chromium   |
+| `npm run test:browsers`    | Mesmos testes e os E2E no Firefox e no WebKit (no CI roda em todo PR)                |
+| `npm run test:watch`       | Testes em modo watch                                                                 |
+| `npm run test:coverage`    | Testes com relatório de cobertura (falha abaixo de 90%)                              |
+| `npm run test:e2e`         | Testes E2E (Playwright) no playground: navegação, teclado, tema, console e axe       |
+| `npm run size`             | Confere o tamanho de cada componente contra os limites do `.size-limit.json`         |
+| `npm run guide`            | Regera o guia para agentes (`docs/guia-para-agentes.md`) a partir de `src/`          |
+| `npx changeset`            | Registra a mudança do pacote no PR (versão + CHANGELOG)                              |
+| `npm run test:consumer`    | Empacota a lib, instala em `examples/consumer-app` e confere o build                 |
+| `npm run typecheck`        | Checa os tipos com o TypeScript                                                      |
+| `npm run lint`             | Roda o ESLint, falhando com qualquer warning (`lint:fix` corrige o que for possível) |
+| `npm run lint:package`     | Valida o pacote publicado (publint + arethetypeswrong)                               |
+| `npm run format`           | Formata o código com o Prettier                                                      |
+| `npm run format:check`     | Verifica a formatação sem alterar arquivos                                           |
+| `npm run check`            | typecheck + lint + format:check + build + size + lint:package                        |
 
 O CI (`.github/workflows/ci.yml`) roda `check`, `test:coverage`, `test:e2e`, `test:browsers`, `storybook:build` e
 `test:consumer` em todo PR, com Chromium, Firefox e WebKit.
@@ -214,6 +225,13 @@ O CI (`.github/workflows/ci.yml`) roda `check`, `test:coverage`, `test:e2e`, `te
 - **Navegadores:** local, os testes usam o Chromium; o CI roda também Firefox e WebKit (`npm run test:browsers`).
 - **Tamanho:** `npm run size` mede cada componente (brotli, com as dependências) e falha acima do limite.
 - **Leitor de tela:** roteiro manual com o Orca em [docs/auditoria-leitor-de-tela.md](docs/auditoria-leitor-de-tela.md).
+
+### Publicação
+
+Versões com [Changesets](https://github.com/changesets/changesets): cada PR que muda o pacote traz um changeset
+(`npx changeset`). Na `main`, o workflow `release.yml` abre o PR de versão; **mergear esse PR publica no npm**
+(trusted publishing, com provenance). O `pages.yml` publica o Storybook e o playground no GitHub Pages. Passo a passo
+e configuração inicial em [docs/publicacao.md](docs/publicacao.md).
 
 ### Estrutura
 

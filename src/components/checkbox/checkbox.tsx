@@ -11,6 +11,14 @@ export type CheckboxProps = ComponentProps<typeof CheckboxPrimitive.Root>;
  * checkbox nativo.
  *
  * Use num `Field orientation="horizontal"` com `FieldLabel` ao lado.
+ *
+ * @example
+ * ```tsx
+ * <Field orientation="horizontal">
+ *   <Checkbox name="termos" />
+ *   <FieldLabel>Aceito os termos de uso</FieldLabel>
+ * </Field>
+ * ```
  */
 export function Checkbox({ className, ...props }: CheckboxProps) {
   const fieldProps = useFieldControl(props);

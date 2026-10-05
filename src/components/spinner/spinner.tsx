@@ -21,6 +21,11 @@ export interface SpinnerProps extends ComponentProps<"span"> {
  *
  * É uma região `role="status"`: leitores de tela anunciam o `label`. Com redução de movimento
  * ligada no sistema, gira mais devagar em vez de parar, para não esconder que algo está acontecendo.
+ *
+ * @example
+ * ```tsx
+ * <Spinner size="sm" label="Carregando pedidos" />
+ * ```
  */
 export function Spinner({ className, size, label = "Carregando", ...props }: SpinnerProps) {
   return (

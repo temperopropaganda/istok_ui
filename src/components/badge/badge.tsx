@@ -22,7 +22,15 @@ export interface BadgeProps extends ComponentProps<"span"> {
   asChild?: boolean;
 }
 
-/** Rótulo curto para status, categoria ou contagem. */
+/**
+ * Rótulo curto para status, categoria ou contagem.
+ *
+ * @example
+ * ```tsx
+ * <Badge variant="success">Ativo</Badge>
+ * <Badge variant="outline">Rascunho</Badge>
+ * ```
+ */
 export function Badge({ className, variant, asChild = false, ...props }: BadgeProps) {
   const Comp = asChild ? Slot.Root : "span";
   return (

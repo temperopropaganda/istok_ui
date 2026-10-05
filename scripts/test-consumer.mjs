@@ -1,7 +1,7 @@
 // Teste de consumo: empacota a lib, instala o tarball em examples/consumer-app (um projeto
 // Vite + Tailwind como os que vão usar a istok_ui), builda e confere o resultado.
 import { execFileSync } from "node:child_process";
-import { mkdtemp, readFile, readdir, rm } from "node:fs/promises";
+import { access, mkdtemp, readFile, readdir, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -107,6 +107,15 @@ try {
   check(
     otherSlots.every((slot) => !new RegExp(`"data-slot":["\`]${slot}["\`]`).test(js)),
     "tree-shaking: componentes não importados da lib fora do bundle",
+  );
+
+  const guide = join(app, "node_modules/istok-ui/docs/guia-para-agentes.md");
+  check(
+    await access(guide).then(
+      () => true,
+      () => false,
+    ),
+    "guia para agentes vai no pacote (docs/guia-para-agentes.md)",
   );
 
   const output = execFileSync(

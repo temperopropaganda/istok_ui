@@ -12,6 +12,27 @@ import {
  * Confirmação que exige resposta (`role="alertdialog"`), para ações destrutivas ou irreversíveis.
  * Diferente do `Dialog`: não fecha com clique fora e, ao abrir, o foco vai para o
  * `AlertDialogCancel` (a opção segura). Esc cancela.
+ *
+ * @example
+ * ```tsx
+ * <AlertDialog>
+ *   <AlertDialogTrigger asChild>
+ *     <Button variant="destructive">Excluir projeto</Button>
+ *   </AlertDialogTrigger>
+ *   <AlertDialogContent>
+ *     <AlertDialogHeader>
+ *       <AlertDialogTitle>Excluir o projeto?</AlertDialogTitle>
+ *       <AlertDialogDescription>Isso não pode ser desfeito.</AlertDialogDescription>
+ *     </AlertDialogHeader>
+ *     <AlertDialogFooter>
+ *       <AlertDialogCancel>Cancelar</AlertDialogCancel>
+ *       <AlertDialogAction variant="destructive" onClick={excluir}>
+ *         Excluir
+ *       </AlertDialogAction>
+ *     </AlertDialogFooter>
+ *   </AlertDialogContent>
+ * </AlertDialog>
+ * ```
  */
 export function AlertDialog(props: ComponentProps<typeof AlertDialogPrimitive.Root>) {
   return <AlertDialogPrimitive.Root {...props} />;

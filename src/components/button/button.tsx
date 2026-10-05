@@ -43,7 +43,22 @@ function blockClick(event: MouseEvent) {
   event.preventDefault();
 }
 
-/** Botão para ações. Para navegação, use `asChild` com um `<a>` ou `<Link>`. */
+/**
+ * Botão para ações. Para navegação, use `asChild` com um `<a>` ou `<Link>`.
+ *
+ * @example
+ * ```tsx
+ * <Button>Salvar</Button>
+ * <Button variant="outline" size="sm">Cancelar</Button>
+ * <Button loading={salvando}>{salvando ? "Salvando…" : "Salvar"}</Button>
+ * <Button size="icon" variant="ghost" aria-label="Fechar">
+ *   <XIcon />
+ * </Button>
+ * <Button asChild variant="link">
+ *   <a href="/ajuda">Ajuda</a>
+ * </Button>
+ * ```
+ */
 export function Button({
   className,
   variant,

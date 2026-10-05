@@ -27,6 +27,8 @@ Rode na raiz do projeto.
 | `npm run test:coverage`           | Testes com cobertura (falha abaixo de 90%)                                             |
 | `npm run test:e2e`                | Fluxos E2E no playground com Playwright, no Chromium                                   |
 | `npm run test:browsers`           | Testes, stories e E2E no Firefox e no WebKit (roda no CI; o WebKit não abre no Fedora) |
+| `npm run guide`                   | Regera `docs/guia-para-agentes.md` a partir de `src/` (tipos, JSDoc e `@example`)      |
+| `npx changeset`                   | Registra a mudança do pacote no PR (patch/minor e descrição) para versão e CHANGELOG   |
 | `npm run size`                    | Tamanho de cada componente contra o `.size-limit.json` (também no `check`)             |
 | `npm run test:consumer`           | Empacota a lib, instala em `examples/consumer-app`, builda e confere                   |
 | `npm run storybook`               | Storybook em http://localhost:6006                                                     |
@@ -43,6 +45,8 @@ Siga o **checklist de componente pronto** (SPEC, seção 6). Os pontos que mais 
 - Componente novo entra em `src/index.ts`, no Storybook **e** no playground (seção em `playground/sections/`,
   entrada em `playground/pages.ts` e na lista `views` de `playground/app.tsx`).
 - Copie o estilo dos arquivos existentes (`src/lib/cn.ts`, `src/lib/cn.test.ts`, `src/styles/theme.stories.tsx`).
+- PR que muda o pacote publicado (componentes, `theme.css`, tipos, `exports`) inclui um changeset
+  (`npx changeset`). Mudou JSDoc, props ou exports? Rode `npm run guide` e commite o guia (o `check` confere).
 - Commits em [Conventional Commits](https://www.conventionalcommits.org) (`feat:`, `fix:`, `chore:`, `test:`…).
 - PRs em português, com as seções **O que muda**, **Como foi testado** (comandos e resultados reais) e **Pontos de
   atenção** quando houver.

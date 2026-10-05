@@ -24,31 +24,36 @@ precisa ser previsível, tipada e bem documentada.
 
 ## 2. Stack e decisões
 
-| Tema                    | Decisão                                                                                         | Motivo                                                                                                                              |
-| ----------------------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| Stack                   | React 19 + TypeScript 6 + Vite 8 + Tailwind CSS 4                                               | Mesma stack dos projetos consumidores                                                                                               |
-| TypeScript              | 6.0 (não 7)                                                                                     | O `typescript-eslint` só suporta até a 6.0. Código testado e compatível com a 7.0                                                   |
-| Lint                    | ESLint 10 (`strictTypeChecked`, react-hooks, `eslint-plugin-jsx-a11y-x`, storybook), 0 warnings | O `eslint-plugin-jsx-a11y` original não suporta ESLint 10; o fork é do es-tooling                                                   |
-| Formatação              | Prettier padrão + ordenação de classes do Tailwind (também em `cn()`/`cva()`)                   | Padrão do time                                                                                                                      |
-| React                   | `peerDependencies: ^19`, sem `forwardRef`                                                       | Projetos sempre no latest; no 19 o `ref` chega como prop                                                                            |
-| Base dos componentes    | Radix UI (comportamento/a11y) + código do shadcn/ui como ponto de partida                       | O shadcn já é Radix + Tailwind + cva; partimos de código testado e com API conhecida                                                |
-| Estilos                 | `theme.css` com tokens + `@source` embutido; sem CSS pré-compilado                              | Projetos já têm Tailwind; um único `@import` resolve tokens e classes da lib                                                        |
-| Tokens                  | Nomes do shadcn/ui + `success`/`warning`; pares `*-foreground` com contraste WCAG AA            | Temas do shadcn funcionam direto; acessível por padrão                                                                              |
-| Build                   | Só ESM, `preserveModules`, sem minificação; `.d.ts` via `tsc` (`tsconfig.build.json`)           | Tree-shaking real e código legível nos projetos                                                                                     |
-| Imports internos        | Sempre com extensão `.ts`/`.tsx`                                                                | Os `.d.ts` precisam funcionar em resolução `nodenext`; o build falha se faltar                                                      |
-| Docs                    | Storybook 10 (um componente por vez) + playground (vitrine com tudo)                            | Storybook para ajustar cada componente; playground para ver a lib inteira de uma vez                                                |
-| Testes                  | Vitest 5 em browser mode (Chromium/Playwright); stories viram testes com axe                    | Navegador real, sem simular DOM; acessibilidade checada em todo PR                                                                  |
-| E2E                     | Playwright Test + `@axe-core/playwright` contra o playground (`e2e/`)                           | Testa a lib como o usuário usa: teclado, tema, console limpo e axe na página inteira                                                |
-| Dependências de runtime | `clsx`, `tailwind-merge`, `radix-ui`, `class-variance-authority`                                | `cn()`; Radix para comportamento/a11y (`sideEffects: false`, tree-shaking verificado no `test:consumer`); variantes tipadas com cva |
-| Testes de componente    | Carregam o CSS real (`tests/setup.ts`: Tailwind + tema) e dependências pré-otimizadas no Vitest | Medidas e cores batem com o que o usuário vê; sem recarga no meio da rodada no CI                                                   |
-| Scripts de instalação   | `allowScripts: { esbuild: false }`                                                              | O npm 11 exige revisão; o binário do esbuild já vem por dependência opcional, então nenhum script de terceiro roda no `npm install` |
-| Card                    | `CardTitle` é `<h3>` (o shadcn usa `<div>`); `asChild` em `Card` e `CardTitle`                  | Título reconhecido por leitores de tela; nível e elemento ajustáveis à página                                                       |
-| Badge                   | Variantes do shadcn + `success` e `warning`                                                     | Usa os tokens que a lib já tem                                                                                                      |
-| Avatar                  | Tamanhos `sm` (24px), `md` (32px, padrão), `lg` (40px); `alt` obrigatório em `AvatarImage`      | —                                                                                                                                   |
-| Skeleton                | `aria-hidden` + `motion-safe:animate-pulse`                                                     | Decorativo; respeita quem pediu redução de movimento                                                                                |
-| CI                      | GitHub Actions em todo PR e push na `main`                                                      | Mesmas verificações para todo mundo                                                                                                 |
-| Conta GitHub            | `temperopropaganda` é conta de **usuário** (não org); repo **público** desde 2026-10-02         | CI ilimitado e Storybook grátis no GitHub Pages (Fase 8)                                                                            |
-| Registry                | **npm público**, pacote `istok-ui` (decidido em 2026-10-02)                                     | Instala sem token nem `.npmrc`; o nome estava livre no npm                                                                          |
+| Tema                    | Decisão                                                                                                            | Motivo                                                                                                                              |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------- |
+| Stack                   | React 19 + TypeScript 6 + Vite 8 + Tailwind CSS 4                                                                  | Mesma stack dos projetos consumidores                                                                                               |
+| TypeScript              | 6.0 (não 7)                                                                                                        | O `typescript-eslint` só suporta até a 6.0. Código testado e compatível com a 7.0                                                   |
+| Lint                    | ESLint 10 (`strictTypeChecked`, react-hooks, `eslint-plugin-jsx-a11y-x`, storybook), 0 warnings                    | O `eslint-plugin-jsx-a11y` original não suporta ESLint 10; o fork é do es-tooling                                                   |
+| Formatação              | Prettier padrão + ordenação de classes do Tailwind (também em `cn()`/`cva()`)                                      | Padrão do time                                                                                                                      |
+| React                   | `peerDependencies: ^19`, sem `forwardRef`                                                                          | Projetos sempre no latest; no 19 o `ref` chega como prop                                                                            |
+| Base dos componentes    | Radix UI (comportamento/a11y) + código do shadcn/ui como ponto de partida                                          | O shadcn já é Radix + Tailwind + cva; partimos de código testado e com API conhecida                                                |
+| Estilos                 | `theme.css` com tokens + `@source` embutido; sem CSS pré-compilado                                                 | Projetos já têm Tailwind; um único `@import` resolve tokens e classes da lib                                                        |
+| Tokens                  | Nomes do shadcn/ui + `success`/`warning`; pares `*-foreground` com contraste WCAG AA                               | Temas do shadcn funcionam direto; acessível por padrão                                                                              |
+| Build                   | Só ESM, `preserveModules`, sem minificação; `.d.ts` via `tsc` (`tsconfig.build.json`)                              | Tree-shaking real e código legível nos projetos                                                                                     |
+| Imports internos        | Sempre com extensão `.ts`/`.tsx`                                                                                   | Os `.d.ts` precisam funcionar em resolução `nodenext`; o build falha se faltar                                                      |
+| Docs                    | Storybook 10 (um componente por vez) + playground (vitrine com tudo)                                               | Storybook para ajustar cada componente; playground para ver a lib inteira de uma vez                                                |
+| Testes                  | Vitest 5 em browser mode (Chromium/Playwright); stories viram testes com axe                                       | Navegador real, sem simular DOM; acessibilidade checada em todo PR                                                                  |
+| E2E                     | Playwright Test + `@axe-core/playwright` contra o playground (`e2e/`)                                              | Testa a lib como o usuário usa: teclado, tema, console limpo e axe na página inteira                                                |
+| Dependências de runtime | `clsx`, `tailwind-merge`, `radix-ui`, `class-variance-authority`                                                   | `cn()`; Radix para comportamento/a11y (`sideEffects: false`, tree-shaking verificado no `test:consumer`); variantes tipadas com cva |
+| Testes de componente    | Carregam o CSS real (`tests/setup.ts`: Tailwind + tema) e dependências pré-otimizadas no Vitest                    | Medidas e cores batem com o que o usuário vê; sem recarga no meio da rodada no CI                                                   |
+| Scripts de instalação   | `allowScripts: { esbuild: false }`                                                                                 | O npm 11 exige revisão; o binário do esbuild já vem por dependência opcional, então nenhum script de terceiro roda no `npm install` |
+| Card                    | `CardTitle` é `<h3>` (o shadcn usa `<div>`); `asChild` em `Card` e `CardTitle`                                     | Título reconhecido por leitores de tela; nível e elemento ajustáveis à página                                                       |
+| Badge                   | Variantes do shadcn + `success` e `warning`                                                                        | Usa os tokens que a lib já tem                                                                                                      |
+| Avatar                  | Tamanhos `sm` (24px), `md` (32px, padrão), `lg` (40px); `alt` obrigatório em `AvatarImage`                         | —                                                                                                                                   |
+| Skeleton                | `aria-hidden` + `motion-safe:animate-pulse`                                                                        | Decorativo; respeita quem pediu redução de movimento                                                                                |
+| Alert                   | `default`/`success` com `role="status"`, `warning`/`destructive` com `role="alert"` (sobrescrevível)               | `alert` interrompe o leitor de tela: só para o que pede atenção imediata                                                            |
+| Alert (cores)           | Variantes coloridas com borda do token, fundo `bg-x/10` e texto `foreground`; ícone sem cor no `warning`           | Texto na cor do token não passa no AA em todos os casos (`warning` claro fica em ~2:1 sobre fundo claro)                            |
+| Alert (título)          | `AlertTitle` é `<div>` como no shadcn, sem `line-clamp-1`                                                          | Alerta não é seção da página; truncar esconde texto com zoom alto                                                                   |
+| Spinner                 | SVG próprio, `role="status"` + texto `sr-only` (`label`, padrão "Carregando"); 16/24/32px                          | Sem biblioteca de ícones na lib; com redução de movimento gira a 2s em vez de parar, para não esconder o carregamento               |
+| Button `loading`        | `aria-busy` + `aria-disabled` (continua focável) e bloqueia clique e envio; Spinner decorativo no lugar dos ícones | O foco não se perde quando o carregamento começa; com `disabled` ele cairia no `<body>`                                             |
+| CI                      | GitHub Actions em todo PR e push na `main`                                                                         | Mesmas verificações para todo mundo                                                                                                 |
+| Conta GitHub            | `temperopropaganda` é conta de **usuário** (não org); repo **público** desde 2026-10-02                            | CI ilimitado e Storybook grátis no GitHub Pages (Fase 8)                                                                            |
+| Registry                | **npm público**, pacote `istok-ui` (decidido em 2026-10-02)                                                        | Instala sem token nem `.npmrc`; o nome estava livre no npm                                                                          |
 
 ## 3. Arquitetura e estrutura
 
@@ -94,18 +99,18 @@ scripts/test-consumer.mjs  empacota a lib, instala no app de exemplo e confere o
 
 ## 5. Status das fases
 
-| Fase | Entrega                                                   | Status                                                 |
-| ---- | --------------------------------------------------------- | ------------------------------------------------------ |
-| 1    | Ambiente (Vite, TS strict, Tailwind, ESLint, Prettier)    | ✅ Concluída                                           |
-| 2    | Build da biblioteca (ESM, `.d.ts`, `exports`, `cn()`)     | ✅ Concluída                                           |
-| 3    | Tokens, tema e dark mode (`theme.css`)                    | ✅ Concluída                                           |
-| —    | Ambiente do editor (`.vscode/`, `npm run check`)          | ✅ Concluída                                           |
-| 4    | Storybook, testes no navegador, teste de consumo, CI      | ✅ Concluída                                           |
-| —    | SPEC + AGENTS.md; pacote `istok-ui` no npm público        | ✅ Concluída                                           |
-| 5    | Button + playground como vitrine + testes E2E             | ✅ Concluída                                           |
-| 6    | Componentes da v0.1                                       | 🔄 Grupo 1 (Exibição) em revisão; grupos 2–4 pendentes |
-| 7    | Testes finais (cobertura, cross-browser, tamanho)         | Pendente                                               |
-| 8    | Release (publicação, Storybook online, guia para agentes) | Pendente                                               |
+| Fase | Entrega                                                   | Status                                                |
+| ---- | --------------------------------------------------------- | ----------------------------------------------------- |
+| 1    | Ambiente (Vite, TS strict, Tailwind, ESLint, Prettier)    | ✅ Concluída                                          |
+| 2    | Build da biblioteca (ESM, `.d.ts`, `exports`, `cn()`)     | ✅ Concluída                                          |
+| 3    | Tokens, tema e dark mode (`theme.css`)                    | ✅ Concluída                                          |
+| —    | Ambiente do editor (`.vscode/`, `npm run check`)          | ✅ Concluída                                          |
+| 4    | Storybook, testes no navegador, teste de consumo, CI      | ✅ Concluída                                          |
+| —    | SPEC + AGENTS.md; pacote `istok-ui` no npm público        | ✅ Concluída                                          |
+| 5    | Button + playground como vitrine + testes E2E             | ✅ Concluída                                          |
+| 6    | Componentes da v0.1                                       | 🔄 Grupos 1–2 entregues (2 em revisão); 3–4 pendentes |
+| 7    | Testes finais (cobertura, cross-browser, tamanho)         | Pendente                                              |
+| 8    | Release (publicação, Storybook online, guia para agentes) | Pendente                                              |
 
 ### Concluído (resumo)
 
@@ -128,11 +133,14 @@ scripts/test-consumer.mjs  empacota a lib, instala no app de exemplo e confere o
   `asChild`), `Separator` (Radix, decorativo por padrão), `Avatar` (Radix, 3 tamanhos, fallback) e `Skeleton`
   (`aria-hidden`, respeita redução de movimento). Testes de componente passaram a carregar o CSS real;
   `test:consumer` verifica tree-shaking dos componentes da própria lib.
+- **Fase 6, grupo 2 (Feedback):** `Alert` (4 variantes, `role` por variante, ícone opcional), `Spinner`
+  (`role="status"`, 3 tamanhos, gira mais devagar com redução de movimento) e `loading` no `Button` (focável,
+  bloqueia clique e envio de formulário). Vitrine com o fluxo "ação → loading → alerta".
 
-### ⏭️ Próxima entrega — Fase 6, grupo 2: Feedback
+### ⏭️ Próxima entrega — Fase 6, grupo 3: Formulário
 
 > Rascunho de escopo. Os critérios de aceite detalhados de cada grupo são fechados com o humano antes de começar.
-> Grupo 1 (Exibição) entregue; próximo: grupo 2.
+> Grupos 1 (Exibição) e 2 (Feedback) entregues; próximo: grupo 3.
 
 Um PR por grupo, do mais simples ao mais complexo, todos partindo do shadcn quando houver equivalente e seguindo o
 padrão do Button (`src/components/button/`) e o checklist da seção 6:
@@ -140,7 +148,7 @@ padrão do Button (`src/components/button/`) e o checklist da seção 6:
 | Ordem | Grupo      | Componentes                                                 | Observação                                            |
 | ----- | ---------- | ----------------------------------------------------------- | ----------------------------------------------------- |
 | ✅ 1  | Exibição   | Card, Badge, Separator, Avatar, Skeleton                    | Sem comportamento: consolida o padrão visual          |
-| 2     | Feedback   | Alert, Spinner                                              | Spinner habilita `loading` no Button                  |
+| ✅ 2  | Feedback   | Alert, Spinner                                              | Spinner habilita `loading` no Button                  |
 | 3     | Formulário | Label, Input, Textarea, Field, Checkbox, RadioGroup, Switch | Estados `invalid`/`disabled`, Field liga label + erro |
 | 4     | Overlay    | Dialog, Tooltip                                             | Foco preso, Esc, portal: E2E obrigatório              |
 

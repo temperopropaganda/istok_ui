@@ -29,23 +29,32 @@ Requer React 19 e Tailwind CSS 4 no projeto.
 ### Componentes
 
 ```tsx
-import { Button } from "istok-ui";
+import { Alert, AlertDescription, AlertTitle, Button } from "istok-ui";
 
 <Button>Salvar</Button>
 <Button variant="outline" size="sm">Cancelar</Button>
+<Button loading={saving}>{saving ? "Salvando…" : "Salvar"}</Button>
 <Button asChild variant="link">
   <a href="/ajuda">Ajuda</a>
 </Button>
+
+<Alert variant="success">
+  <CheckIcon />
+  <AlertTitle>Pedido enviado</AlertTitle>
+  <AlertDescription>Você vai receber a confirmação por e-mail.</AlertDescription>
+</Alert>
 ```
 
-| Componente                                                                                      | Variações                                                                                               |
-| ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| `Avatar`, `AvatarImage`, `AvatarFallback`                                                       | `size`: sm, md, lg · fallback com iniciais quando não há foto                                           |
-| `Badge`                                                                                         | `variant`: default, secondary, outline, destructive, success, warning · `asChild`                       |
-| `Button`                                                                                        | `variant`: default, secondary, outline, ghost, link, destructive · `size`: sm, md, lg, icon · `asChild` |
-| `Card`, `CardHeader`, `CardTitle`, `CardDescription`, `CardAction`, `CardContent`, `CardFooter` | Peças combináveis · `CardTitle` é `<h3>` (`asChild` troca o nível) · `Card asChild`                     |
-| `Separator`                                                                                     | `orientation`: horizontal, vertical · `decorative`                                                      |
-| `Skeleton`                                                                                      | Tamanho por classes · decorativo, respeita redução de movimento                                         |
+| Componente                                                                                      | Variações                                                                                                           |
+| ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `Alert`, `AlertTitle`, `AlertDescription`                                                       | `variant`: default, success, warning, destructive · ícone SVG opcional como primeiro filho                          |
+| `Avatar`, `AvatarImage`, `AvatarFallback`                                                       | `size`: sm, md, lg · fallback com iniciais quando não há foto                                                       |
+| `Badge`                                                                                         | `variant`: default, secondary, outline, destructive, success, warning · `asChild`                                   |
+| `Button`                                                                                        | `variant`: default, secondary, outline, ghost, link, destructive · `size`: sm, md, lg, icon · `asChild` · `loading` |
+| `Card`, `CardHeader`, `CardTitle`, `CardDescription`, `CardAction`, `CardContent`, `CardFooter` | Peças combináveis · `CardTitle` é `<h3>` (`asChild` troca o nível) · `Card asChild`                                 |
+| `Separator`                                                                                     | `orientation`: horizontal, vertical · `decorative`                                                                  |
+| `Skeleton`                                                                                      | Tamanho por classes · decorativo, respeita redução de movimento                                                     |
+| `Spinner`                                                                                       | `size`: sm, md, lg · `label` para leitores de tela · cor do texto em volta                                          |
 
 A documentação de cada componente (props, exemplos, estados) está no Storybook.
 

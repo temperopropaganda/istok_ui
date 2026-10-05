@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { useState } from "react";
 import { expect, fn } from "storybook/test";
 import { Button } from "./button.tsx";
 
@@ -120,5 +121,67 @@ export const ComoLink: Story = {
   play: async ({ canvas }) => {
     const link = canvas.getByRole("link", { name: "Ver documentação" });
     await expect(link).toHaveAttribute("href", "#documentacao");
+  },
+};
+
+/** Carregando: mostra o Spinner, fica focável e ignora cliques (`aria-busy` + `aria-disabled`). */
+export const Carregando: Story = {
+  args: { loading: true, children: "Salvando…" },
+  play: async ({ args, canvas, userEvent }) => {
+    const button = canvas.getByRole("button", { name: "Salvando…" });
+    await expect(button).toHaveAttribute("aria-busy", "true");
+    await expect(button).toHaveAttribute("aria-disabled", "true");
+    await userEvent.click(button);
+    await expect(args.onClick).not.toHaveBeenCalled();
+  },
+};
+
+/** Carregando em todas as variantes, e no lugar do ícone (sem mudar o tamanho). */
+export const CarregandoVariantes: Story = {
+  name: "Carregando (variantes)",
+  render: (args) => (
+    <div className="flex flex-wrap items-center gap-3">
+      {variants.map((variant) => (
+        <Button key={variant} {...args} variant={variant} loading>
+          {variant}
+        </Button>
+      ))}
+      <Button {...args} variant="secondary" loading>
+        <PlusIcon />
+        Adicionar
+      </Button>
+      <Button {...args} size="icon" variant="outline" aria-label="Adicionar" loading>
+        <PlusIcon />
+      </Button>
+    </div>
+  ),
+};
+
+/** Carregando no tema escuro. */
+export const CarregandoEscuro: Story = {
+  ...CarregandoVariantes,
+  name: "Carregando (escuro)",
+  globals: { theme: "escuro" },
+};
+
+/** Clique para simular um envio de 2 segundos: o texto muda junto com o estado. */
+export const EnvioSimulado: Story = {
+  name: "Envio simulado",
+  render: function EnvioSimulado(args) {
+    const [loading, setLoading] = useState(false);
+    return (
+      <Button
+        {...args}
+        loading={loading}
+        onClick={() => {
+          setLoading(true);
+          setTimeout(() => {
+            setLoading(false);
+          }, 2000);
+        }}
+      >
+        {loading ? "Salvando…" : "Salvar"}
+      </Button>
+    );
   },
 };

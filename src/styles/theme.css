@@ -6,7 +6,8 @@
  *
  * Para trocar a marca, sobrescreva as variáveis de :root / .dark no CSS do projeto.
  * Os nomes seguem o padrão do shadcn/ui, então temas gerados para ele funcionam aqui.
- * Todos os pares `x` / `x-foreground` passam no contraste WCAG AA (4.5:1) nos dois temas.
+ * Todos os pares `x` / `x-foreground` passam no contraste WCAG AA (4.5:1) nos dois temas, e a
+ * borda dos controles (`--input`) tem 3:1 com o fundo (WCAG 1.4.11).
  */
 
 /* Faz o Tailwind do projeto enxergar as classes usadas pelos componentes da lib. */
@@ -41,7 +42,8 @@
   --warning-foreground: oklch(0.205 0 0);
 
   --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
+  /* Mais escuro que o do shadcn (0.922, 1.3:1): é a borda que mostra onde está o campo. */
+  --input: oklch(0.62 0 0);
   --ring: oklch(0.708 0 0);
 }
 
@@ -71,7 +73,7 @@
   --warning-foreground: oklch(0.205 0 0);
 
   --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
+  --input: oklch(0.556 0 0);
   --ring: oklch(0.556 0 0);
 }
 

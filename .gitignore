@@ -40,3 +40,7 @@ test-results
 playwright-report
 blob-report
 .vitest
+
+# Build estático do playground e site do GitHub Pages
+playground-dist
+site

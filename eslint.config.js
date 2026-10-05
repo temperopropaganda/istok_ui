@@ -12,6 +12,8 @@ export default defineConfig([
     "dist",
     "coverage",
     "storybook-static",
+    "playground-dist",
+    "site",
     "examples",
     "test-results",
     "playwright-report",

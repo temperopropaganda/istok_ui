@@ -1,0 +1,58 @@
+name: Pages
+
+# Storybook na raiz e playground em /playground, no GitHub Pages:
+# https://temperopropaganda.github.io/istok_ui/ e https://temperopropaganda.github.io/istok_ui/playground/
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+permissions: {}
+
+jobs:
+  build:
+    name: Build do site
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - name: Build do Storybook
+        run: npm run storybook:build
+      - name: Build do playground
+        run: npm run playground:build
+      - name: Montar o site
+        run: |
+          mkdir site
+          cp -r storybook-static/. site/
+          cp -r playground-dist site/playground
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: site
+
+  deploy:
+    name: Publicar no GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5

@@ -43,7 +43,10 @@
     "test:coverage": "vitest run --project=*chromium* --coverage",
     "storybook": "storybook dev -p 6006",
     "storybook:build": "storybook build",
+    "playground:build": "vite build --config vite.playground.config.ts",
     "test:consumer": "node scripts/test-consumer.mjs",
+    "changeset": "changeset",
+    "version-packages": "changeset version && npm install --package-lock-only --ignore-scripts",
     "test:e2e": "playwright test --project=chromium",
     "test:browsers": "vitest run --project=*firefox* --project=*webkit* --no-file-parallelism && playwright test --project=firefox --project=webkit"
   },
@@ -61,6 +64,7 @@
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.5",
     "@axe-core/playwright": "^4.13.0",
+    "@changesets/cli": "^3.0.3",
     "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.63.0",
     "@size-limit/preset-small-lib": "^14.1.0",

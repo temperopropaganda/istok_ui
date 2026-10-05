@@ -50,12 +50,11 @@ test.describe("Button", () => {
   });
 
   test("botões desabilitados ficam fora do Tab e não disparam a ação", async ({ page }) => {
-    // Do último botão habilitado antes dos desabilitados, o Tab pula direto para o link.
+    // Do último botão habilitado antes dos desabilitados, o Tab pula direto para os botões em
+    // loading (que continuam focáveis).
     await group(page, "Com ícone").getByRole("button", { name: "Adicionar" }).last().focus();
     await page.keyboard.press("Tab");
-    await expect(
-      group(page, "Como link (asChild)").getByRole("link", { name: "Ir para os tokens" }),
-    ).toBeFocused();
+    await expect(group(page, "Carregando").getByRole("button", { name: "default" })).toBeFocused();
 
     await group(page, "Desabilitado")
       .getByRole("button", { name: "default" })

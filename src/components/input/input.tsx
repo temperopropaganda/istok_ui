@@ -16,6 +16,14 @@ export interface InputProps extends Omit<ComponentProps<"input">, "size"> {
 /**
  * Campo de texto (`<input>` nativo: funciona com formulários, `FormData` e react-hook-form).
  * Dentro de um `Field`, recebe `id`, descrição, erro, `required` e `disabled` sozinho.
+ *
+ * @example
+ * ```tsx
+ * <Field>
+ *   <FieldLabel>Busca</FieldLabel>
+ *   <Input type="search" size="sm" placeholder="Buscar…" />
+ * </Field>
+ * ```
  */
 export function Input({ className, size, ...props }: InputProps) {
   const fieldProps = useFieldControl(props);

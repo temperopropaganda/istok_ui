@@ -12,7 +12,26 @@ export interface CardProps extends ComponentProps<"div"> {
   asChild?: boolean;
 }
 
-/** Superfície que agrupa conteúdo relacionado. */
+/**
+ * Superfície que agrupa conteúdo relacionado.
+ *
+ * @example
+ * ```tsx
+ * <Card>
+ *   <CardHeader>
+ *     <CardTitle>Plano Pro</CardTitle>
+ *     <CardDescription>Para times que publicam toda semana.</CardDescription>
+ *     <CardAction>
+ *       <Badge variant="success">Ativo</Badge>
+ *     </CardAction>
+ *   </CardHeader>
+ *   <CardContent>R$ 49/mês por pessoa.</CardContent>
+ *   <CardFooter>
+ *     <Button>Assinar</Button>
+ *   </CardFooter>
+ * </Card>
+ * ```
+ */
 export function Card({ className, asChild = false, ...props }: CardProps) {
   const Comp = asChild ? Slot.Root : "div";
   return (

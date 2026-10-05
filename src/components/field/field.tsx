@@ -54,6 +54,16 @@ export interface FieldProps extends ComponentProps<"div"> {
  *
  * Para ligar na mão, passe `htmlFor` no `FieldLabel` e `id` no controle (o que for passado vence
  * o automático). Para um controle próprio, use o hook `useFieldControl`.
+ *
+ * @example
+ * ```tsx
+ * <Field required>
+ *   <FieldLabel>E-mail</FieldLabel>
+ *   <Input type="email" name="email" />
+ *   <FieldDescription>Usado só para recuperar a senha.</FieldDescription>
+ *   <FieldError>{erros.email}</FieldError>
+ * </Field>
+ * ```
  */
 export function Field({
   className,

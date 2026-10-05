@@ -20,6 +20,14 @@ export interface AlertProps extends ComponentProps<"div"> {
 /**
  * Mensagem em destaque. Combine com `AlertTitle`, `AlertDescription` e, opcionalmente, um ícone
  * SVG como primeiro filho (ele vai para a coluna da esquerda).
+ *
+ * @example
+ * ```tsx
+ * <Alert variant="destructive">
+ *   <AlertTitle>Falha no pagamento</AlertTitle>
+ *   <AlertDescription>O cartão foi recusado. Confira os dados e tente de novo.</AlertDescription>
+ * </Alert>
+ * ```
  */
 export function Alert({ className, variant, ...props }: AlertProps) {
   const role = variant === "destructive" || variant === "warning" ? "alert" : "status";

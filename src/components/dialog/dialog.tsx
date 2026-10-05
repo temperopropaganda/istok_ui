@@ -13,6 +13,31 @@ import {
  * Use `open`/`onOpenChange` para controlar, ou deixe o `DialogTrigger` abrir sozinho.
  *
  * Para confirmar ações destrutivas ("Excluir projeto?"), use o `AlertDialog`.
+ *
+ * @example
+ * ```tsx
+ * <Dialog>
+ *   <DialogTrigger asChild>
+ *     <Button variant="outline">Editar perfil</Button>
+ *   </DialogTrigger>
+ *   <DialogContent>
+ *     <DialogHeader>
+ *       <DialogTitle>Editar perfil</DialogTitle>
+ *       <DialogDescription>As mudanças aparecem para todo o time.</DialogDescription>
+ *     </DialogHeader>
+ *     <Field>
+ *       <FieldLabel>Nome</FieldLabel>
+ *       <Input name="nome" />
+ *     </Field>
+ *     <DialogFooter>
+ *       <DialogClose asChild>
+ *         <Button variant="outline">Cancelar</Button>
+ *       </DialogClose>
+ *       <Button type="submit">Salvar</Button>
+ *     </DialogFooter>
+ *   </DialogContent>
+ * </Dialog>
+ * ```
  */
 export function Dialog(props: ComponentProps<typeof DialogPrimitive.Root>) {
   return <DialogPrimitive.Root {...props} />;

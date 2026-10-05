@@ -27,6 +27,18 @@ export function TooltipProvider({
  * É complemento: vira a descrição do gatilho (`aria-describedby`), não o nome. Botão só com ícone
  * continua precisando de `aria-label`. Não abre em telas de toque; não coloque nela informação que
  * só exista ali.
+ *
+ * @example
+ * ```tsx
+ * <Tooltip>
+ *   <TooltipTrigger asChild>
+ *     <Button size="icon" variant="ghost" aria-label="Negrito">
+ *       <BoldIcon />
+ *     </Button>
+ *   </TooltipTrigger>
+ *   <TooltipContent>Negrito (Ctrl+B)</TooltipContent>
+ * </Tooltip>
+ * ```
  */
 export function Tooltip(props: ComponentProps<typeof TooltipPrimitive.Root>) {
   const root = <TooltipPrimitive.Root {...props} />;

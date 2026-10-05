@@ -16,6 +16,14 @@ export interface AvatarProps extends ComponentProps<typeof AvatarPrimitive.Root>
 /**
  * Foto de uma pessoa ou entidade. Combine `AvatarImage` com `AvatarFallback`: o fallback aparece
  * enquanto a imagem carrega ou se ela falhar.
+ *
+ * @example
+ * ```tsx
+ * <Avatar size="lg">
+ *   <AvatarImage src="/fotos/ana.jpg" alt="Ana Souza" />
+ *   <AvatarFallback aria-label="Ana Souza">AS</AvatarFallback>
+ * </Avatar>
+ * ```
  */
 export function Avatar({ className, size, ...props }: AvatarProps) {
   return (
@@ -32,7 +40,10 @@ export function AvatarImage({
   className,
   alt,
   ...props
-}: ComponentProps<typeof AvatarPrimitive.Image> & { alt: string }) {
+}: ComponentProps<typeof AvatarPrimitive.Image> & {
+  /** Texto alternativo: o nome da pessoa (ex.: "Ana Souza"). */
+  alt: string;
+}) {
   return (
     <AvatarPrimitive.Image
       data-slot="avatar-image"

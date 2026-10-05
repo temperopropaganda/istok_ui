@@ -23,6 +23,23 @@ export interface RadioGroupProps extends Omit<
  * Num `Field`, o `FieldLabel` vira o nome do grupo (`aria-labelledby`) e a descrição, o erro,
  * `required` e `disabled` vão para o grupo. Cada opção vai num `Field orientation="horizontal"`
  * próprio, com `RadioGroupItem` e `FieldLabel`.
+ *
+ * @example
+ * ```tsx
+ * <Field>
+ *   <FieldLabel>Plano</FieldLabel>
+ *   <RadioGroup name="plano" defaultValue="mensal">
+ *     <Field orientation="horizontal">
+ *       <RadioGroupItem value="mensal" />
+ *       <FieldLabel>Mensal</FieldLabel>
+ *     </Field>
+ *     <Field orientation="horizontal">
+ *       <RadioGroupItem value="anual" />
+ *       <FieldLabel>Anual</FieldLabel>
+ *     </Field>
+ *   </RadioGroup>
+ * </Field>
+ * ```
  */
 export function RadioGroup({ className, orientation, children, ...props }: RadioGroupProps) {
   const field = use(FieldContext);

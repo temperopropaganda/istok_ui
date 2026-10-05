@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Button, type ButtonProps } from "../../src/index.ts";
+import { PlusIcon } from "../icons.tsx";
 import { Example, Section } from "../section.tsx";
 
 const variants: NonNullable<ButtonProps["variant"]>[] = [
@@ -11,21 +12,6 @@ const variants: NonNullable<ButtonProps["variant"]>[] = [
   "destructive",
 ];
 const sizes: NonNullable<ButtonProps["size"]>[] = ["sm", "md", "lg"];
-
-function PlusIcon() {
-  return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-    >
-      <path d="M12 5v14M5 12h14" />
-    </svg>
-  );
-}
 
 export function ButtonSection() {
   const [clicks, setClicks] = useState(0);
@@ -76,6 +62,20 @@ export function ButtonSection() {
             {variant}
           </Button>
         ))}
+      </Example>
+      <Example label="Carregando">
+        {variants.map((variant) => (
+          <Button key={variant} variant={variant} loading onClick={count}>
+            {variant}
+          </Button>
+        ))}
+        <Button variant="secondary" loading onClick={count}>
+          <PlusIcon />
+          Adicionar
+        </Button>
+        <Button size="icon" variant="outline" aria-label="Adicionar" loading onClick={count}>
+          <PlusIcon />
+        </Button>
       </Example>
       <Example label="Como link (asChild)">
         <Button asChild variant="outline">

@@ -1,23 +1,27 @@
 import { useEffect, useState } from "react";
 import { Button } from "../src/index.ts";
+import { AlertSection } from "./sections/alert.tsx";
 import { AvatarSection } from "./sections/avatar.tsx";
 import { BadgeSection } from "./sections/badge.tsx";
 import { ButtonSection } from "./sections/button.tsx";
 import { CardSection } from "./sections/card.tsx";
 import { SeparatorSection } from "./sections/separator.tsx";
 import { SkeletonSection } from "./sections/skeleton.tsx";
+import { SpinnerSection } from "./sections/spinner.tsx";
 import { TokensSection } from "./sections/tokens.tsx";
 
 // Vitrine: todos os componentes da lib numa página só. Componente novo = seção nova aqui
 // (Tokens primeiro, componentes em ordem alfabética).
 const sections = [
   { id: "tokens", label: "Tokens", Component: TokensSection },
+  { id: "alert", label: "Alert", Component: AlertSection },
   { id: "avatar", label: "Avatar", Component: AvatarSection },
   { id: "badge", label: "Badge", Component: BadgeSection },
   { id: "button", label: "Button", Component: ButtonSection },
   { id: "card", label: "Card", Component: CardSection },
   { id: "separator", label: "Separator", Component: SeparatorSection },
   { id: "skeleton", label: "Skeleton", Component: SkeletonSection },
+  { id: "spinner", label: "Spinner", Component: SpinnerSection },
 ];
 
 export function App() {

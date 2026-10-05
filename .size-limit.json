@@ -6,6 +6,12 @@
     "limit": "8.5 kB"
   },
   {
+    "name": "Accordion",
+    "path": "dist/index.js",
+    "import": "{ Accordion, AccordionContent, AccordionItem, AccordionTrigger }",
+    "limit": "17 kB"
+  },
+  {
     "name": "Alert",
     "path": "dist/index.js",
     "import": "{ Alert, AlertDescription, AlertTitle }",
@@ -72,6 +78,18 @@
     "limit": "10 kB"
   },
   {
+    "name": "NewsCard",
+    "path": "dist/index.js",
+    "import": "{ NewsCard }",
+    "limit": "9.5 kB"
+  },
+  {
+    "name": "ProductCard",
+    "path": "dist/index.js",
+    "import": "{ ProductCard }",
+    "limit": "11.5 kB"
+  },
+  {
     "name": "RadioGroup",
     "path": "dist/index.js",
     "import": "{ RadioGroup, RadioGroupItem }",
@@ -117,6 +135,6 @@
     "name": "Biblioteca inteira",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "45 kB"
+    "limit": "48 kB"
   }
 ]

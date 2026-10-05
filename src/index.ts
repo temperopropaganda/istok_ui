@@ -1,6 +1,12 @@
 // API pública da istok_ui: só o que for exportado aqui chega aos projetos.
 export { cn } from "./lib/cn.ts";
 
+export {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "./components/accordion/index.ts";
 export { Alert, AlertDescription, AlertTitle, type AlertProps } from "./components/alert/index.ts";
 export {
   AlertDialog,
@@ -61,6 +67,8 @@ export {
 } from "./components/field/index.ts";
 export { Input, type InputProps } from "./components/input/index.ts";
 export { Label, type LabelProps } from "./components/label/index.ts";
+export { NewsCard, type NewsCardProps } from "./components/news-card/index.ts";
+export { ProductCard, type ProductCardProps } from "./components/product-card/index.ts";
 export {
   RadioGroup,
   RadioGroupItem,

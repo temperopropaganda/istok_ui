@@ -8,11 +8,13 @@ import {
   MoonIcon,
   SunIcon,
 } from "./icons.tsx";
+import { ApiSection } from "./api-section.tsx";
 import { BrandLogo } from "./brand.tsx";
 import { groups, pages, type PageId } from "./pages.ts";
 import { useRoute } from "./router.ts";
 import { PageView } from "./section.tsx";
 import { HomeSection } from "./sections/home.tsx";
+import { AccordionSection } from "./sections/accordion.tsx";
 import { AlertSection } from "./sections/alert.tsx";
 import { AlertDialogSection } from "./sections/alert-dialog.tsx";
 import { AvatarSection } from "./sections/avatar.tsx";
@@ -24,6 +26,8 @@ import { DialogSection } from "./sections/dialog.tsx";
 import { FieldSection } from "./sections/field.tsx";
 import { InputSection } from "./sections/input.tsx";
 import { LabelSection } from "./sections/label.tsx";
+import { NewsCardSection } from "./sections/news-card.tsx";
+import { ProductCardSection } from "./sections/product-card.tsx";
 import { RadioGroupSection } from "./sections/radio-group.tsx";
 import { SeparatorSection } from "./sections/separator.tsx";
 import { SkeletonSection } from "./sections/skeleton.tsx";
@@ -39,6 +43,7 @@ import { useDarkTheme } from "./theme.ts";
 const views = {
   "": HomeSection,
   tokens: TokensSection,
+  accordion: AccordionSection,
   alert: AlertSection,
   "alert-dialog": AlertDialogSection,
   avatar: AvatarSection,
@@ -50,6 +55,8 @@ const views = {
   field: FieldSection,
   input: InputSection,
   label: LabelSection,
+  "news-card": NewsCardSection,
+  "product-card": ProductCardSection,
   "radio-group": RadioGroupSection,
   separator: SeparatorSection,
   skeleton: SkeletonSection,
@@ -216,6 +223,7 @@ export function App() {
               description={page.description}
             >
               <View />
+              <ApiSection id={page.id} />
             </PageView>
             <nav aria-label="Páginas vizinhas" className="flex justify-between gap-4 border-t pt-6">
               {previous ? (

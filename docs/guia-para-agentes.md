@@ -41,9 +41,53 @@ Cada cor de fundo tem um par `*-foreground` para o texto por cima.
 
 Raio: `rounded-sm`, `rounded-md`, `rounded-lg`, `rounded-xl` (derivados de `--radius`).
 
-Animações (use com `motion-safe:`): `animate-fade-in`, `animate-fade-out`, `animate-zoom-in`, `animate-zoom-out`.
+Animações (use com `motion-safe:`): `animate-fade-in`, `animate-fade-out`, `animate-zoom-in`, `animate-zoom-out`, `animate-accordion-down`, `animate-accordion-up`.
 
 ## Componentes
+
+### Accordion
+
+Peças: `Accordion`, `AccordionContent`, `AccordionItem`, `AccordionTrigger`.
+
+#### `Accordion`
+
+Seções que abrem e fecham (Radix). `type="single"` abre uma por vez (com `collapsible`, dá para
+fechar a aberta); `type="multiple"` abre várias. Enter/Espaço alternam; setas, Home e End andam
+entre os títulos.
+
+Aceita as props de [`Accordion.Root`](https://www.radix-ui.com/primitives/docs/components/accordion) do Radix.
+
+```tsx
+<Accordion type="single" collapsible defaultValue="entrega">
+  <AccordionItem value="entrega">
+    <AccordionTrigger>Qual o prazo de entrega?</AccordionTrigger>
+    <AccordionContent>De 3 a 5 dias úteis para capitais.</AccordionContent>
+  </AccordionItem>
+  <AccordionItem value="troca">
+    <AccordionTrigger>Posso trocar o produto?</AccordionTrigger>
+    <AccordionContent>Sim, em até 30 dias após o recebimento.</AccordionContent>
+  </AccordionItem>
+</Accordion>
+```
+
+#### `AccordionContent`
+
+Conteúdo da seção. Anima a altura ao abrir e fechar (só com `motion-safe`).
+
+Aceita as props de [`Accordion.Content`](https://www.radix-ui.com/primitives/docs/components/accordion) do Radix.
+
+#### `AccordionItem`
+
+Uma seção do Accordion. Precisa de um `value` único.
+
+Aceita as props de [`Accordion.Item`](https://www.radix-ui.com/primitives/docs/components/accordion) do Radix.
+
+#### `AccordionTrigger`
+
+Título clicável da seção (um `<button>` dentro de um `<h3>`). `aria-expanded` e `aria-controls`
+ficam por conta do Radix.
+
+Aceita as props de [`Accordion.Trigger`](https://www.radix-ui.com/primitives/docs/components/accordion) do Radix.
 
 ### Alert
 
@@ -89,7 +133,7 @@ Confirmação que exige resposta (`role="alertdialog"`), para ações destrutiva
 Diferente do `Dialog`: não fecha com clique fora e, ao abrir, o foco vai para o
 `AlertDialogCancel` (a opção segura). Esc cancela.
 
-Aceita as props de `AlertDialog.Root` do Radix (https://www.radix-ui.com/primitives/docs/components/alert-dialog).
+Aceita as props de [`AlertDialog.Root`](https://www.radix-ui.com/primitives/docs/components/alert-dialog) do Radix.
 
 ```tsx
 <AlertDialog>
@@ -122,7 +166,7 @@ Aceita as props nativas de `<button>`.
 
 | Prop      | Tipo                                                                          | Padrão      | Descrição                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | --------- | ----------------------------------------------------------------------------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `variant` | `"link" \| "default" \| "destructive" \| "secondary" \| "outline" \| "ghost"` | `"default"` | Estilo visual. <br>- `default`: ação principal <br>- `secondary`: ação secundária <br>- `outline`: ação neutra com borda <br>- `ghost`: ação discreta, sem fundo (barras de ferramentas, menus) <br>- `link`: aparência de link <br>- `destructive`: ação perigosa ou irreversível (excluir, cancelar assinatura)                                                                                                                                        |
+| `variant` | `"default" \| "link" \| "destructive" \| "secondary" \| "outline" \| "ghost"` | `"default"` | Estilo visual. <br>- `default`: ação principal <br>- `secondary`: ação secundária <br>- `outline`: ação neutra com borda <br>- `ghost`: ação discreta, sem fundo (barras de ferramentas, menus) <br>- `link`: aparência de link <br>- `destructive`: ação perigosa ou irreversível (excluir, cancelar assinatura)                                                                                                                                        |
 | `size`    | `"sm" \| "md" \| "lg" \| "icon"`                                              | `"md"`      | Tamanho. Use `icon` para botões só com ícone (exige `aria-label`).                                                                                                                                                                                                                                                                                                                                                                                       |
 | `asChild` | `boolean`                                                                     | `false`     | Renderiza o filho único (ex.: `<a>` ou `<Link>` do router) com o visual do botão, em vez de um `<button>`.                                                                                                                                                                                                                                                                                                                                               |
 | `loading` | `boolean`                                                                     | `false`     | Ação em andamento: mostra um `Spinner` no lugar do ícone (ou antes do texto), marca `aria-busy` e ignora cliques, inclusive o envio de formulário. Continua focável (`aria-disabled` em vez de `disabled`), para o foco não se perder quando o carregamento começa. Leitores de tela anunciam o botão como indisponível; para dizer o que está acontecendo, troque o texto junto (ex.: "Salvando…"). Com `asChild`, aplica só o estado, sem o `Spinner`. |
@@ -135,7 +179,7 @@ Aceita as props nativas de `<button>`.
 
 | Prop      | Tipo                                                                          | Padrão      | Descrição                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | --------- | ----------------------------------------------------------------------------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `variant` | `"link" \| "default" \| "destructive" \| "secondary" \| "outline" \| "ghost"` | `"default"` | Estilo visual. <br>- `default`: ação principal <br>- `secondary`: ação secundária <br>- `outline`: ação neutra com borda <br>- `ghost`: ação discreta, sem fundo (barras de ferramentas, menus) <br>- `link`: aparência de link <br>- `destructive`: ação perigosa ou irreversível (excluir, cancelar assinatura)                                                                                                                                        |
+| `variant` | `"default" \| "link" \| "destructive" \| "secondary" \| "outline" \| "ghost"` | `"default"` | Estilo visual. <br>- `default`: ação principal <br>- `secondary`: ação secundária <br>- `outline`: ação neutra com borda <br>- `ghost`: ação discreta, sem fundo (barras de ferramentas, menus) <br>- `link`: aparência de link <br>- `destructive`: ação perigosa ou irreversível (excluir, cancelar assinatura)                                                                                                                                        |
 | `size`    | `"sm" \| "md" \| "lg" \| "icon"`                                              | `"md"`      | Tamanho. Use `icon` para botões só com ícone (exige `aria-label`).                                                                                                                                                                                                                                                                                                                                                                                       |
 | `asChild` | `boolean`                                                                     | `false`     | Renderiza o filho único (ex.: `<a>` ou `<Link>` do router) com o visual do botão, em vez de um `<button>`.                                                                                                                                                                                                                                                                                                                                               |
 | `loading` | `boolean`                                                                     | `false`     | Ação em andamento: mostra um `Spinner` no lugar do ícone (ou antes do texto), marca `aria-busy` e ignora cliques, inclusive o envio de formulário. Continua focável (`aria-disabled` em vez de `disabled`), para o foco não se perder quando o carregamento começa. Leitores de tela anunciam o botão como indisponível; para dizer o que está acontecendo, troque o texto junto (ex.: "Salvando…"). Com `asChild`, aplica só o estado, sem o `Spinner`. |
@@ -144,7 +188,7 @@ Aceita as props nativas de `<button>`.
 
 Conteúdo do AlertDialog, num portal no `<body>`. Precisa de título e descrição.
 
-Aceita as props de `AlertDialog.Content` do Radix (https://www.radix-ui.com/primitives/docs/components/alert-dialog).
+Aceita as props de [`AlertDialog.Content`](https://www.radix-ui.com/primitives/docs/components/alert-dialog) do Radix.
 
 | Prop   | Tipo                   | Padrão | Descrição                                                   |
 | ------ | ---------------------- | ------ | ----------------------------------------------------------- |
@@ -154,7 +198,7 @@ Aceita as props de `AlertDialog.Content` do Radix (https://www.radix-ui.com/prim
 
 Consequência da ação ("Isso não pode ser desfeito."). Obrigatório.
 
-Aceita as props de `AlertDialog.Description` do Radix (https://www.radix-ui.com/primitives/docs/components/alert-dialog).
+Aceita as props de [`AlertDialog.Description`](https://www.radix-ui.com/primitives/docs/components/alert-dialog) do Radix.
 
 #### `AlertDialogFooter`
 
@@ -172,13 +216,13 @@ Aceita as props nativas de `<div>`.
 
 Pergunta do AlertDialog (`<h2>`), que também é o nome do modal. Obrigatório.
 
-Aceita as props de `AlertDialog.Title` do Radix (https://www.radix-ui.com/primitives/docs/components/alert-dialog).
+Aceita as props de [`AlertDialog.Title`](https://www.radix-ui.com/primitives/docs/components/alert-dialog) do Radix.
 
 #### `AlertDialogTrigger`
 
 Abre o AlertDialog. Use `asChild` com um `Button`.
 
-Aceita as props de `AlertDialog.Trigger` do Radix (https://www.radix-ui.com/primitives/docs/components/alert-dialog).
+Aceita as props de [`AlertDialog.Trigger`](https://www.radix-ui.com/primitives/docs/components/alert-dialog) do Radix.
 
 ### Avatar
 
@@ -189,7 +233,7 @@ Peças: `Avatar`, `AvatarFallback`, `AvatarImage`.
 Foto de uma pessoa ou entidade. Combine `AvatarImage` com `AvatarFallback`: o fallback aparece
 enquanto a imagem carrega ou se ela falhar.
 
-Aceita as props de `Avatar.Root` do Radix (https://www.radix-ui.com/primitives/docs/components/avatar).
+Aceita as props de [`Avatar.Root`](https://www.radix-ui.com/primitives/docs/components/avatar) do Radix.
 
 | Prop   | Tipo                   | Padrão | Descrição                                         |
 | ------ | ---------------------- | ------ | ------------------------------------------------- |
@@ -207,13 +251,13 @@ Aceita as props de `Avatar.Root` do Radix (https://www.radix-ui.com/primitives/d
 Conteúdo mostrado sem a imagem, normalmente as iniciais. Para leitores de tela, prefira
 `aria-label` com o nome completo (ex.: `<AvatarFallback aria-label="Ana Souza">AS</AvatarFallback>`).
 
-Aceita as props de `Avatar.Fallback` do Radix (https://www.radix-ui.com/primitives/docs/components/avatar).
+Aceita as props de [`Avatar.Fallback`](https://www.radix-ui.com/primitives/docs/components/avatar) do Radix.
 
 #### `AvatarImage`
 
 Imagem do avatar. O `alt` é obrigatório (use o nome da pessoa).
 
-Aceita as props de `Avatar.Image` do Radix (https://www.radix-ui.com/primitives/docs/components/avatar).
+Aceita as props de [`Avatar.Image`](https://www.radix-ui.com/primitives/docs/components/avatar) do Radix.
 
 | Prop                | Tipo     | Padrão | Descrição                                               |
 | ------------------- | -------- | ------ | ------------------------------------------------------- |
@@ -247,7 +291,7 @@ Aceita as props nativas de `<button>`.
 
 | Prop      | Tipo                                                                          | Padrão      | Descrição                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | --------- | ----------------------------------------------------------------------------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `variant` | `"link" \| "default" \| "destructive" \| "secondary" \| "outline" \| "ghost"` | `"default"` | Estilo visual. <br>- `default`: ação principal <br>- `secondary`: ação secundária <br>- `outline`: ação neutra com borda <br>- `ghost`: ação discreta, sem fundo (barras de ferramentas, menus) <br>- `link`: aparência de link <br>- `destructive`: ação perigosa ou irreversível (excluir, cancelar assinatura)                                                                                                                                        |
+| `variant` | `"default" \| "link" \| "destructive" \| "secondary" \| "outline" \| "ghost"` | `"default"` | Estilo visual. <br>- `default`: ação principal <br>- `secondary`: ação secundária <br>- `outline`: ação neutra com borda <br>- `ghost`: ação discreta, sem fundo (barras de ferramentas, menus) <br>- `link`: aparência de link <br>- `destructive`: ação perigosa ou irreversível (excluir, cancelar assinatura)                                                                                                                                        |
 | `size`    | `"sm" \| "md" \| "lg" \| "icon"`                                              | `"md"`      | Tamanho. Use `icon` para botões só com ícone (exige `aria-label`).                                                                                                                                                                                                                                                                                                                                                                                       |
 | `asChild` | `boolean`                                                                     | `false`     | Renderiza o filho único (ex.: `<a>` ou `<Link>` do router) com o visual do botão, em vez de um `<button>`.                                                                                                                                                                                                                                                                                                                                               |
 | `loading` | `boolean`                                                                     | `false`     | Ação em andamento: mostra um `Spinner` no lugar do ícone (ou antes do texto), marca `aria-busy` e ignora cliques, inclusive o envio de formulário. Continua focável (`aria-disabled` em vez de `disabled`), para o foco não se perder quando o carregamento começa. Leitores de tela anunciam o botão como indisponível; para dizer o que está acontecendo, troque o texto junto (ex.: "Salvando…"). Com `asChild`, aplica só o estado, sem o `Spinner`. |
@@ -344,7 +388,7 @@ checkbox nativo.
 
 Use num `Field orientation="horizontal"` com `FieldLabel` ao lado.
 
-Aceita as props de `Checkbox.Root` do Radix (https://www.radix-ui.com/primitives/docs/components/checkbox).
+Aceita as props de [`Checkbox.Root`](https://www.radix-ui.com/primitives/docs/components/checkbox) do Radix.
 
 ```tsx
 <Field orientation="horizontal">
@@ -364,7 +408,7 @@ Use `open`/`onOpenChange` para controlar, ou deixe o `DialogTrigger` abrir sozin
 
 Para confirmar ações destrutivas ("Excluir projeto?"), use o `AlertDialog`.
 
-Aceita as props de `Dialog.Root` do Radix (https://www.radix-ui.com/primitives/docs/components/dialog).
+Aceita as props de [`Dialog.Root`](https://www.radix-ui.com/primitives/docs/components/dialog) do Radix.
 
 ```tsx
 <Dialog>
@@ -394,14 +438,14 @@ Aceita as props de `Dialog.Root` do Radix (https://www.radix-ui.com/primitives/d
 
 Fecha o Dialog. Use `asChild` com um `Button` (ex.: "Cancelar" no `DialogFooter`).
 
-Aceita as props de `Dialog.Close` do Radix (https://www.radix-ui.com/primitives/docs/components/dialog).
+Aceita as props de [`Dialog.Close`](https://www.radix-ui.com/primitives/docs/components/dialog) do Radix.
 
 #### `DialogContent`
 
 Conteúdo do Dialog, num portal no `<body>`, com o fundo escurecido. Precisa de um
 `DialogTitle`; sem `DialogDescription`, passe `aria-describedby={undefined}`.
 
-Aceita as props de `Dialog.Content` do Radix (https://www.radix-ui.com/primitives/docs/components/dialog).
+Aceita as props de [`Dialog.Content`](https://www.radix-ui.com/primitives/docs/components/dialog) do Radix.
 
 | Prop              | Tipo                   | Padrão     | Descrição                                                                                                |
 | ----------------- | ---------------------- | ---------- | -------------------------------------------------------------------------------------------------------- |
@@ -413,7 +457,7 @@ Aceita as props de `Dialog.Content` do Radix (https://www.radix-ui.com/primitive
 
 Texto de apoio, lido junto com o título quando o modal abre.
 
-Aceita as props de `Dialog.Description` do Radix (https://www.radix-ui.com/primitives/docs/components/dialog).
+Aceita as props de [`Dialog.Description`](https://www.radix-ui.com/primitives/docs/components/dialog) do Radix.
 
 #### `DialogFooter`
 
@@ -431,13 +475,13 @@ Aceita as props nativas de `<div>`.
 
 Título do Dialog (`<h2>`), que também é o nome do modal para leitores de tela. Obrigatório.
 
-Aceita as props de `Dialog.Title` do Radix (https://www.radix-ui.com/primitives/docs/components/dialog).
+Aceita as props de [`Dialog.Title`](https://www.radix-ui.com/primitives/docs/components/dialog) do Radix.
 
 #### `DialogTrigger`
 
 Abre o Dialog. Use `asChild` com um `Button`: `<DialogTrigger asChild><Button>…</Button></DialogTrigger>`.
 
-Aceita as props de `Dialog.Trigger` do Radix (https://www.radix-ui.com/primitives/docs/components/dialog).
+Aceita as props de [`Dialog.Trigger`](https://www.radix-ui.com/primitives/docs/components/dialog) do Radix.
 
 ### Field
 
@@ -455,7 +499,7 @@ Aceita as props nativas de `<div>`.
 
 | Prop          | Tipo                         | Padrão       | Descrição                                                                                                                                                 |
 | ------------- | ---------------------------- | ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `orientation` | `"vertical" \| "horizontal"` | `"vertical"` | `vertical`: rótulo em cima do controle (campos de texto, RadioGroup). `horizontal`: controle e rótulo lado a lado (Checkbox, Switch, item de RadioGroup). |
+| `orientation` | `"horizontal" \| "vertical"` | `"vertical"` | `vertical`: rótulo em cima do controle (campos de texto, RadioGroup). `horizontal`: controle e rótulo lado a lado (Checkbox, Switch, item de RadioGroup). |
 | `invalid`     | `boolean`                    | —            | Marca o controle como inválido (`aria-invalid`) e o rótulo na cor de erro. Sem a prop, fica inválido sozinho quando há um `FieldError` com conteúdo.      |
 | `required`    | `boolean`                    | `false`      | Repassa `required` ao controle e mostra `*` no `FieldLabel`.                                                                                              |
 | `disabled`    | `boolean`                    | `false`      | Repassa `disabled` ao controle.                                                                                                                           |
@@ -499,7 +543,7 @@ Aceita as props nativas de `<div>`.
 
 Rótulo do `Field`: aponta para o controle sozinho e mostra `*` quando o `Field` é `required`.
 
-Aceita as props de `ComponentProps<typeof Label>`.
+Aceita as props de `Label`.
 
 #### `FieldLegend`
 
@@ -558,11 +602,94 @@ controle. Dentro de um `Field`, prefira o `FieldLabel`, que se liga sozinho.
 
 Com o controle desabilitado logo antes (classe `peer`), o rótulo fica na cor de apoio.
 
-Aceita as props de `Label.Root` do Radix (https://www.radix-ui.com/primitives/docs/components/label).
+Aceita as props de [`Label.Root`](https://www.radix-ui.com/primitives/docs/components/label) do Radix.
 
 ```tsx
 <Label htmlFor="cupom">Cupom</Label>
 <Input id="cupom" />
+```
+
+### NewsCard
+
+#### `NewsCard`
+
+Card de notícia: data, título e resumo, com imagem de capa (`variant="default"`) ou só texto
+(`variant="simple"`). O card inteiro é clicável; o link fica no título, então o leitor de tela lê
+só o título.
+
+Aceita as props nativas de `<article>`, exceto `children`, `title`.
+
+| Prop                  | Tipo                    | Padrão      | Descrição                                                                                                                                |
+| --------------------- | ----------------------- | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `variant`             | `"default" \| "simple"` | `"default"` | `default`: com imagem de capa (`image` obrigatória). `simple`: só texto.                                                                 |
+| `image`               | `string`                | —           | URL da imagem de capa (obrigatória na versão `default`).                                                                                 |
+| `imageAlt`            | `string`                | `""`        | Texto alternativo da capa. Vazio deixa a imagem decorativa (o título já descreve a notícia).                                             |
+| `title` (obrigatória) | `string`                | —           | Título da notícia. É o link, e o card inteiro fica clicável.                                                                             |
+| `href` (obrigatória)  | `string`                | —           | Endereço da notícia.                                                                                                                     |
+| `excerpt`             | `string`                | —           | Resumo, até 3 linhas na tela.                                                                                                            |
+| `date`                | `string \| Date`        | —           | Data de publicação: `Date` ou texto "AAAA-MM-DD" (lido como data local, sem fuso). Formatada em `locale` dentro de um `<time datetime>`. |
+| `locale`              | `string`                | `"pt-BR"`   | Idioma da data.                                                                                                                          |
+| `headingLevel`        | `2 \| 3 \| 4`           | `3`         | Nível do título, para seguir a hierarquia da página.                                                                                     |
+
+```tsx
+<NewsCard
+  image="/img/feira.jpg"
+  title="Feira de design reúne 200 expositores"
+  href="/noticias/feira-de-design"
+  excerpt="Evento segue até domingo, com entrada gratuita."
+  date="2026-10-05"
+/>
+<NewsCard variant="simple" title="Novo horário de atendimento" href="/noticias/horario" />
+```
+
+### ProductCard
+
+#### `ProductCard`
+
+Card de produto: imagem, nome, preço (com "de/por" opcional), selo, variações, avaliação e uma
+ação. Com `href`, o card inteiro é clicável; o link fica no nome, então o leitor de tela lê só o
+nome do produto. A `action` continua clicável à parte.
+
+Aceita as props nativas de `<article>`, exceto `children`.
+
+| Prop                  | Tipo                                                                               | Padrão      | Descrição                                                                                                                     |
+| --------------------- | ---------------------------------------------------------------------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| `name` (obrigatória)  | `string`                                                                           | —           | Nome do produto (título do card e nome do link).                                                                              |
+| `price` (obrigatória) | `number`                                                                           | —           | Preço atual, formatado com `currency` e `locale` (ex.: `47.9` → "R$ 47,90").                                                  |
+| `originalPrice`       | `number`                                                                           | —           | Preço anterior, riscado ("de R$ 59,90 por R$ 47,90"). Use quando houver desconto.                                             |
+| `href`                | `string`                                                                           | —           | Página do produto. Com ela, o card inteiro vira link (o link fica no nome).                                                   |
+| `image`               | `string`                                                                           | —           | URL da imagem. Sem ela, aparece um espaço neutro do mesmo tamanho.                                                            |
+| `imageAlt`            | `string`                                                                           | `""`        | Texto alternativo da imagem. Vazio deixa a imagem decorativa (o nome já está no card); descreva só o que a imagem acrescenta. |
+| `badge`               | `string`                                                                           | —           | Selo sobre a imagem (ex.: "-20%", "Novo", "Esgotado").                                                                        |
+| `badgeVariant`        | `"default" \| "destructive" \| "success" \| "warning" \| "secondary" \| "outline"` | `"default"` | Estilo do selo (variantes do `Badge`).                                                                                        |
+| `options`             | `string[]`                                                                         | —           | Variações do produto, mostradas como selos (ex.: `["600 ml", "1 L", "1,5 L"]`).                                               |
+| `optionsLabel`        | `string`                                                                           | `"Opções"`  | Nome da lista de variações para leitores de tela (ex.: "Tamanhos").                                                           |
+| `rating`              | `number`                                                                           | —           | Nota de 0 a 5 (aceita frações, ex.: `4.5`).                                                                                   |
+| `reviewCount`         | `number`                                                                           | —           | Quantidade de avaliações, ao lado da nota.                                                                                    |
+| `action`              | `ReactNode`                                                                        | —           | Ação do card, clicável por cima do link (ex.: `<Button size="sm">Adicionar</Button>`).                                        |
+| `currency`            | `string`                                                                           | `"BRL"`     | Moeda do preço (código ISO 4217).                                                                                             |
+| `locale`              | `string`                                                                           | `"pt-BR"`   | Idioma da formatação de preço, nota e quantidade.                                                                             |
+| `headingLevel`        | `2 \| 3 \| 4`                                                                      | `3`         | Nível do título, para seguir a hierarquia da página.                                                                          |
+
+```tsx
+<ProductCard
+  name="Suco de laranja integral"
+  href="/produtos/suco-de-laranja"
+  image="/img/suco.jpg"
+  price={9.9}
+  originalPrice={12.9}
+  badge="-23%"
+  badgeVariant="destructive"
+  options={["300 ml", "1 L", "1,5 L"]}
+  optionsLabel="Tamanhos"
+  rating={4.5}
+  reviewCount={128}
+  action={
+    <Button size="sm" className="w-full">
+      Adicionar
+    </Button>
+  }
+/>
 ```
 
 ### RadioGroup
@@ -578,11 +705,11 @@ Num `Field`, o `FieldLabel` vira o nome do grupo (`aria-labelledby`) e a descri�
 `required` e `disabled` vão para o grupo. Cada opção vai num `Field orientation="horizontal"`
 próprio, com `RadioGroupItem` e `FieldLabel`.
 
-Aceita as props de `RadioGroup.Root` do Radix (https://www.radix-ui.com/primitives/docs/components/radio-group), exceto `orientation`.
+Aceita as props de [`RadioGroup.Root`](https://www.radix-ui.com/primitives/docs/components/radio-group) do Radix, exceto `orientation`.
 
 | Prop          | Tipo                         | Padrão       | Descrição                                                                                                                                            |
 | ------------- | ---------------------------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `orientation` | `"vertical" \| "horizontal"` | `"vertical"` | Disposição das opções: uma por linha ou lado a lado (quebrando linha se faltar espaço). As setas funcionam nas duas direções em qualquer orientação. |
+| `orientation` | `"horizontal" \| "vertical"` | `"vertical"` | Disposição das opções: uma por linha ou lado a lado (quebrando linha se faltar espaço). As setas funcionam nas duas direções em qualquer orientação. |
 
 ```tsx
 <Field>
@@ -604,7 +731,7 @@ Aceita as props de `RadioGroup.Root` do Radix (https://www.radix-ui.com/primitiv
 
 Opção do `RadioGroup`. Precisa de `value` e de um rótulo (`FieldLabel` ou `Label`).
 
-Aceita as props de `RadioGroup.Item` do Radix (https://www.radix-ui.com/primitives/docs/components/radio-group).
+Aceita as props de [`RadioGroup.Item`](https://www.radix-ui.com/primitives/docs/components/radio-group) do Radix.
 
 ### Separator
 
@@ -612,11 +739,11 @@ Aceita as props de `RadioGroup.Item` do Radix (https://www.radix-ui.com/primitiv
 
 Linha que separa conteúdos. Baseado no Separator do shadcn/ui (Radix).
 
-Aceita as props de `Separator.Root` do Radix (https://www.radix-ui.com/primitives/docs/components/separator).
+Aceita as props de [`Separator.Root`](https://www.radix-ui.com/primitives/docs/components/separator) do Radix.
 
 | Prop          | Tipo                         | Padrão         | Descrição                                                                                                                                |
 | ------------- | ---------------------------- | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| `orientation` | `"vertical" \| "horizontal"` | `"horizontal"` | Direção da linha.                                                                                                                        |
+| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` | Direção da linha.                                                                                                                        |
 | `decorative`  | `boolean`                    | `true`         | Decorativo (padrão): leitores de tela ignoram. Use `false` quando a linha separa seções com significado; aí ela vira `role="separator"`. |
 
 ```tsx
@@ -678,7 +805,7 @@ ligado.
 
 Use num `Field orientation="horizontal"` com `FieldLabel` ao lado.
 
-Aceita as props de `Switch.Root` do Radix (https://www.radix-ui.com/primitives/docs/components/switch).
+Aceita as props de [`Switch.Root`](https://www.radix-ui.com/primitives/docs/components/switch) do Radix.
 
 ```tsx
 <Field orientation="horizontal">
@@ -721,7 +848,7 @@ Esc fecha; dá para mover o ponteiro até a dica sem ela sumir (WCAG 1.4.13).
 continua precisando de `aria-label`. Não abre em telas de toque; não coloque nela informação que
 só exista ali.
 
-Aceita as props de `Tooltip.Root` do Radix (https://www.radix-ui.com/primitives/docs/components/tooltip).
+Aceita as props de [`Tooltip.Root`](https://www.radix-ui.com/primitives/docs/components/tooltip) do Radix.
 
 ```tsx
 <Tooltip>
@@ -739,20 +866,20 @@ Aceita as props de `Tooltip.Root` do Radix (https://www.radix-ui.com/primitives/
 Conteúdo da dica, num portal no `<body>`. `side` escolhe o lado (`top` por padrão); o Radix troca
 de lado se faltar espaço.
 
-Aceita as props de `Tooltip.Content` do Radix (https://www.radix-ui.com/primitives/docs/components/tooltip).
+Aceita as props de [`Tooltip.Content`](https://www.radix-ui.com/primitives/docs/components/tooltip) do Radix.
 
 #### `TooltipProvider`
 
 Opcional: compartilha o atraso entre vários Tooltips (ex.: numa barra de ferramentas). Depois que
 um abre, os vizinhos abrem na hora enquanto o ponteiro passa por eles.
 
-Aceita as props de `Tooltip.Provider` do Radix (https://www.radix-ui.com/primitives/docs/components/tooltip).
+Aceita as props de [`Tooltip.Provider`](https://www.radix-ui.com/primitives/docs/components/tooltip) do Radix.
 
 #### `TooltipTrigger`
 
 Elemento que mostra a dica. Use `asChild` com um elemento focável (ex.: `Button`, `<a>`).
 
-Aceita as props de `Tooltip.Trigger` do Radix (https://www.radix-ui.com/primitives/docs/components/tooltip).
+Aceita as props de [`Tooltip.Trigger`](https://www.radix-ui.com/primitives/docs/components/tooltip) do Radix.
 
 ## Utilitários
 

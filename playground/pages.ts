@@ -17,6 +17,13 @@ export const pages = [
     description: "Cores do tema (fundo + texto) e escala de raio.",
   },
   {
+    id: "accordion",
+    label: "Accordion",
+    group: "Componentes",
+    description:
+      "Seções que abrem e fecham. Enter/Espaço alternam; setas, Home e End andam entre os títulos.",
+  },
+  {
     id: "alert",
     label: "Alert",
     group: "Componentes",
@@ -85,6 +92,20 @@ export const pages = [
     label: "Label",
     group: "Componentes",
     description: "Rótulo ligado pelo htmlFor. Dentro de um Field, use FieldLabel (liga sozinho).",
+  },
+  {
+    id: "news-card",
+    label: "NewsCard",
+    group: "Componentes",
+    description:
+      "Card de notícia com capa ou só texto. O card inteiro é clicável; o link fica no título.",
+  },
+  {
+    id: "product-card",
+    label: "ProductCard",
+    group: "Componentes",
+    description:
+      "Card de produto: preço de/por, selo, variações, avaliação e ação. O card inteiro é clicável.",
   },
   {
     id: "radio-group",

@@ -1,0 +1,122 @@
+[
+  {
+    "name": "cn()",
+    "path": "dist/index.js",
+    "import": "{ cn }",
+    "limit": "8.5 kB"
+  },
+  {
+    "name": "Alert",
+    "path": "dist/index.js",
+    "import": "{ Alert, AlertDescription, AlertTitle }",
+    "limit": "9 kB"
+  },
+  {
+    "name": "AlertDialog",
+    "path": "dist/index.js",
+    "import": "{ AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger }",
+    "limit": "23 kB"
+  },
+  {
+    "name": "Avatar",
+    "path": "dist/index.js",
+    "import": "{ Avatar, AvatarFallback, AvatarImage }",
+    "limit": "11.5 kB"
+  },
+  {
+    "name": "Badge",
+    "path": "dist/index.js",
+    "import": "{ Badge }",
+    "limit": "10.5 kB"
+  },
+  {
+    "name": "Button",
+    "path": "dist/index.js",
+    "import": "{ Button }",
+    "limit": "11 kB"
+  },
+  {
+    "name": "Card",
+    "path": "dist/index.js",
+    "import": "{ Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }",
+    "limit": "10 kB"
+  },
+  {
+    "name": "Checkbox",
+    "path": "dist/index.js",
+    "import": "{ Checkbox }",
+    "limit": "14 kB"
+  },
+  {
+    "name": "Dialog",
+    "path": "dist/index.js",
+    "import": "{ Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger }",
+    "limit": "22.5 kB"
+  },
+  {
+    "name": "Field",
+    "path": "dist/index.js",
+    "import": "{ Field, FieldContent, FieldDescription, FieldError, FieldLabel, FieldLegend, FieldSet, useFieldControl }",
+    "limit": "11.5 kB"
+  },
+  {
+    "name": "Input",
+    "path": "dist/index.js",
+    "import": "{ Input }",
+    "limit": "9.5 kB"
+  },
+  {
+    "name": "Label",
+    "path": "dist/index.js",
+    "import": "{ Label }",
+    "limit": "10 kB"
+  },
+  {
+    "name": "RadioGroup",
+    "path": "dist/index.js",
+    "import": "{ RadioGroup, RadioGroupItem }",
+    "limit": "18.5 kB"
+  },
+  {
+    "name": "Separator",
+    "path": "dist/index.js",
+    "import": "{ Separator }",
+    "limit": "10 kB"
+  },
+  {
+    "name": "Skeleton",
+    "path": "dist/index.js",
+    "import": "{ Skeleton }",
+    "limit": "8.5 kB"
+  },
+  {
+    "name": "Spinner",
+    "path": "dist/index.js",
+    "import": "{ Spinner }",
+    "limit": "9 kB"
+  },
+  {
+    "name": "Switch",
+    "path": "dist/index.js",
+    "import": "{ Switch }",
+    "limit": "13 kB"
+  },
+  {
+    "name": "Textarea",
+    "path": "dist/index.js",
+    "import": "{ Textarea }",
+    "limit": "9.5 kB"
+  },
+  {
+    "name": "Tooltip",
+    "path": "dist/index.js",
+    "import": "{ Tooltip, TooltipContent, TooltipProvider, TooltipTrigger }",
+    "limit": "26.5 kB"
+  },
+  {
+    "name": "Biblioteca inteira",
+    "path": "dist/index.js",
+    "import": "*",
+    "limit": "45 kB"
+  }
+]

@@ -1,16 +1,13 @@
 import type { Page } from "@playwright/test";
-import { enableDarkTheme, expect, test } from "./fixtures.ts";
+import { expect, openPage, setTheme, test } from "./fixtures.ts";
 
 const section = (page: Page, name: string) => page.getByRole("region", { name });
 const group = (page: Page, sectionName: string, name: string) =>
   section(page, sectionName).getByRole("group", { name, exact: true });
 
 test.describe("Overlays", () => {
-  test.beforeEach(async ({ page }) => {
-    await page.goto("/");
-  });
-
   test("Dialog: abre e salva só com teclado, com o foco preso e devolvido", async ({ page }) => {
+    await openPage(page, "dialog");
     const trigger = page.getByRole("button", { name: "Editar perfil" });
     await trigger.focus();
     await page.keyboard.press("Enter");
@@ -39,6 +36,7 @@ test.describe("Overlays", () => {
   });
 
   test("Dialog: Esc e clique fora fecham, sem salvar", async ({ page }) => {
+    await openPage(page, "dialog");
     const trigger = page.getByRole("button", { name: "Editar perfil" });
     const dialog = page.getByRole("dialog");
 
@@ -55,6 +53,7 @@ test.describe("Overlays", () => {
   });
 
   test("Dialog: trava a rolagem e esconde a página de leitores de tela", async ({ page }) => {
+    await openPage(page, "dialog");
     await page.getByRole("button", { name: "Editar perfil" }).click();
     await expect(page.getByRole("dialog")).toBeVisible();
 
@@ -69,6 +68,7 @@ test.describe("Overlays", () => {
   });
 
   test("Dialog: larguras de 384, 512 e 672px", async ({ page }) => {
+    await openPage(page, "dialog");
     const sizes = group(page, "Dialog", "Tamanhos");
 
     for (const [size, pixels] of [
@@ -85,6 +85,7 @@ test.describe("Overlays", () => {
   });
 
   test("Dialog: conteúdo longo rola por dentro, sem passar da tela", async ({ page }) => {
+    await openPage(page, "dialog");
     await page.getByRole("button", { name: "Ler os termos" }).click();
     const dialog = page.getByRole("dialog", { name: "Termos de uso" });
 
@@ -101,6 +102,7 @@ test.describe("Overlays", () => {
   });
 
   test("Dialog: sem animação com redução de movimento", async ({ page }) => {
+    await openPage(page, "dialog");
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.getByRole("button", { name: "Editar perfil" }).click();
 
@@ -110,6 +112,7 @@ test.describe("Overlays", () => {
   test("AlertDialog: foco em Cancelar, clique fora não fecha, exclusão com loading", async ({
     page,
   }) => {
+    await openPage(page, "alert-dialog");
     const trigger = page.getByRole("button", { name: "Excluir projeto" });
     await trigger.click();
 
@@ -131,6 +134,7 @@ test.describe("Overlays", () => {
   });
 
   test("AlertDialog: Esc cancela", async ({ page }) => {
+    await openPage(page, "alert-dialog");
     await page.getByRole("button", { name: "Excluir projeto" }).click();
     await page.keyboard.press("Escape");
 
@@ -141,6 +145,7 @@ test.describe("Overlays", () => {
   test("Tooltip: abre com o ponteiro depois do atraso, e dá para passar o ponteiro nele", async ({
     page,
   }) => {
+    await openPage(page, "tooltip");
     const bold = page.getByRole("toolbar", { name: "Formatação" }).getByRole("button", {
       name: "Negrito",
     });
@@ -160,6 +165,7 @@ test.describe("Overlays", () => {
   });
 
   test("Tooltip: abre com o teclado e Esc fecha sem tirar o foco", async ({ page }) => {
+    await openPage(page, "tooltip");
     const sides = group(page, "Tooltip", "Lados");
     await sides.getByRole("button", { name: "top" }).focus();
     await page.keyboard.press("Tab");
@@ -182,6 +188,7 @@ test.describe("Overlays", () => {
   test("Tooltip: na barra de ferramentas, cada botão mostra a sua dica com o teclado", async ({
     page,
   }) => {
+    await openPage(page, "tooltip");
     const toolbar = page.getByRole("toolbar", { name: "Formatação" });
     await toolbar.getByRole("button", { name: "Negrito" }).focus();
 
@@ -204,14 +211,16 @@ test.describe("Overlays", () => {
     // Só o modal: a página atrás fica inerte (fora da árvore de acessibilidade e sob o fundo
     // escurecido) e já é verificada sem modal no playground.spec.ts. No WebKit, o axe calcula o
     // contraste dos botões de trás através do overlay e reprova o que ninguém consegue usar.
-    for (const theme of ["claro", "escuro"]) {
-      if (theme === "escuro") await enableDarkTheme(page);
+    for (const theme of ["claro", "escuro"] as const) {
+      await openPage(page, "dialog");
+      await setTheme(page, theme);
       await page.getByRole("button", { name: "Editar perfil" }).click();
       await expect(page.getByRole("dialog")).toBeVisible();
       await checkA11y('[role="dialog"]');
       await page.keyboard.press("Escape");
       await expect(page.getByRole("dialog")).toBeHidden();
 
+      await openPage(page, "alert-dialog");
       await page.getByRole("button", { name: "Excluir projeto" }).click();
       await expect(page.getByRole("alertdialog")).toBeVisible();
       await checkA11y('[role="alertdialog"]');
@@ -220,14 +229,16 @@ test.describe("Overlays", () => {
     }
   });
 
-  test("modal muda de cor no tema escuro", async ({ page }) => {
+  test("modal muda de cor entre os temas", async ({ page }) => {
+    await openPage(page, "dialog");
+    await setTheme(page, "claro");
     await page.getByRole("button", { name: "Editar perfil" }).click();
     const light = await page
       .getByRole("dialog")
       .evaluate((element) => getComputedStyle(element).backgroundColor);
     await page.keyboard.press("Escape");
 
-    await enableDarkTheme(page);
+    await setTheme(page, "escuro");
     await page.getByRole("button", { name: "Editar perfil" }).click();
     await expect(page.getByRole("dialog")).not.toHaveCSS("background-color", light);
   });

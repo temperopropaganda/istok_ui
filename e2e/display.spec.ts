@@ -1,16 +1,13 @@
 import type { Page } from "@playwright/test";
-import { enableDarkTheme, expect, test } from "./fixtures.ts";
+import { expect, expectThemeChange, openPage, test } from "./fixtures.ts";
 
 const section = (page: Page, name: string) => page.getByRole("region", { name });
 const group = (page: Page, sectionName: string, name: string) =>
   section(page, sectionName).getByRole("group", { name, exact: true });
 
 test.describe("Componentes de exibição", () => {
-  test.beforeEach(async ({ page }) => {
-    await page.goto("/");
-  });
-
   test("Card: títulos como heading, lista semântica e ações no rodapé", async ({ page }) => {
+    await openPage(page, "card");
     const card = section(page, "Card");
 
     await expect(card.getByRole("heading", { level: 3, name: "Plano Pro" })).toBeVisible();
@@ -22,18 +19,21 @@ test.describe("Componentes de exibição", () => {
   });
 
   test("Badge: todas as variantes e badge como link navegável", async ({ page }) => {
+    await openPage(page, "badge");
     const variants = group(page, "Badge", "Variantes");
     for (const name of ["default", "secondary", "outline", "destructive", "success", "warning"]) {
       await expect(variants.getByText(name, { exact: true })).toBeVisible();
     }
 
     const link = group(page, "Badge", "Como link (asChild)").getByRole("link", { name: "#design" });
+    await expect(link).toHaveAttribute("href", "#/badge");
     await link.focus();
     await page.keyboard.press("Enter");
-    await expect(page).toHaveURL(/#badge$/);
+    await expect(page).toHaveURL(/#\/badge$/);
   });
 
   test("Avatar: imagem com alt, fallback com nome e tamanhos 24/32/40px", async ({ page }) => {
+    await openPage(page, "avatar");
     const images = group(page, "Avatar", "Com imagem");
     await expect(images.getByRole("img", { name: "Ana Souza (md)" })).toBeVisible();
 
@@ -51,6 +51,7 @@ test.describe("Componentes de exibição", () => {
   });
 
   test("Separator: decorativo fica fora da árvore de acessibilidade", async ({ page }) => {
+    await openPage(page, "separator");
     const separators = section(page, "Separator").locator('[data-slot="separator"]');
 
     await expect(separators).toHaveCount(3);
@@ -60,6 +61,7 @@ test.describe("Componentes de exibição", () => {
   });
 
   test("Skeleton: alterna entre carregando e conteúdo, com aria-busy", async ({ page }) => {
+    await openPage(page, "skeleton");
     const demo = page.getByTestId("skeleton-demo");
     const toggle = section(page, "Skeleton").getByRole("button", { name: "Simular carregamento" });
 
@@ -78,6 +80,7 @@ test.describe("Componentes de exibição", () => {
   });
 
   test("Skeleton: anima por padrão e para com redução de movimento", async ({ page }) => {
+    await openPage(page, "skeleton");
     const block = page.getByTestId("skeleton-demo").locator('[data-slot="skeleton"]').first();
     await expect(block).toHaveCSS("animation-name", "pulse");
 
@@ -85,17 +88,19 @@ test.describe("Componentes de exibição", () => {
     await expect(block).toHaveCSS("animation-name", "none");
   });
 
-  test("componentes de exibição mudam de cor no tema escuro", async ({ page }) => {
-    const card = section(page, "Card").locator('[data-slot="card"]').first();
-    const badge = group(page, "Badge", "Variantes").getByText("success", { exact: true });
-    const before = await Promise.all(
-      [card, badge].map((locator) =>
-        locator.evaluate((element) => getComputedStyle(element).backgroundColor),
-      ),
+  test("componentes de exibição mudam de cor entre os temas", async ({ page }) => {
+    await openPage(page, "card");
+    await expectThemeChange(
+      page,
+      section(page, "Card").locator('[data-slot="card"]').first(),
+      "background-color",
     );
 
-    await enableDarkTheme(page);
-    await expect(card).not.toHaveCSS("background-color", before[0] ?? "");
-    await expect(badge).not.toHaveCSS("background-color", before[1] ?? "");
+    await openPage(page, "badge");
+    await expectThemeChange(
+      page,
+      group(page, "Badge", "Variantes").getByText("success", { exact: true }),
+      "background-color",
+    );
   });
 });

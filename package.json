@@ -37,13 +37,14 @@
     "format:check": "prettier --check .",
     "prepack": "npm run build",
     "check": "npm run typecheck && npm run lint && npm run format:check && npm run build && npm run lint:package",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage",
+    "test": "vitest run --project=*chromium*",
+    "test:watch": "vitest --project=*chromium*",
+    "test:coverage": "vitest run --project=*chromium* --coverage",
     "storybook": "storybook dev -p 6006",
     "storybook:build": "storybook build",
     "test:consumer": "node scripts/test-consumer.mjs",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test --project=chromium",
+    "test:browsers": "vitest run --project=*firefox* --project=*webkit* --no-file-parallelism && playwright test --project=firefox --project=webkit"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",

@@ -81,8 +81,9 @@ test.describe("Componentes de feedback", () => {
       [normal.last(), loading.last()],
     ] as const) {
       const [a, b] = await Promise.all([before.boundingBox(), after.boundingBox()]);
-      expect(b?.width).toBe(a?.width);
-      expect(b?.height).toBe(a?.height);
+      // Tolerância de sub-pixel: o Firefox arredonda o layout em 1/60 px (diferença de 0,00003px).
+      expect(b?.width).toBeCloseTo(a?.width ?? 0, 1);
+      expect(b?.height).toBeCloseTo(a?.height ?? 0, 1);
       await expect(after.locator('[data-slot="spinner"]')).toBeVisible();
       await expect(after.locator(":scope > svg")).toBeHidden();
     }

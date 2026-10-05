@@ -197,20 +197,24 @@ test.describe("Overlays", () => {
     }
   });
 
-  test("sem violações de acessibilidade com os modais abertos, nos dois temas", async ({
+  test("sem violações de acessibilidade nos modais abertos, nos dois temas", async ({
     page,
     checkA11y,
   }) => {
+    // Só o modal: a página atrás fica inerte (fora da árvore de acessibilidade e sob o fundo
+    // escurecido) e já é verificada sem modal no playground.spec.ts. No WebKit, o axe calcula o
+    // contraste dos botões de trás através do overlay e reprova o que ninguém consegue usar.
     for (const theme of ["claro", "escuro"]) {
       if (theme === "escuro") await enableDarkTheme(page);
       await page.getByRole("button", { name: "Editar perfil" }).click();
       await expect(page.getByRole("dialog")).toBeVisible();
-      await checkA11y();
+      await checkA11y('[role="dialog"]');
       await page.keyboard.press("Escape");
+      await expect(page.getByRole("dialog")).toBeHidden();
 
       await page.getByRole("button", { name: "Excluir projeto" }).click();
       await expect(page.getByRole("alertdialog")).toBeVisible();
-      await checkA11y();
+      await checkA11y('[role="alertdialog"]');
       await page.keyboard.press("Escape");
       await expect(page.getByRole("alertdialog")).toBeHidden();
     }

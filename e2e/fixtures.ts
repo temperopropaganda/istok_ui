@@ -4,9 +4,13 @@ import { test as base, expect, type Page } from "@playwright/test";
 /**
  * `test` com duas garantias automáticas em todo teste E2E:
  * - nenhum erro/warning no console nem exceção na página;
- * - `checkA11y()` disponível para rodar o axe na página inteira.
+ * - `checkA11y()` disponível para rodar o axe na página inteira (ou só no seletor informado, ex.: o
+ *   modal aberto, já que o conteúdo atrás dele fica inerte).
  */
-export const test = base.extend<{ consoleProblems: string[]; checkA11y: () => Promise<void> }>({
+export const test = base.extend<{
+  consoleProblems: string[];
+  checkA11y: (include?: string) => Promise<void>;
+}>({
   consoleProblems: [
     async ({ page }, use) => {
       const problems: string[] = [];
@@ -24,11 +28,16 @@ export const test = base.extend<{ consoleProblems: string[]; checkA11y: () => Pr
     { auto: true },
   ],
   checkA11y: async ({ page }, use) => {
-    await use(async () => {
-      const results = await new AxeBuilder({ page }).analyze();
-      const summary = results.violations.map(
-        (violation) =>
-          `${violation.id}: ${violation.nodes.map((node) => node.target.join(" ")).join(", ")}`,
+    await use(async (include) => {
+      const builder = new AxeBuilder({ page });
+      if (include) builder.include(include);
+      const results = await builder.analyze();
+      // Com a mensagem do axe (ex.: os valores de contraste), para a falha no CI já dizer o motivo.
+      const summary = results.violations.flatMap((violation) =>
+        violation.nodes.map(
+          (node) =>
+            `${violation.id}: ${node.target.join(" ")}${node.any[0] ? ` (${node.any[0].message})` : ""}`,
+        ),
       );
       expect(summary, "violações de acessibilidade (axe)").toEqual([]);
     });

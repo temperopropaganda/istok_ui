@@ -12,7 +12,8 @@
     "access": "public"
   },
   "files": [
-    "dist"
+    "dist",
+    "docs/guia-para-agentes.md"
   ],
   "sideEffects": [
     "**/*.css"
@@ -34,10 +35,12 @@
     "lint:fix": "eslint . --fix",
     "lint:package": "publint --strict && attw --pack . --profile esm-only --exclude-entrypoints ./theme.css",
     "size": "size-limit",
+    "guide": "node scripts/generate-guide.mjs",
+    "guide:check": "node scripts/generate-guide.mjs --check",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "prepack": "npm run build",
-    "check": "npm run typecheck && npm run lint && npm run format:check && npm run build && npm run size && npm run lint:package",
+    "check": "npm run typecheck && npm run lint && npm run format:check && npm run guide:check && npm run build && npm run size && npm run lint:package",
     "test": "vitest run --project=*chromium*",
     "test:watch": "vitest --project=*chromium*",
     "test:coverage": "vitest run --project=*chromium* --coverage",
@@ -46,7 +49,7 @@
     "playground:build": "vite build --config vite.playground.config.ts",
     "test:consumer": "node scripts/test-consumer.mjs",
     "changeset": "changeset",
-    "version-packages": "changeset version && npm install --package-lock-only --ignore-scripts",
+    "version-packages": "changeset version && npm install --package-lock-only --ignore-scripts && npm run guide",
     "test:e2e": "playwright test --project=chromium",
     "test:browsers": "vitest run --project=*firefox* --project=*webkit* --no-file-parallelism && playwright test --project=firefox --project=webkit"
   },

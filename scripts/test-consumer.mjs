@@ -57,6 +57,8 @@ try {
   );
   check(css.includes("--primary:"), "variáveis do tema presentes (--primary)");
   check(/\.dark\{[^}]*--background:/.test(css), "tema escuro presente (.dark)");
+  check(css.includes("--overlay:"), "token do fundo dos modais presente (--overlay)");
+  check(css.includes("@keyframes zoom-in"), "animações dos overlays presentes (@keyframes)");
   check(css.includes(".dark\\:bg-card:where(.dark"), "variante dark: segue a classe .dark");
   // O app não escreve essas classes: elas só existem dentro do Button da lib. Prova que o
   // @source do theme.css faz o Tailwind do projeto escanear o JS da lib.
@@ -69,6 +71,7 @@ try {
   // Importar só o Button não pode arrastar outros componentes do Radix (tree-shaking).
   const otherRadix = [
     "DialogContent",
+    "AlertDialogContent",
     "PopoverContent",
     "DropdownMenuContent",
     "TooltipContent",
@@ -97,6 +100,9 @@ try {
     "radio-group",
     "switch",
     "label",
+    "dialog-content",
+    "alert-dialog-content",
+    "tooltip-content",
   ];
   check(
     otherSlots.every((slot) => !new RegExp(`"data-slot":["\`]${slot}["\`]`).test(js)),

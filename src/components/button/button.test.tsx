@@ -34,13 +34,17 @@ describe("Button", () => {
     expect(onSubmit).not.toHaveBeenCalled();
   });
 
-  it("chama onClick ao clicar, com Enter e com Espaço", async () => {
+  it("chama onClick ao clicar, com Espaço e com Enter", async () => {
     const onClick = vi.fn();
     const screen = await render(<Button onClick={onClick}>Salvar</Button>);
 
-    await screen.getByRole("button").click();
-    await userEvent.keyboard("{Enter}");
+    const button = screen.getByRole("button");
+    await button.click();
+    // Clicar nem sempre foca o botão (Safari, Firefox no macOS): foca antes de usar o teclado.
+    (button.element() as HTMLButtonElement).focus();
+    // Espaço antes do Enter: no Firefox, um Espaço sintético logo depois de um Enter não clica.
     await userEvent.keyboard(" ");
+    await userEvent.keyboard("{Enter}");
 
     expect(onClick).toHaveBeenCalledTimes(3);
   });

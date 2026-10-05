@@ -15,6 +15,8 @@ describe("Switch", () => {
     await expect.element(toggle).toHaveAttribute("aria-checked", "false");
     await toggle.click();
     await expect.element(toggle).toHaveAttribute("aria-checked", "true");
+    // Clicar nem sempre foca o botão (Safari e WebKit): foca antes de usar o teclado.
+    (toggle.element() as HTMLButtonElement).focus();
     await userEvent.keyboard(" ");
     await expect.element(toggle).toHaveAttribute("aria-checked", "false");
     expect(onCheckedChange.mock.calls).toEqual([[true], [false]]);

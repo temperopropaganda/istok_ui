@@ -15,6 +15,8 @@ describe("Checkbox", () => {
     await expect.element(checkbox).not.toBeChecked();
     await checkbox.click();
     await expect.element(checkbox).toBeChecked();
+    // Clicar nem sempre foca o botão (Safari e WebKit): foca antes de usar o teclado.
+    (checkbox.element() as HTMLButtonElement).focus();
     await userEvent.keyboard(" ");
     await expect.element(checkbox).not.toBeChecked();
     expect(onCheckedChange.mock.calls).toEqual([[true], [false]]);

@@ -31,7 +31,7 @@ test.describe("Button", () => {
     await expect(clicks(page)).toHaveText("2");
   });
 
-  test("funciona só com teclado: Tab, foco visível, Enter e Espaço", async ({ page }) => {
+  test("funciona só com teclado: Tab, foco visível, Espaço e Enter", async ({ page }) => {
     // Clicar no título define o ponto de partida da navegação por Tab.
     await group(page, "Variantes").getByRole("heading", { name: "Variantes" }).click();
     await page.keyboard.press("Tab");
@@ -41,8 +41,9 @@ test.describe("Button", () => {
     expect(await first.evaluate((element) => element.matches(":focus-visible"))).toBe(true);
     await expect(first).not.toHaveCSS("box-shadow", "none");
 
-    await page.keyboard.press("Enter");
+    // Espaço antes do Enter: no Firefox, um Espaço sintético logo depois de um Enter não clica.
     await page.keyboard.press("Space");
+    await page.keyboard.press("Enter");
     await expect(clicks(page)).toHaveText("2");
 
     await page.keyboard.press("Tab");

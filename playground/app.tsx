@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { Button } from "../src/index.ts";
 import { AlertSection } from "./sections/alert.tsx";
+import { AlertDialogSection } from "./sections/alert-dialog.tsx";
 import { AvatarSection } from "./sections/avatar.tsx";
 import { BadgeSection } from "./sections/badge.tsx";
 import { ButtonSection } from "./sections/button.tsx";
 import { CardSection } from "./sections/card.tsx";
 import { CheckboxSection } from "./sections/checkbox.tsx";
+import { DialogSection } from "./sections/dialog.tsx";
 import { FieldSection } from "./sections/field.tsx";
 import { InputSection } from "./sections/input.tsx";
 import { LabelSection } from "./sections/label.tsx";
@@ -15,6 +17,7 @@ import { SkeletonSection } from "./sections/skeleton.tsx";
 import { SpinnerSection } from "./sections/spinner.tsx";
 import { SwitchSection } from "./sections/switch.tsx";
 import { TextareaSection } from "./sections/textarea.tsx";
+import { TooltipSection } from "./sections/tooltip.tsx";
 import { TokensSection } from "./sections/tokens.tsx";
 
 // Vitrine: todos os componentes da lib numa página só. Componente novo = seção nova aqui
@@ -22,11 +25,13 @@ import { TokensSection } from "./sections/tokens.tsx";
 const sections = [
   { id: "tokens", label: "Tokens", Component: TokensSection },
   { id: "alert", label: "Alert", Component: AlertSection },
+  { id: "alert-dialog", label: "AlertDialog", Component: AlertDialogSection },
   { id: "avatar", label: "Avatar", Component: AvatarSection },
   { id: "badge", label: "Badge", Component: BadgeSection },
   { id: "button", label: "Button", Component: ButtonSection },
   { id: "card", label: "Card", Component: CardSection },
   { id: "checkbox", label: "Checkbox", Component: CheckboxSection },
+  { id: "dialog", label: "Dialog", Component: DialogSection },
   { id: "field", label: "Field", Component: FieldSection },
   { id: "input", label: "Input", Component: InputSection },
   { id: "label", label: "Label", Component: LabelSection },
@@ -36,6 +41,7 @@ const sections = [
   { id: "spinner", label: "Spinner", Component: SpinnerSection },
   { id: "switch", label: "Switch", Component: SwitchSection },
   { id: "textarea", label: "Textarea", Component: TextareaSection },
+  { id: "tooltip", label: "Tooltip", Component: TooltipSection },
 ];
 
 export function App() {

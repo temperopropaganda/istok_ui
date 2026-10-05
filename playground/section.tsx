@@ -1,4 +1,5 @@
 import { useId, type ReactNode } from "react";
+import { BrandLogo, BrandWaves } from "./brand.tsx";
 
 interface PageViewProps {
   id: string;
@@ -14,15 +15,43 @@ interface PageViewProps {
 export function PageView({ id, title, description, children }: PageViewProps) {
   return (
     <section aria-labelledby={`${id || "inicio"}-titulo`} className="space-y-10">
-      <header className="space-y-2">
+      <header className={id ? "preview-page-heading space-y-3" : "brand-hero"}>
+        {!id && <BrandWaves />}
+        <p className="relative text-xs font-medium tracking-[0.18em] text-muted-foreground uppercase">
+          {id ? "Tempero Design System / Biblioteca" : "Design que conecta"}
+        </p>
         <h1
           id={`${id || "inicio"}-titulo`}
           tabIndex={-1}
-          className="text-3xl font-bold tracking-tight outline-none"
+          aria-label={!id ? title : undefined}
+          className="relative text-4xl font-semibold tracking-tight outline-none"
         >
-          {title}
+          {id ? title : <BrandLogo className="brand-hero-logo" />}
         </h1>
-        {description && <p className="text-lg text-muted-foreground">{description}</p>}
+        {!id && (
+          <p className="relative max-w-lg text-2xl leading-tight font-medium tracking-tight sm:text-3xl">
+            Uma base comum.
+            <br />
+            Infinitas possibilidades.
+          </p>
+        )}
+        {description && (
+          <p className="relative max-w-2xl text-base leading-relaxed text-muted-foreground">
+            {description}
+          </p>
+        )}
+        {!id && (
+          <div className="relative flex flex-wrap gap-2 pt-1">
+            {["React 19", "TypeScript", "Tailwind CSS 4"].map((label) => (
+              <span
+                key={label}
+                className="rounded-full border px-3 py-1 text-xs text-muted-foreground"
+              >
+                {label}
+              </span>
+            ))}
+          </div>
+        )}
       </header>
       {children}
     </section>
@@ -42,7 +71,9 @@ export function Example({ label, children }: ExampleProps) {
       <h2 id={labelId} className="text-base font-semibold">
         {label}
       </h2>
-      <div className="flex flex-wrap items-center gap-3 rounded-lg border p-6">{children}</div>
+      <div className="preview-example flex flex-wrap items-center gap-3 rounded-xl border bg-card p-6">
+        {children}
+      </div>
     </div>
   );
 }

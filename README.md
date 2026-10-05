@@ -181,6 +181,11 @@ npm run storybook
 
 O Storybook (http://localhost:6006) é o ambiente principal: documentação, stories de cada componente e alternância entre tema claro e escuro. O `npm run dev` abre o playground (`playground/`), a vitrine no estilo da documentação do shadcn: sidebar à esquerda, uma página por componente com todas as variações, e tema escuro por padrão (botão sol/lua no topo).
 
+A vitrine usa a identidade **Istok — Tempero Design System**: logo original, azul-marinho, azul-claro e ondas
+na abertura. O tema de marca fica em `playground/index.css`, com versões clara e escura; os tokens publicados
+em `src/styles/theme.css` continuam independentes da marca. A arte em `playground/assets/istok-brand.png` é
+enquadrada por `playground/brand.tsx`, preservando o símbolo e a tipografia recebidos.
+
 ### VS Code
 
 O repositório já traz as configurações em `.vscode/`. Ao abrir o projeto:

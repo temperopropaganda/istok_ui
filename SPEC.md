@@ -142,6 +142,11 @@ scripts/generate-guide.mjs gera docs/guia-para-agentes.md (vai no pacote)
 
 ### Concluído (resumo)
 
+- **Identidade visual do playground:** logo Istok — Tempero Design System da arte fornecida, cabeçalho
+  marinho, abertura com ondas, navegação destacada e quadros de exemplos. Paleta de marca nos temas claro e
+  escuro, aplicada somente em `playground/index.css`; o tema do pacote permanece independente da marca.
+  Sidebar, rotas por hash, preferência de tema e integração das páginas de componentes preservadas.
+
 - **Fase 1:** Vite 8, TypeScript 6 strict, Tailwind 4, ESLint 10, Prettier, EditorConfig, `.nvmrc` (Node 24).
 - **Fase 2:** pacote ESM com `preserveModules`, `.d.ts` via `tsc` com `nodenext`, `exports`, `peerDependencies`,
   `cn()`, validação com `publint` + `arethetypeswrong` (`npm run lint:package`).

@@ -1,10 +1,151 @@
 @import "tailwindcss";
 @import "../src/styles/theme.css";
 
+/* Identidade da vitrine. Estes tokens não entram no CSS publicado pela biblioteca. */
+:root {
+  --background: #f4f8fc;
+  --foreground: #102b43;
+  --card: #ffffff;
+  --card-foreground: #102b43;
+  --popover: #ffffff;
+  --popover-foreground: #102b43;
+  --primary: #175c8a;
+  --primary-foreground: #ffffff;
+  --secondary: #e4eff7;
+  --secondary-foreground: #164a70;
+  --muted: #eaf1f7;
+  --muted-foreground: #506a80;
+  --accent: #deedf8;
+  --accent-foreground: #164a70;
+  --border: #d2e0ec;
+  --input: #698499;
+  --ring: #2877a9;
+  --preview-wave: #125689;
+  --preview-navy: #001028;
+}
+
+html.dark {
+  --background: #041226;
+  --foreground: #edf6fc;
+  --card: #091d34;
+  --card-foreground: #edf6fc;
+  --popover: #0d243e;
+  --popover-foreground: #edf6fc;
+  --primary: #a5ddf6;
+  --primary-foreground: #06233c;
+  --secondary: #122e4b;
+  --secondary-foreground: #d3eafa;
+  --muted: #0d233b;
+  --muted-foreground: #9db4c9;
+  --accent: #113654;
+  --accent-foreground: #b8e6fb;
+  --border: #203b54;
+  --input: #63829e;
+  --ring: #7ec9ef;
+}
+
 /* Barras de rolagem e controles nativos acompanham o tema. */
 html {
   color-scheme: light;
 }
 html.dark {
   color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* A assinatura mantém o fundo marinho da arte nos dois temas. */
+.preview-header,
+.brand-hero {
+  --background: var(--preview-navy);
+  --foreground: #edf6fc;
+  --muted-foreground: #a6bfd4;
+  --border: #234461;
+  --input: #63829e;
+  --accent: #113654;
+  --accent-foreground: #b8e6fb;
+  --ring: #7ec9ef;
+  color: var(--foreground);
+  background: var(--background);
+}
+
+.preview-header {
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--ring) 8%, transparent);
+}
+
+.preview-sidebar {
+  background: var(--background);
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.preview-nav-link[aria-current="page"] {
+  box-shadow: inset 2px 0 0 var(--primary);
+}
+
+.preview-main {
+  background-image: radial-gradient(
+    ellipse at 85% 0%,
+    color-mix(in srgb, var(--primary) 5%, transparent),
+    transparent 40rem
+  );
+}
+
+.brand-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: clamp(1.5rem, 4vw, 3rem);
+  border: 1px solid var(--border);
+  border-radius: 1.25rem;
+}
+
+.brand-hero-logo {
+  width: min(100%, 28rem);
+  margin-block: 0.25rem;
+}
+
+.brand-waves {
+  position: absolute;
+  z-index: -1;
+  inset: auto 0 0;
+  width: 100%;
+  height: 55%;
+  fill: var(--preview-wave);
+  opacity: 0.16;
+}
+
+.brand-waves path:nth-child(2) {
+  opacity: 0.65;
+}
+
+.brand-waves path:nth-child(3) {
+  opacity: 0.8;
+}
+
+.preview-page-heading {
+  padding-bottom: 1.75rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.preview-example,
+.preview-component-card {
+  box-shadow: 0 3px 16px color-mix(in srgb, var(--foreground) 3%, transparent);
+}
+
+.preview-code {
+  border-left: 3px solid var(--primary);
+}
+
+@media (forced-colors: active) {
+  .preview-nav-link[aria-current="page"] {
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
+  }
 }

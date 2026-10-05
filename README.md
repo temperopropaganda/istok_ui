@@ -67,23 +67,62 @@ import { Checkbox, Field, FieldDescription, FieldError, FieldLabel, Input } from
 
 Para ligar um controle próprio (ou de outra biblioteca) ao `Field`, use o hook `useFieldControl(props)`.
 
-| Componente                                                                                         | Variações                                                                                                           |
-| -------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| `Alert`, `AlertTitle`, `AlertDescription`                                                          | `variant`: default, success, warning, destructive · ícone SVG opcional como primeiro filho                          |
-| `Avatar`, `AvatarImage`, `AvatarFallback`                                                          | `size`: sm, md, lg · fallback com iniciais quando não há foto                                                       |
-| `Badge`                                                                                            | `variant`: default, secondary, outline, destructive, success, warning · `asChild`                                   |
-| `Button`                                                                                           | `variant`: default, secondary, outline, ghost, link, destructive · `size`: sm, md, lg, icon · `asChild` · `loading` |
-| `Card`, `CardHeader`, `CardTitle`, `CardDescription`, `CardAction`, `CardContent`, `CardFooter`    | Peças combináveis · `CardTitle` é `<h3>` (`asChild` troca o nível) · `Card asChild`                                 |
-| `Checkbox`                                                                                         | marcado, desmarcado, `"indeterminate"` · envia `name`/`value` no `<form>`                                           |
-| `Field`, `FieldLabel`, `FieldDescription`, `FieldError`, `FieldContent`, `FieldSet`, `FieldLegend` | `orientation`: vertical, horizontal · `invalid`, `required`, `disabled` · hook `useFieldControl`                    |
-| `Input`                                                                                            | `size`: sm, md, lg (alturas do Button) · tipos nativos                                                              |
-| `Label`                                                                                            | Rótulo ligado por `htmlFor` (num `Field`, use `FieldLabel`)                                                         |
-| `RadioGroup`, `RadioGroupItem`                                                                     | `orientation`: vertical, horizontal · setas trocam a opção                                                          |
-| `Separator`                                                                                        | `orientation`: horizontal, vertical · `decorative`                                                                  |
-| `Skeleton`                                                                                         | Tamanho por classes · decorativo, respeita redução de movimento                                                     |
-| `Spinner`                                                                                          | `size`: sm, md, lg · `label` para leitores de tela · cor do texto em volta                                          |
-| `Switch`                                                                                           | Liga/desliga com efeito imediato (`role="switch"`)                                                                  |
-| `Textarea`                                                                                         | `size`: sm, md, lg · cresce com o conteúdo                                                                          |
+**Overlays:** `Dialog` para modais, `AlertDialog` para confirmar ações destrutivas e `Tooltip` para dicas. Todos
+renderizam num portal no `<body>`, prendem ou devolvem o foco e fecham com Esc.
+
+```tsx
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+  Button,
+} from "istok-ui";
+
+<AlertDialog>
+  <AlertDialogTrigger asChild>
+    <Button variant="destructive">Excluir projeto</Button>
+  </AlertDialogTrigger>
+  <AlertDialogContent>
+    <AlertDialogHeader>
+      <AlertDialogTitle>Excluir o projeto?</AlertDialogTitle>
+      <AlertDialogDescription>Isso não pode ser desfeito.</AlertDialogDescription>
+    </AlertDialogHeader>
+    <AlertDialogFooter>
+      <AlertDialogCancel>Cancelar</AlertDialogCancel>
+      <AlertDialogAction variant="destructive" onClick={excluir}>
+        Excluir
+      </AlertDialogAction>
+    </AlertDialogFooter>
+  </AlertDialogContent>
+</AlertDialog>;
+```
+
+| Componente                                                                                                                                                                                  | Variações                                                                                                           |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `Alert`, `AlertTitle`, `AlertDescription`                                                                                                                                                   | `variant`: default, success, warning, destructive · ícone SVG opcional como primeiro filho                          |
+| `AlertDialog`, `AlertDialogTrigger`, `AlertDialogContent`, `AlertDialogHeader`, `AlertDialogTitle`, `AlertDialogDescription`, `AlertDialogFooter`, `AlertDialogAction`, `AlertDialogCancel` | `size`: sm, md, lg · ações são `Button` (`variant`, `loading`) · não fecha com clique fora                          |
+| `Avatar`, `AvatarImage`, `AvatarFallback`                                                                                                                                                   | `size`: sm, md, lg · fallback com iniciais quando não há foto                                                       |
+| `Badge`                                                                                                                                                                                     | `variant`: default, secondary, outline, destructive, success, warning · `asChild`                                   |
+| `Button`                                                                                                                                                                                    | `variant`: default, secondary, outline, ghost, link, destructive · `size`: sm, md, lg, icon · `asChild` · `loading` |
+| `Card`, `CardHeader`, `CardTitle`, `CardDescription`, `CardAction`, `CardContent`, `CardFooter`                                                                                             | Peças combináveis · `CardTitle` é `<h3>` (`asChild` troca o nível) · `Card asChild`                                 |
+| `Checkbox`                                                                                                                                                                                  | marcado, desmarcado, `"indeterminate"` · envia `name`/`value` no `<form>`                                           |
+| `Dialog`, `DialogTrigger`, `DialogContent`, `DialogHeader`, `DialogTitle`, `DialogDescription`, `DialogFooter`, `DialogClose`                                                               | `size`: sm, md, lg · `showCloseButton`, `closeLabel`                                                                |
+| `Field`, `FieldLabel`, `FieldDescription`, `FieldError`, `FieldContent`, `FieldSet`, `FieldLegend`                                                                                          | `orientation`: vertical, horizontal · `invalid`, `required`, `disabled` · hook `useFieldControl`                    |
+| `Input`                                                                                                                                                                                     | `size`: sm, md, lg (alturas do Button) · tipos nativos                                                              |
+| `Label`                                                                                                                                                                                     | Rótulo ligado por `htmlFor` (num `Field`, use `FieldLabel`)                                                         |
+| `RadioGroup`, `RadioGroupItem`                                                                                                                                                              | `orientation`: vertical, horizontal · setas trocam a opção                                                          |
+| `Separator`                                                                                                                                                                                 | `orientation`: horizontal, vertical · `decorative`                                                                  |
+| `Skeleton`                                                                                                                                                                                  | Tamanho por classes · decorativo, respeita redução de movimento                                                     |
+| `Spinner`                                                                                                                                                                                   | `size`: sm, md, lg · `label` para leitores de tela · cor do texto em volta                                          |
+| `Switch`                                                                                                                                                                                    | Liga/desliga com efeito imediato (`role="switch"`)                                                                  |
+| `Textarea`                                                                                                                                                                                  | `size`: sm, md, lg · cresce com o conteúdo                                                                          |
+| `Tooltip`, `TooltipTrigger`, `TooltipContent`, `TooltipProvider`                                                                                                                            | `side`: top, right, bottom, left · 300ms · Provider opcional                                                        |
 
 A documentação de cada componente (props, exemplos, estados) está no Storybook.
 
@@ -99,6 +138,7 @@ Os tokens viram utilitários do Tailwind: `bg-primary`, `text-muted-foreground`,
 | `secondary`, `accent`, `muted`      | Ações secundárias, hover e textos de apoio |
 | `destructive`, `success`, `warning` | Erro, sucesso e alerta                     |
 | `border`, `input`, `ring`           | Bordas, controles (3:1) e anel de foco     |
+| `overlay`                           | Fundo escurecido atrás dos modais          |
 | `--radius`                          | Raio base (`rounded-sm` … `rounded-xl`)    |
 
 Cada cor de fundo tem um par `*-foreground` para o texto por cima, com contraste WCAG AA garantido. A borda dos

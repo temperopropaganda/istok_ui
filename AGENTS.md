@@ -43,7 +43,8 @@ Siga o **checklist de componente pronto** (SPEC, seção 6). Os pontos que mais 
 - Classes do Tailwind **literais** e **só com tokens** (`bg-primary`, nunca `bg-${cor}` nem `bg-neutral-500`).
 - Imports internos **com extensão** (`./button.tsx`); o build falha sem ela.
 - Componente novo entra em `src/index.ts`, no Storybook **e** no playground (seção em `playground/sections/`,
-  entrada em `playground/pages.ts` e na lista `views` de `playground/app.tsx`).
+  entrada em `playground/pages.ts` e na lista `views` de `playground/app.tsx`). O JSDoc vira a seção
+  "Propriedades" da página e o guia para agentes: rode `npm run guide`.
 - Copie o estilo dos arquivos existentes (`src/lib/cn.ts`, `src/lib/cn.test.ts`, `src/styles/theme.stories.tsx`).
 - PR que muda o pacote publicado (componentes, `theme.css`, tipos, `exports`) inclui um changeset
   (`npx changeset`). Mudou JSDoc, props ou exports? Rode `npm run guide` e commite o guia (o `check` confere).

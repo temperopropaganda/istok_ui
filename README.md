@@ -45,16 +45,45 @@ import { Alert, AlertDescription, AlertTitle, Button } from "istok-ui";
 </Alert>
 ```
 
-| Componente                                                                                      | Variações                                                                                                           |
-| ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| `Alert`, `AlertTitle`, `AlertDescription`                                                       | `variant`: default, success, warning, destructive · ícone SVG opcional como primeiro filho                          |
-| `Avatar`, `AvatarImage`, `AvatarFallback`                                                       | `size`: sm, md, lg · fallback com iniciais quando não há foto                                                       |
-| `Badge`                                                                                         | `variant`: default, secondary, outline, destructive, success, warning · `asChild`                                   |
-| `Button`                                                                                        | `variant`: default, secondary, outline, ghost, link, destructive · `size`: sm, md, lg, icon · `asChild` · `loading` |
-| `Card`, `CardHeader`, `CardTitle`, `CardDescription`, `CardAction`, `CardContent`, `CardFooter` | Peças combináveis · `CardTitle` é `<h3>` (`asChild` troca o nível) · `Card asChild`                                 |
-| `Separator`                                                                                     | `orientation`: horizontal, vertical · `decorative`                                                                  |
-| `Skeleton`                                                                                      | Tamanho por classes · decorativo, respeita redução de movimento                                                     |
-| `Spinner`                                                                                       | `size`: sm, md, lg · `label` para leitores de tela · cor do texto em volta                                          |
+**Formulários:** o `Field` liga rótulo, descrição e erro ao controle sozinho (`id`, `aria-describedby`,
+`aria-invalid`, `required`, `disabled`). O que for passado nas props vence o automático.
+
+```tsx
+import { Checkbox, Field, FieldDescription, FieldError, FieldLabel, Input } from "istok-ui";
+
+<Field required>
+  <FieldLabel>E-mail</FieldLabel>
+  <Input type="email" name="email" />
+  <FieldDescription>Usado só para recuperar a senha.</FieldDescription>
+  {/* Com conteúdo, o erro marca o campo como inválido. */}
+  <FieldError>{errors.email?.message}</FieldError>
+</Field>
+
+<Field orientation="horizontal">
+  <Checkbox name="termos" />
+  <FieldLabel>Aceito os termos</FieldLabel>
+</Field>
+```
+
+Para ligar um controle próprio (ou de outra biblioteca) ao `Field`, use o hook `useFieldControl(props)`.
+
+| Componente                                                                                         | Variações                                                                                                           |
+| -------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `Alert`, `AlertTitle`, `AlertDescription`                                                          | `variant`: default, success, warning, destructive · ícone SVG opcional como primeiro filho                          |
+| `Avatar`, `AvatarImage`, `AvatarFallback`                                                          | `size`: sm, md, lg · fallback com iniciais quando não há foto                                                       |
+| `Badge`                                                                                            | `variant`: default, secondary, outline, destructive, success, warning · `asChild`                                   |
+| `Button`                                                                                           | `variant`: default, secondary, outline, ghost, link, destructive · `size`: sm, md, lg, icon · `asChild` · `loading` |
+| `Card`, `CardHeader`, `CardTitle`, `CardDescription`, `CardAction`, `CardContent`, `CardFooter`    | Peças combináveis · `CardTitle` é `<h3>` (`asChild` troca o nível) · `Card asChild`                                 |
+| `Checkbox`                                                                                         | marcado, desmarcado, `"indeterminate"` · envia `name`/`value` no `<form>`                                           |
+| `Field`, `FieldLabel`, `FieldDescription`, `FieldError`, `FieldContent`, `FieldSet`, `FieldLegend` | `orientation`: vertical, horizontal · `invalid`, `required`, `disabled` · hook `useFieldControl`                    |
+| `Input`                                                                                            | `size`: sm, md, lg (alturas do Button) · tipos nativos                                                              |
+| `Label`                                                                                            | Rótulo ligado por `htmlFor` (num `Field`, use `FieldLabel`)                                                         |
+| `RadioGroup`, `RadioGroupItem`                                                                     | `orientation`: vertical, horizontal · setas trocam a opção                                                          |
+| `Separator`                                                                                        | `orientation`: horizontal, vertical · `decorative`                                                                  |
+| `Skeleton`                                                                                         | Tamanho por classes · decorativo, respeita redução de movimento                                                     |
+| `Spinner`                                                                                          | `size`: sm, md, lg · `label` para leitores de tela · cor do texto em volta                                          |
+| `Switch`                                                                                           | Liga/desliga com efeito imediato (`role="switch"`)                                                                  |
+| `Textarea`                                                                                         | `size`: sm, md, lg · cresce com o conteúdo                                                                          |
 
 A documentação de cada componente (props, exemplos, estados) está no Storybook.
 
@@ -69,10 +98,11 @@ Os tokens viram utilitários do Tailwind: `bg-primary`, `text-muted-foreground`,
 | `primary`                           | Ação principal                             |
 | `secondary`, `accent`, `muted`      | Ações secundárias, hover e textos de apoio |
 | `destructive`, `success`, `warning` | Erro, sucesso e alerta                     |
-| `border`, `input`, `ring`           | Bordas, campos e anel de foco              |
+| `border`, `input`, `ring`           | Bordas, controles (3:1) e anel de foco     |
 | `--radius`                          | Raio base (`rounded-sm` … `rounded-xl`)    |
 
-Cada cor de fundo tem um par `*-foreground` para o texto por cima, com contraste WCAG AA garantido.
+Cada cor de fundo tem um par `*-foreground` para o texto por cima, com contraste WCAG AA garantido. A borda dos
+controles (`input`) tem contraste de 3:1 com o fundo (WCAG 1.4.11).
 
 **Trocar a marca:** sobrescreva as variáveis no CSS do projeto. Os nomes seguem o padrão do shadcn/ui, então temas gerados para ele funcionam aqui.
 

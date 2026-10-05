@@ -1,8 +1,14 @@
 import { createRef } from "react";
 import { describe, expect, it, vi } from "vitest";
-import { userEvent } from "vitest/browser";
+import { userEvent, type Locator } from "vitest/browser";
 import { render } from "vitest-browser-react";
 import { RadioGroup, RadioGroupItem } from "./radio-group.tsx";
+
+// Clicar nem sempre foca o elemento (Safari e WebKit não focam botões no clique): foca antes de
+// usar o teclado.
+const focus = (locator: Locator) => {
+  (locator.element() as HTMLElement).focus();
+};
 
 // O Radix move o foco num setTimeout e só marca a opção se a seta ainda estiver pressionada (como
 // num teclado real); soltar a tecla na mesma hora cria uma corrida que não existe para quem digita.
@@ -39,6 +45,7 @@ describe("RadioGroup", () => {
     const radio = (name: string) => screen.getByRole("radio", { name });
 
     await radio("Mensal").click();
+    focus(radio("Mensal"));
     await pressArrow("ArrowDown");
     await expect.element(radio("Anual")).toHaveFocus();
     await expect.element(radio("Anual")).toBeChecked();
@@ -55,6 +62,7 @@ describe("RadioGroup", () => {
     const radio = (name: string) => screen.getByRole("radio", { name });
 
     await radio("Mensal").click();
+    focus(radio("Mensal"));
     await pressArrow("ArrowDown");
     await expect.element(radio("Anual")).toBeChecked();
     await expect.element(screen.getByRole("radiogroup")).toHaveClass("flex", "flex-wrap");
@@ -69,7 +77,7 @@ describe("RadioGroup", () => {
       </>,
     );
 
-    await screen.getByRole("button", { name: "antes" }).click();
+    focus(screen.getByRole("button", { name: "antes" }));
     await userEvent.tab();
     await expect.element(screen.getByRole("radio", { name: "Anual" })).toHaveFocus();
     await userEvent.tab();

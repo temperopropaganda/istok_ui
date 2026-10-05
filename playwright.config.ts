@@ -12,7 +12,12 @@ export default defineConfig({
     baseURL: `http://localhost:${String(port)}`,
     trace: "retain-on-failure",
   },
-  projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
+  // `npm run test:e2e` roda só o Chromium; `npm run test:browsers`, Firefox e WebKit (no CI, os três).
+  projects: [
+    { name: "chromium", use: { ...devices["Desktop Chrome"] } },
+    { name: "firefox", use: { ...devices["Desktop Firefox"] } },
+    { name: "webkit", use: { ...devices["Desktop Safari"] } },
+  ],
   webServer: {
     command: `npm run dev -- --port ${String(port)} --strictPort`,
     url: `http://localhost:${String(port)}`,

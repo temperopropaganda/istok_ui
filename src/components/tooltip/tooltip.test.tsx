@@ -1,8 +1,14 @@
 import { describe, expect, it } from "vitest";
-import { page, userEvent } from "vitest/browser";
+import { page, userEvent, type Locator } from "vitest/browser";
 import { render } from "vitest-browser-react";
 import { Button } from "../button/button.tsx";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./tooltip.tsx";
+
+// Clicar nem sempre foca o elemento (Safari e WebKit não focam botões no clique): foca antes de
+// usar o teclado.
+const focus = (locator: Locator) => {
+  (locator.element() as HTMLElement).focus();
+};
 
 function Bold(props: { delayDuration?: number; side?: "top" | "right" | "bottom" | "left" }) {
   return (
@@ -40,7 +46,7 @@ describe("Tooltip", () => {
       </>,
     );
 
-    await page.getByRole("button", { name: "antes" }).click();
+    focus(page.getByRole("button", { name: "antes" }));
     await userEvent.tab();
     await expect.element(page.getByRole("tooltip")).toBeInTheDocument();
     await userEvent.keyboard("{Escape}");

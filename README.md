@@ -167,6 +167,7 @@ controles (`input`) tem contraste de 3:1 com o fundo (WCAG 1.4.11).
 ```bash
 npm install
 npx playwright install chromium   # navegador usado pelos testes (uma vez por máquina)
+npx playwright install firefox webkit   # opcional: para o npm run test:browsers
 npm run storybook
 ```
 
@@ -188,18 +189,21 @@ O repositório já traz as configurações em `.vscode/`. Ao abrir o projeto:
 | `npm run dev`             | Sobe o playground com hot reload                                                      |
 | `npm run build`           | Checa os tipos e gera a biblioteca (JS + `.d.ts` + `theme.css`) em `dist/`            |
 | `npm test`                | Roda os testes unitários e as stories (com checagem de acessibilidade) no Chromium    |
+| `npm run test:browsers`   | Mesmos testes e os E2E no Firefox e no WebKit (no CI roda em todo PR)                 |
 | `npm run test:watch`      | Testes em modo watch                                                                  |
-| `npm run test:coverage`   | Testes com relatório de cobertura                                                     |
+| `npm run test:coverage`   | Testes com relatório de cobertura (falha abaixo de 90%)                               |
 | `npm run test:e2e`        | Testes E2E (Playwright) no playground: teclado, tema, console e axe na página inteira |
+| `npm run size`            | Confere o tamanho de cada componente contra os limites do `.size-limit.json`          |
 | `npm run test:consumer`   | Empacota a lib, instala em `examples/consumer-app` e confere o build                  |
 | `npm run typecheck`       | Checa os tipos com o TypeScript                                                       |
 | `npm run lint`            | Roda o ESLint, falhando com qualquer warning (`lint:fix` corrige o que for possível)  |
 | `npm run lint:package`    | Valida o pacote publicado (publint + arethetypeswrong)                                |
 | `npm run format`          | Formata o código com o Prettier                                                       |
 | `npm run format:check`    | Verifica a formatação sem alterar arquivos                                            |
-| `npm run check`           | typecheck + lint + format:check + build + lint:package                                |
+| `npm run check`           | typecheck + lint + format:check + build + size + lint:package                         |
 
-O CI (`.github/workflows/ci.yml`) roda `check`, `test`, `test:e2e`, `storybook:build` e `test:consumer` em todo PR.
+O CI (`.github/workflows/ci.yml`) roda `check`, `test:coverage`, `test:e2e`, `test:browsers`, `storybook:build` e
+`test:consumer` em todo PR, com Chromium, Firefox e WebKit.
 
 ### Testes
 
@@ -207,6 +211,9 @@ O CI (`.github/workflows/ci.yml`) roda `check`, `test`, `test:e2e`, `storybook:b
 - **Stories:** cada story em `*.stories.tsx` vira um teste que renderiza o componente e roda o axe. Qualquer violação de acessibilidade falha o teste, inclusive contraste de cor.
 - **E2E:** `e2e/*.spec.ts` (Playwright) usa a vitrine como um usuário: clique, teclado, tema escuro, console sem erros e axe na página inteira.
 - **Consumo:** `npm run test:consumer` simula um projeto real instalando o pacote (inclui tree-shaking).
+- **Navegadores:** local, os testes usam o Chromium; o CI roda também Firefox e WebKit (`npm run test:browsers`).
+- **Tamanho:** `npm run size` mede cada componente (brotli, com as dependências) e falha acima do limite.
+- **Leitor de tela:** roteiro manual com o Orca em [docs/auditoria-leitor-de-tela.md](docs/auditoria-leitor-de-tela.md).
 
 ### Estrutura
 
@@ -214,7 +221,7 @@ O CI (`.github/workflows/ci.yml`) roda `check`, `test`, `test:e2e`, `storybook:b
 src/                  código da biblioteca (src/index.ts é a API pública)
 src/styles/           theme.css com os tokens (publicado cru em dist/theme.css)
 .storybook/           configuração do Storybook
-docs/                 páginas MDX do Storybook
+docs/                 páginas MDX do Storybook e roteiro de auditoria com leitor de tela
 examples/consumer-app app de teste de consumo (usado pelo test:consumer)
 scripts/              scripts de manutenção
 playground/           vitrine com todos os componentes (não vai pro pacote publicado)

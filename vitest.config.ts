@@ -3,13 +3,21 @@ import { playwright } from "@vitest/browser-playwright";
 import { defineConfig, mergeConfig } from "vitest/config";
 import viteConfig from "./vite.config.ts";
 
-// Tudo roda num navegador real (Chromium via Playwright), sem simulação de DOM.
+// Tudo roda num navegador real (via Playwright), sem simulação de DOM. Cada navegador vira um
+// projeto ("unit (chromium)", "storybook (firefox)"…); os scripts escolhem pelo nome:
+// `npm test` só Chromium, `npm run test:browsers` Firefox e WebKit (no CI, os três). Firefox e
+// WebKit rodam um arquivo por vez (`--no-file-parallelism`): páginas paralelas no mesmo navegador
+// disputam o foco do teclado e os testes de Espaço/Enter falham aleatoriamente.
 // Função (e não objeto compartilhado) porque o Vitest altera a config de cada projeto.
 const browser = () => ({
   enabled: true,
   headless: true,
   provider: playwright(),
-  instances: [{ browser: "chromium" as const }],
+  instances: [
+    { browser: "chromium" as const },
+    { browser: "firefox" as const },
+    { browser: "webkit" as const },
+  ],
 });
 
 export default mergeConfig(
@@ -35,6 +43,8 @@ export default mergeConfig(
         provider: "v8",
         include: ["src/**/*.{ts,tsx}"],
         exclude: ["src/**/*.stories.tsx", "src/**/*.test.{ts,tsx}"],
+        // O provider v8 só mede no Chromium (`npm run test:coverage`).
+        thresholds: { lines: 90, functions: 90, branches: 90, statements: 90 },
       },
       projects: [
         {

@@ -18,19 +18,21 @@ status das fases, próxima entrega e critérios de aceite).
 
 Rode na raiz do projeto.
 
-| Comando                           | O que faz                                                                          |
-| --------------------------------- | ---------------------------------------------------------------------------------- |
-| `npm ci`                          | Instala dependências (use em vez de `npm install` quando não for adicionar pacote) |
-| `npx playwright install chromium` | Navegador dos testes (uma vez por máquina)                                         |
-| `npm run check`                   | typecheck + lint (0 warnings) + formatação + build + validação do pacote           |
-| `npm test`                        | Testes unitários/de componente + stories (render + axe) no Chromium                |
-| `npm run test:coverage`           | Testes com cobertura                                                               |
-| `npm run test:e2e`                | Fluxos E2E no playground com Playwright (a partir da Fase 5)                       |
-| `npm run test:consumer`           | Empacota a lib, instala em `examples/consumer-app`, builda e confere               |
-| `npm run storybook`               | Storybook em http://localhost:6006                                                 |
-| `npm run storybook:build`         | Build estático do Storybook                                                        |
-| `npm run dev`                     | Playground (vitrine) na porta que o Vite indicar (padrão 5173)                     |
-| `npm run format`                  | Formata com Prettier                                                               |
+| Comando                           | O que faz                                                                              |
+| --------------------------------- | -------------------------------------------------------------------------------------- |
+| `npm ci`                          | Instala dependências (use em vez de `npm install` quando não for adicionar pacote)     |
+| `npx playwright install chromium` | Navegador dos testes (uma vez por máquina); `firefox webkit` para o `test:browsers`    |
+| `npm run check`                   | typecheck + lint (0 warnings) + formatação + build + tamanho + validação do pacote     |
+| `npm test`                        | Testes unitários/de componente + stories (render + axe) no Chromium                    |
+| `npm run test:coverage`           | Testes com cobertura (falha abaixo de 90%)                                             |
+| `npm run test:e2e`                | Fluxos E2E no playground com Playwright, no Chromium                                   |
+| `npm run test:browsers`           | Testes, stories e E2E no Firefox e no WebKit (roda no CI; o WebKit não abre no Fedora) |
+| `npm run size`                    | Tamanho de cada componente contra o `.size-limit.json` (também no `check`)             |
+| `npm run test:consumer`           | Empacota a lib, instala em `examples/consumer-app`, builda e confere                   |
+| `npm run storybook`               | Storybook em http://localhost:6006                                                     |
+| `npm run storybook:build`         | Build estático do Storybook                                                            |
+| `npm run dev`                     | Playground (vitrine) na porta que o Vite indicar (padrão 5173)                         |
+| `npm run format`                  | Formata com Prettier                                                                   |
 
 ## Convenções de código
 
@@ -48,18 +50,19 @@ Siga o **checklist de componente pronto** (SPEC, seção 6). Os pontos que mais 
 
 Uma entrega só vai para PR quando tudo abaixo passa:
 
-| #   | Verificação                            | Como                                         | Passa quando                             |
-| --- | -------------------------------------- | -------------------------------------------- | ---------------------------------------- |
-| 1   | Tipos, lint, formatação, build, pacote | `npm run check`                              | Exit 0, **0 warnings** no ESLint         |
-| 2   | Testes unitários e de componente       | `npm test` (projeto `unit`)                  | Todos passam                             |
-| 3   | Stories + acessibilidade               | `npm test` (projeto `storybook`)             | Todas renderizam, **0 violações do axe** |
-| 4   | Cobertura                              | `npm run test:coverage`                      | ≥ 80% de linhas nos arquivos novos       |
-| 5   | Storybook                              | `npm run storybook:build`                    | Build sem erro                           |
-| 6   | Consumo como pacote                    | `npm run test:consumer`                      | Todas as verificações ✓                  |
-| 7   | E2E                                    | `npm run test:e2e` (a partir da Fase 5)      | Todos os fluxos passam                   |
-| 8   | Fluxo no navegador                     | Playground (`npm run dev`) e Storybook       | Ver lista abaixo                         |
-| 9   | Critérios de aceite                    | SPEC, seção 5 (entrega atual) e seção 6      | Cada um atendido, com evidência          |
-| 10  | CI                                     | `gh pr checks <número>` depois de abrir o PR | Verde                                    |
+| #   | Verificação                                     | Como                                         | Passa quando                             |
+| --- | ----------------------------------------------- | -------------------------------------------- | ---------------------------------------- |
+| 1   | Tipos, lint, formatação, build, tamanho, pacote | `npm run check`                              | Exit 0, **0 warnings** no ESLint         |
+| 2   | Testes unitários e de componente                | `npm test` (projeto `unit`)                  | Todos passam                             |
+| 3   | Stories + acessibilidade                        | `npm test` (projeto `storybook`)             | Todas renderizam, **0 violações do axe** |
+| 4   | Cobertura                                       | `npm run test:coverage`                      | Exit 0 (mínimo global de 90%)            |
+| 5   | Storybook                                       | `npm run storybook:build`                    | Build sem erro                           |
+| 6   | Consumo como pacote                             | `npm run test:consumer`                      | Todas as verificações ✓                  |
+| 7   | E2E                                             | `npm run test:e2e` (a partir da Fase 5)      | Todos os fluxos passam                   |
+| 7b  | Firefox e WebKit                                | `npm run test:browsers` (no CI)              | Testes, stories e E2E passam             |
+| 8   | Fluxo no navegador                              | Playground (`npm run dev`) e Storybook       | Ver lista abaixo                         |
+| 9   | Critérios de aceite                             | SPEC, seção 5 (entrega atual) e seção 6      | Cada um atendido, com evidência          |
+| 10  | CI                                              | `gh pr checks <número>` depois de abrir o PR | Verde                                    |
 
 **Fluxo no navegador** — teste o que foi feito como um usuário:
 

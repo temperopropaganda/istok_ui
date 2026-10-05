@@ -9,11 +9,13 @@ test.describe("Vitrine (playground)", () => {
     const sections = [
       "Tokens",
       "Alert",
+      "AlertDialog",
       "Avatar",
       "Badge",
       "Button",
       "Card",
       "Checkbox",
+      "Dialog",
       "Field",
       "Input",
       "Label",
@@ -23,9 +25,10 @@ test.describe("Vitrine (playground)", () => {
       "Spinner",
       "Switch",
       "Textarea",
+      "Tooltip",
     ];
     for (const name of sections) {
-      await expect(page.getByRole("region", { name })).toBeVisible();
+      await expect(page.getByRole("region", { name, exact: true })).toBeVisible();
     }
   });
 

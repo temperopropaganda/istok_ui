@@ -59,6 +59,11 @@ precisa ser previsível, tipada e bem documentada.
 | Input e Textarea        | Tamanhos `sm`/`md`/`lg` com as alturas do Button (32/36/40px); o `size` nativo do `<input>` sai da API                                                                                                         | Campo e botão alinhados na mesma linha; largura por classe (`w-48`)                                                                                                                                |
 | RadioGroup              | `orientation` só muda o layout; setas nas duas direções (APG). Num Field, o `FieldLabel` nomeia o grupo (`aria-labelledby`); cada opção tem seu Field e não herda o do grupo                                   | Mesmo modelo de Field para todos os controles, sem ids duplicados                                                                                                                                  |
 | Checkbox (raio)         | `rounded-[min(4px,var(--radius))]`                                                                                                                                                                             | Acompanha marcas de cantos retos sem virar círculo. Obs.: o `--radius` do shadcn colide com um `--radius: 0.25rem` legado do Tailwind, então o IntelliSense calcula os `rounded-*` do tema com 4px |
+| Token `--overlay`       | Fundo atrás dos modais: preto 50% no claro e 70% no escuro (`bg-overlay`)                                                                                                                                      | Regra "só tokens" (o shadcn usa `bg-black/50`) e a marca pode trocar                                                                                                                               |
+| Animações               | `@keyframes` `fade-*`/`zoom-*` no `theme.css` (sem `tw-animate-css`); componentes animam só com `motion-safe:`                                                                                                 | Sem dependência nova no projeto consumidor. `motion-reduce:animate-none` perde para `data-[state=…]:animate-*` (mais específico) e o modal continuaria animando                                    |
+| Dialog                  | Tamanhos `sm`/`md`/`lg` (384/512/672px), `bg-popover`, rola por dentro quando não cabe. X é um `Button` de 32px por último no DOM, com `closeLabel` ("Fechar"); cabeçalho alinhado à esquerda                  | Alvo de toque maior que o do shadcn (16px) e foco inicial no conteúdo, não no X                                                                                                                    |
+| AlertDialog             | Incluído no grupo 4 (decidido em 2026-10-05). `AlertDialogAction`/`Cancel` são o nosso `Button` (`variant`, `loading`); ação assíncrona com `event.preventDefault()`                                           | Confirmação destrutiva é o uso mais comum de modal e tem acessibilidade própria (`alertdialog`, foco no Cancelar, sem fechar no clique fora)                                                       |
+| Tooltip                 | Atraso de 300ms (o shadcn usa 0; o Radix, 700). Cada `Tooltip` cria o seu Provider se não houver um `TooltipProvider` em volta                                                                                 | Sem configuração obrigatória; o Provider opcional faz vizinhos abrirem sem espera                                                                                                                  |
 | CI                      | GitHub Actions em todo PR e push na `main`                                                                                                                                                                     | Mesmas verificações para todo mundo                                                                                                                                                                |
 | Conta GitHub            | `temperopropaganda` é conta de **usuário** (não org); repo **público** desde 2026-10-02                                                                                                                        | CI ilimitado e Storybook grátis no GitHub Pages (Fase 8)                                                                                                                                           |
 | Registry                | **npm público**, pacote `istok-ui` (decidido em 2026-10-02)                                                                                                                                                    | Instala sem token nem `.npmrc`; o nome estava livre no npm                                                                                                                                         |
@@ -107,18 +112,18 @@ scripts/test-consumer.mjs  empacota a lib, instala no app de exemplo e confere o
 
 ## 5. Status das fases
 
-| Fase | Entrega                                                   | Status                                             |
-| ---- | --------------------------------------------------------- | -------------------------------------------------- |
-| 1    | Ambiente (Vite, TS strict, Tailwind, ESLint, Prettier)    | ✅ Concluída                                       |
-| 2    | Build da biblioteca (ESM, `.d.ts`, `exports`, `cn()`)     | ✅ Concluída                                       |
-| 3    | Tokens, tema e dark mode (`theme.css`)                    | ✅ Concluída                                       |
-| —    | Ambiente do editor (`.vscode/`, `npm run check`)          | ✅ Concluída                                       |
-| 4    | Storybook, testes no navegador, teste de consumo, CI      | ✅ Concluída                                       |
-| —    | SPEC + AGENTS.md; pacote `istok-ui` no npm público        | ✅ Concluída                                       |
-| 5    | Button + playground como vitrine + testes E2E             | ✅ Concluída                                       |
-| 6    | Componentes da v0.1                                       | 🔄 Grupos 1–3 entregues (3 em revisão); 4 pendente |
-| 7    | Testes finais (cobertura, cross-browser, tamanho)         | Pendente                                           |
-| 8    | Release (publicação, Storybook online, guia para agentes) | Pendente                                           |
+| Fase | Entrega                                                   | Status                                 |
+| ---- | --------------------------------------------------------- | -------------------------------------- |
+| 1    | Ambiente (Vite, TS strict, Tailwind, ESLint, Prettier)    | ✅ Concluída                           |
+| 2    | Build da biblioteca (ESM, `.d.ts`, `exports`, `cn()`)     | ✅ Concluída                           |
+| 3    | Tokens, tema e dark mode (`theme.css`)                    | ✅ Concluída                           |
+| —    | Ambiente do editor (`.vscode/`, `npm run check`)          | ✅ Concluída                           |
+| 4    | Storybook, testes no navegador, teste de consumo, CI      | ✅ Concluída                           |
+| —    | SPEC + AGENTS.md; pacote `istok-ui` no npm público        | ✅ Concluída                           |
+| 5    | Button + playground como vitrine + testes E2E             | ✅ Concluída                           |
+| 6    | Componentes da v0.1                                       | 🔄 Grupos 1–4 entregues (4 em revisão) |
+| 7    | Testes finais (cobertura, cross-browser, tamanho)         | Pendente                               |
+| 8    | Release (publicação, Storybook online, guia para agentes) | Pendente                               |
 
 ### Concluído (resumo)
 
@@ -148,27 +153,29 @@ scripts/test-consumer.mjs  empacota a lib, instala no app de exemplo e confere o
   (indeterminado), `RadioGroup`, `Switch` e `Field` (+ `FieldLabel`, `FieldDescription`, `FieldError`,
   `FieldContent`, `FieldSet`, `FieldLegend` e o hook `useFieldControl`), que liga tudo sozinho. Token `--input`
   com 3:1. Vitrine com formulário de cadastro (validação no envio, foco no primeiro erro, `FormData` nativo).
+- **Fase 6, grupo 4 (Overlay):** `Dialog` (tamanhos `sm`/`md`/`lg`, X com `closeLabel`), `AlertDialog` (ações são
+  `Button`, exclusão assíncrona com `loading`) e `Tooltip` (300ms, `TooltipProvider` opcional). Token
+  `--overlay` e animações no `theme.css`, só com `motion-safe:`. E2E de foco preso, Esc, clique fora, foco
+  devolvido, rolagem travada e axe com os modais abertos.
 
-### ⏭️ Próxima entrega — Fase 6, grupo 4: Overlay
-
-> Rascunho de escopo. Os critérios de aceite detalhados de cada grupo são fechados com o humano antes de começar.
-> Grupos 1 (Exibição), 2 (Feedback) e 3 (Formulário) entregues; próximo: grupo 4.
-
-Um PR por grupo, do mais simples ao mais complexo, todos partindo do shadcn quando houver equivalente e seguindo o
-padrão do Button (`src/components/button/`) e o checklist da seção 6:
+A Fase 6 foi entregue em quatro PRs, do mais simples ao mais complexo, partindo do shadcn quando havia equivalente:
 
 | Ordem | Grupo      | Componentes                                                 | Observação                                            |
 | ----- | ---------- | ----------------------------------------------------------- | ----------------------------------------------------- |
 | ✅ 1  | Exibição   | Card, Badge, Separator, Avatar, Skeleton                    | Sem comportamento: consolida o padrão visual          |
 | ✅ 2  | Feedback   | Alert, Spinner                                              | Spinner habilita `loading` no Button                  |
 | ✅ 3  | Formulário | Label, Input, Textarea, Field, Checkbox, RadioGroup, Switch | Estados `invalid`/`disabled`, Field liga label + erro |
-| 4     | Overlay    | Dialog, Tooltip                                             | Foco preso, Esc, portal: E2E obrigatório              |
+| ✅ 4  | Overlay    | Dialog, AlertDialog, Tooltip                                | Foco preso, Esc, portal: E2E obrigatório              |
+
+### ⏭️ Próxima entrega — Fase 7: Testes finais
+
+> Rascunho de escopo. Os critérios de aceite são fechados com o humano antes de começar.
+
+Cobertura mínima global de 80% como threshold no Vitest; Firefox e WebKit no browser mode; `size-limit` por
+componente; auditoria manual de teclado e leitor de tela (Orca) nos overlays; regressão visual opcional.
 
 ### Pendente
 
-- **Fase 7 — Testes finais:** cobertura mínima global de 80% como threshold no Vitest; Firefox e WebKit no browser
-  mode; `size-limit` por componente; auditoria manual de teclado e leitor de tela (Orca) nos overlays; regressão
-  visual opcional.
 - **Fase 8 — Release:** Changesets (versão + CHANGELOG); workflow de publicação no npm via GitHub Actions
   (trusted publishing, sem token salvo); Storybook online; guia de uso para agentes dentro do pacote (componentes,
   props, exemplos); publicar `v0.1.0` e usar num projeto real.

@@ -3,6 +3,18 @@ export { cn } from "./lib/cn.ts";
 
 export { Alert, AlertDescription, AlertTitle, type AlertProps } from "./components/alert/index.ts";
 export {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+  type AlertDialogContentProps,
+} from "./components/alert-dialog/index.ts";
+export {
   Avatar,
   AvatarFallback,
   AvatarImage,
@@ -22,6 +34,17 @@ export {
   type CardTitleProps,
 } from "./components/card/index.ts";
 export { Checkbox, type CheckboxProps } from "./components/checkbox/index.ts";
+export {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  type DialogContentProps,
+} from "./components/dialog/index.ts";
 export {
   Field,
   FieldContent,
@@ -49,3 +72,9 @@ export { Skeleton } from "./components/skeleton/index.ts";
 export { Spinner, type SpinnerProps } from "./components/spinner/index.ts";
 export { Switch, type SwitchProps } from "./components/switch/index.ts";
 export { Textarea, type TextareaProps } from "./components/textarea/index.ts";
+export {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "./components/tooltip/index.ts";

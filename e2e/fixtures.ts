@@ -29,6 +29,17 @@ export const test = base.extend<{
   ],
   checkA11y: async ({ page }, use) => {
     await use(async (include) => {
+      // Espera as animações finitas (ex.: entrada de um modal) terminarem: no meio delas o
+      // conteúdo está semitransparente e o axe mede um contraste que ninguém vê parado. As
+      // infinitas (Spinner, Skeleton) ficam de fora, senão a espera nunca acaba.
+      await page.evaluate(() =>
+        Promise.all(
+          document
+            .getAnimations()
+            .filter((animation) => animation.effect?.getComputedTiming().iterations !== Infinity)
+            .map((animation) => animation.finished.catch(() => undefined)),
+        ),
+      );
       const builder = new AxeBuilder({ page });
       if (include) builder.include(include);
       const results = await builder.analyze();

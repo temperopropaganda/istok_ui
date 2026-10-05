@@ -1,15 +1,11 @@
 import { Spinner, type SpinnerProps } from "../../src/index.ts";
-import { Example, Section } from "../section.tsx";
+import { Example } from "../section.tsx";
 
 const sizes: NonNullable<SpinnerProps["size"]>[] = ["sm", "md", "lg"];
 
 export function SpinnerSection() {
   return (
-    <Section
-      id="spinner"
-      title="Spinner"
-      description="Indicador de carregamento (role=status). Usa a cor do texto em volta."
-    >
+    <>
       <Example label="Tamanhos">
         {sizes.map((size) => (
           <Spinner key={size} size={size} label={`Carregando (${size})`} />
@@ -27,6 +23,6 @@ export function SpinnerSection() {
           <span aria-hidden="true">Carregando pedidos…</span>
         </p>
       </Example>
-    </Section>
+    </>
   );
 }

@@ -1,2 +1,10 @@
 @import "tailwindcss";
 @import "../src/styles/theme.css";
+
+/* Barras de rolagem e controles nativos acompanham o tema. */
+html {
+  color-scheme: light;
+}
+html.dark {
+  color-scheme: dark;
+}

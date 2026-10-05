@@ -20,7 +20,7 @@ import {
   Textarea,
 } from "../../src/index.ts";
 import { CheckIcon } from "../icons.tsx";
-import { Example, Section } from "../section.tsx";
+import { Example } from "../section.tsx";
 
 interface Values {
   nome: string;
@@ -198,11 +198,7 @@ function SignupForm() {
 
 export function FieldSection() {
   return (
-    <Section
-      id="field"
-      title="Field"
-      description="Liga rótulo, descrição e erro ao controle sozinho (id, aria-describedby, aria-invalid, required, disabled)."
-    >
+    <>
       <Example label="Vertical">
         <div className="grid w-full max-w-md gap-6">
           <Field>
@@ -242,6 +238,6 @@ export function FieldSection() {
       <Example label="Formulário de cadastro">
         <SignupForm />
       </Example>
-    </Section>
+    </>
   );
 }

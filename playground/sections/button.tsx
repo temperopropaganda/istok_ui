@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button, type ButtonProps } from "../../src/index.ts";
 import { PlusIcon } from "../icons.tsx";
-import { Example, Section } from "../section.tsx";
+import { Example } from "../section.tsx";
 
 const variants: NonNullable<ButtonProps["variant"]>[] = [
   "default",
@@ -20,11 +20,7 @@ export function ButtonSection() {
   };
 
   return (
-    <Section
-      id="button"
-      title="Button"
-      description="Ações. Para navegação, use asChild com um link."
-    >
+    <>
       <p className="text-sm">
         Cliques:{" "}
         <output aria-live="polite" data-testid="button-clicks">
@@ -79,9 +75,9 @@ export function ButtonSection() {
       </Example>
       <Example label="Como link (asChild)">
         <Button asChild variant="outline">
-          <a href="#tokens">Ir para os tokens</a>
+          <a href="#/tokens">Ir para os tokens</a>
         </Button>
       </Example>
-    </Section>
+    </>
   );
 }

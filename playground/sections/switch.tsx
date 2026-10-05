@@ -1,5 +1,5 @@
 import { Field, FieldContent, FieldDescription, FieldLabel, Switch } from "../../src/index.ts";
-import { Example, Section } from "../section.tsx";
+import { Example } from "../section.tsx";
 
 const states = [
   { label: "Desligado", props: {} },
@@ -10,11 +10,7 @@ const states = [
 
 export function SwitchSection() {
   return (
-    <Section
-      id="switch"
-      title="Switch"
-      description="Liga/desliga com efeito imediato (role=switch). Espaço alterna."
-    >
+    <>
       <Example label="Estados">
         {states.map(({ label, props }) => (
           <Field key={label} orientation="horizontal" className="w-auto">
@@ -32,6 +28,6 @@ export function SwitchSection() {
           <Switch defaultChecked />
         </Field>
       </Example>
-    </Section>
+    </>
   );
 }

@@ -11,7 +11,7 @@ import {
   AlertDialogTrigger,
   Button,
 } from "../../src/index.ts";
-import { Example, Section } from "../section.tsx";
+import { Example } from "../section.tsx";
 
 export function AlertDialogSection() {
   const [open, setOpen] = useState(false);
@@ -27,11 +27,7 @@ export function AlertDialogSection() {
   );
 
   return (
-    <Section
-      id="alert-dialog"
-      title="AlertDialog"
-      description="Confirmação (role=alertdialog): o foco vai para Cancelar, Esc cancela e o clique fora não fecha."
-    >
+    <>
       <Example label="Exclusão">
         <AlertDialog open={open} onOpenChange={setOpen}>
           <AlertDialogTrigger asChild>
@@ -69,6 +65,6 @@ export function AlertDialogSection() {
           Projetos excluídos: <output data-testid="alert-dialog-deleted">{deleted}</output>
         </p>
       </Example>
-    </Section>
+    </>
   );
 }

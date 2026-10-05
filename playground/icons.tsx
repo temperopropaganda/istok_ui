@@ -81,3 +81,29 @@ export function ItalicIcon() {
 export function UnderlineIcon() {
   return <StrokeIcon d="M6 4v6a6 6 0 0 0 12 0V4M4 20h16" />;
 }
+
+export function SunIcon() {
+  return (
+    <StrokeIcon d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0" />
+  );
+}
+
+export function MoonIcon() {
+  return <StrokeIcon d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />;
+}
+
+export function MenuIcon() {
+  return <StrokeIcon d="M4 6h16M4 12h16M4 18h16" />;
+}
+
+export function CloseIcon() {
+  return <StrokeIcon d="M18 6 6 18M6 6l12 12" />;
+}
+
+export function ChevronLeftIcon() {
+  return <StrokeIcon d="m15 18-6-6 6-6" />;
+}
+
+export function ChevronRightIcon() {
+  return <StrokeIcon d="m9 18 6-6-6-6" />;
+}

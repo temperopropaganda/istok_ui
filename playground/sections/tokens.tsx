@@ -1,5 +1,5 @@
 import { cn } from "../../src/index.ts";
-import { Example, Section } from "../section.tsx";
+import { Example } from "../section.tsx";
 
 // Classes escritas por inteiro para o Tailwind encontrar (nada de `bg-${nome}`).
 const colorPairs = [
@@ -24,21 +24,19 @@ const radii = [
 
 export function TokensSection() {
   return (
-    <Section
-      id="tokens"
-      title="Tokens"
-      description="Cores do tema (fundo + texto) e escala de raio."
-    >
-      <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5">
-        {colorPairs.map((pair) => (
-          <li
-            key={pair.name}
-            className={cn("flex h-20 items-end rounded-lg border p-3 text-sm", pair.className)}
-          >
-            {pair.name}
-          </li>
-        ))}
-      </ul>
+    <>
+      <Example label="Cores">
+        <ul className="grid w-full grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5">
+          {colorPairs.map((pair) => (
+            <li
+              key={pair.name}
+              className={cn("flex h-20 items-end rounded-lg border p-3 text-sm", pair.className)}
+            >
+              {pair.name}
+            </li>
+          ))}
+        </ul>
+      </Example>
       <Example label="Bordas e foco">
         <span className="rounded-md border-2 border-border px-3 py-2 text-sm">border</span>
         <span className="rounded-md border-2 border-input px-3 py-2 text-sm">input</span>
@@ -57,6 +55,6 @@ export function TokensSection() {
           </span>
         ))}
       </Example>
-    </Section>
+    </>
   );
 }

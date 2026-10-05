@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Checkbox, Field, FieldContent, FieldDescription, FieldLabel } from "../../src/index.ts";
-import { Example, Section } from "../section.tsx";
+import { Example } from "../section.tsx";
 
 const states = [
   { label: "Desmarcado", props: {} },
@@ -18,11 +18,7 @@ export function CheckboxSection() {
     selected.length === fruits.length ? true : selected.length > 0 ? "indeterminate" : false;
 
   return (
-    <Section
-      id="checkbox"
-      title="Checkbox"
-      description="Marcado, desmarcado ou indeterminado. Espaço alterna; clicar no rótulo também."
-    >
+    <>
       <Example label="Estados">
         {states.map(({ label, props }) => (
           <Field key={label} orientation="horizontal" className="w-auto">
@@ -68,6 +64,6 @@ export function CheckboxSection() {
           ))}
         </div>
       </Example>
-    </Section>
+    </>
   );
 }

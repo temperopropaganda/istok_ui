@@ -1,15 +1,11 @@
 import { Textarea, type TextareaProps } from "../../src/index.ts";
-import { Example, Section } from "../section.tsx";
+import { Example } from "../section.tsx";
 
 const sizes: NonNullable<TextareaProps["size"]>[] = ["sm", "md", "lg"];
 
 export function TextareaSection() {
   return (
-    <Section
-      id="textarea"
-      title="Textarea"
-      description="Texto com várias linhas. Cresce com o conteúdo a partir da altura mínima."
-    >
+    <>
       <Example label="Tamanhos">
         <div className="grid w-full max-w-md gap-3">
           {sizes.map((size) => (
@@ -28,6 +24,6 @@ export function TextareaSection() {
           <Textarea aria-label="Inválido" defaultValue="Texto curto" aria-invalid />
         </div>
       </Example>
-    </Section>
+    </>
   );
 }

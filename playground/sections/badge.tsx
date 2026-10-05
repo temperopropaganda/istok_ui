@@ -1,5 +1,5 @@
 import { Badge, type BadgeProps } from "../../src/index.ts";
-import { Example, Section } from "../section.tsx";
+import { Example } from "../section.tsx";
 
 const variants: NonNullable<BadgeProps["variant"]>[] = [
   "default",
@@ -12,11 +12,7 @@ const variants: NonNullable<BadgeProps["variant"]>[] = [
 
 export function BadgeSection() {
   return (
-    <Section
-      id="badge"
-      title="Badge"
-      description="Rótulo curto para status, categoria ou contagem."
-    >
+    <>
       <Example label="Variantes">
         {variants.map((variant) => (
           <Badge key={variant} variant={variant}>
@@ -26,10 +22,10 @@ export function BadgeSection() {
       </Example>
       <Example label="Como link (asChild)">
         <Badge asChild variant="outline">
-          <a href="#badge">#design</a>
+          <a href="#/badge">#design</a>
         </Badge>
         <Badge asChild variant="secondary">
-          <a href="#badge">#react</a>
+          <a href="#/badge">#react</a>
         </Badge>
       </Example>
       <Example label="Em contexto">
@@ -40,6 +36,6 @@ export function BadgeSection() {
           Fatura de outubro <Badge variant="warning">Pendente</Badge>
         </p>
       </Example>
-    </Section>
+    </>
   );
 }

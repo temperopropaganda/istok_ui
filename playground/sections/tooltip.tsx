@@ -6,7 +6,7 @@ import {
   TooltipTrigger,
 } from "../../src/index.ts";
 import { BoldIcon, ItalicIcon, UnderlineIcon } from "../icons.tsx";
-import { Example, Section } from "../section.tsx";
+import { Example } from "../section.tsx";
 
 const tools = [
   { label: "Negrito", hint: "Negrito (Ctrl+B)", Icon: BoldIcon },
@@ -18,11 +18,7 @@ const sides = ["top", "right", "bottom", "left"] as const;
 
 export function TooltipSection() {
   return (
-    <Section
-      id="tooltip"
-      title="Tooltip"
-      description="Dica com o ponteiro ou o foco (300ms). Esc fecha. Complementa o aria-label, não substitui."
-    >
+    <>
       <Example label="Barra de ferramentas">
         <TooltipProvider>
           <div role="toolbar" aria-label="Formatação" className="flex gap-1 rounded-lg border p-1">
@@ -49,6 +45,6 @@ export function TooltipSection() {
           </Tooltip>
         ))}
       </Example>
-    </Section>
+    </>
   );
 }

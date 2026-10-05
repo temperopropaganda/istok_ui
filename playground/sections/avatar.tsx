@@ -1,5 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage, type AvatarProps } from "../../src/index.ts";
-import { Example, Section } from "../section.tsx";
+import { Example } from "../section.tsx";
 
 // Imagem embutida (SVG), para a vitrine e o E2E não dependerem de rede.
 const photo =
@@ -9,11 +9,7 @@ const sizes: NonNullable<AvatarProps["size"]>[] = ["sm", "md", "lg"];
 
 export function AvatarSection() {
   return (
-    <Section
-      id="avatar"
-      title="Avatar"
-      description="Foto com fallback (iniciais) enquanto carrega ou se a imagem falhar."
-    >
+    <>
       <Example label="Com imagem">
         {sizes.map((size) => (
           <Avatar key={size} size={size}>
@@ -29,6 +25,6 @@ export function AvatarSection() {
           </Avatar>
         ))}
       </Example>
-    </Section>
+    </>
   );
 }

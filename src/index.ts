@@ -1,6 +1,7 @@
 // API pública da istok_ui: só o que for exportado aqui chega aos projetos.
 export { cn } from "./lib/cn.ts";
 
+export { Alert, AlertDescription, AlertTitle, type AlertProps } from "./components/alert/index.ts";
 export {
   Avatar,
   AvatarFallback,
@@ -22,3 +23,4 @@ export {
 } from "./components/card/index.ts";
 export { Separator, type SeparatorProps } from "./components/separator/index.ts";
 export { Skeleton } from "./components/skeleton/index.ts";
+export { Spinner, type SpinnerProps } from "./components/spinner/index.ts";

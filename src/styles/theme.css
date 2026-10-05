@@ -45,6 +45,9 @@
   /* Mais escuro que o do shadcn (0.922, 1.3:1): é a borda que mostra onde está o campo. */
   --input: oklch(0.62 0 0);
   --ring: oklch(0.708 0 0);
+
+  /* Fundo escurecido atrás de modais (Dialog, AlertDialog). */
+  --overlay: oklch(0 0 0 / 50%);
 }
 
 .dark {
@@ -75,6 +78,8 @@
   --border: oklch(1 0 0 / 10%);
   --input: oklch(0.556 0 0);
   --ring: oklch(0.556 0 0);
+
+  --overlay: oklch(0 0 0 / 70%);
 }
 
 /* Expõe as variáveis como utilitários do Tailwind: bg-primary, text-muted-foreground, rounded-lg… */
@@ -102,11 +107,46 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+  --color-overlay: var(--overlay);
 
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+}
+
+/*
+ * Entrada e saída de overlays (Dialog, AlertDialog, Tooltip). A saída usa `forwards` porque o Radix
+ * só desmonta o elemento no fim da animação. Os componentes só animam com `motion-safe:`.
+ */
+@theme {
+  --animate-fade-in: fade-in 150ms ease-out;
+  --animate-fade-out: fade-out 150ms ease-in forwards;
+  --animate-zoom-in: zoom-in 150ms ease-out;
+  --animate-zoom-out: zoom-out 150ms ease-in forwards;
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+  }
+  @keyframes fade-out {
+    to {
+      opacity: 0;
+    }
+  }
+  @keyframes zoom-in {
+    from {
+      opacity: 0;
+      scale: 0.95;
+    }
+  }
+  @keyframes zoom-out {
+    to {
+      opacity: 0;
+      scale: 0.95;
+    }
+  }
 }
 
 @layer base {

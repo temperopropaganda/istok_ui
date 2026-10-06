@@ -116,14 +116,17 @@
 }
 
 /*
- * Entrada e saída de overlays (Dialog, AlertDialog, Tooltip). A saída usa `forwards` porque o Radix
- * só desmonta o elemento no fim da animação. Os componentes só animam com `motion-safe:`.
+ * Entrada e saída de overlays (Dialog, AlertDialog, Tooltip) e abertura do Accordion. A saída usa
+ * `forwards` porque o Radix só desmonta o elemento no fim da animação. Os componentes só animam com
+ * `motion-safe:`.
  */
 @theme {
   --animate-fade-in: fade-in 150ms ease-out;
   --animate-fade-out: fade-out 150ms ease-in forwards;
   --animate-zoom-in: zoom-in 150ms ease-out;
   --animate-zoom-out: zoom-out 150ms ease-in forwards;
+  --animate-accordion-down: accordion-down 200ms ease-out;
+  --animate-accordion-up: accordion-up 200ms ease-out;
 
   @keyframes fade-in {
     from {
@@ -145,6 +148,23 @@
     to {
       opacity: 0;
       scale: 0.95;
+    }
+  }
+  /* Altura medida pelo Radix (--radix-accordion-content-height). */
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
     }
   }
 }

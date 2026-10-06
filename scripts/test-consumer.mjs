@@ -72,6 +72,7 @@ try {
   const otherRadix = [
     "DialogContent",
     "AlertDialogContent",
+    "AccordionContent",
     "PopoverContent",
     "DropdownMenuContent",
     "TooltipContent",
@@ -103,6 +104,9 @@ try {
     "dialog-content",
     "alert-dialog-content",
     "tooltip-content",
+    "accordion-item",
+    "product-card",
+    "news-card",
   ];
   check(
     otherSlots.every((slot) => !new RegExp(`"data-slot":["\`]${slot}["\`]`).test(js)),

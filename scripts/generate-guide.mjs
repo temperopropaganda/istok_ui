@@ -1,6 +1,7 @@
-// Gera docs/guia-para-agentes.md a partir dos tipos e do JSDoc de src/ (API do TypeScript), para
-// agentes de IA (e pessoas) usarem a lib sem abrir o código. Vai junto no pacote publicado.
-// `--check` só confere se o arquivo está em dia (roda no `npm run check` e no CI).
+// Lê os tipos e o JSDoc de src/ (API do TypeScript) e gera, do mesmo modelo de dados:
+// - docs/guia-para-agentes.md: guia para agentes de IA (e pessoas), publicado junto no pacote;
+// - playground/api.generated.ts: as tabelas de "Propriedades" de cada página do playground.
+// `--check` só confere se os dois estão em dia (roda no `npm run check` e no CI).
 import { readFile, writeFile } from "node:fs/promises";
 import { join, relative, sep } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -10,6 +11,7 @@ import ts from "typescript";
 const root = fileURLToPath(new URL("..", import.meta.url));
 const srcDir = join(root, "src") + sep;
 const outputPath = join(root, "docs/guia-para-agentes.md");
+const apiPath = join(root, "playground/api.generated.ts");
 const checkOnly = process.argv.includes("--check");
 
 // --- Programa TypeScript com a mesma config do build dos tipos ---------------------------------
@@ -53,21 +55,39 @@ for (const exported of checker.getExportsOfModule(indexSymbol)) {
   groups.get(group).push({ name: exported.getName(), symbol, declaration });
 }
 
-/** O que mais a função aceita além das props próprias (elemento nativo, Radix ou outro tipo). */
+const exceptList = (value) =>
+  value ? [...value.matchAll(/"([^"]+)"/g)].map((match) => match[1]) : [];
+
+/** O que mais a função aceita além das props próprias: elemento nativo, peça do Radix ou outro tipo. */
 function baseProps(typeText) {
-  const native = /^ComponentProps<"(\w+)">$/.exec(typeText);
-  if (native) return `as props nativas de \`<${native[1]}>\``;
-  const omitted = /^Omit<ComponentProps<"(\w+)">, (.+)>$/.exec(typeText);
-  if (omitted)
-    return `as props nativas de \`<${omitted[1]}>\`, exceto ${omitted[2].replaceAll('"', "`")}`;
+  const native = /^(?:Omit<)?ComponentProps<"(\w+)">(?:, (.+)>)?$/.exec(typeText);
+  if (native) return { kind: "native", element: native[1], except: exceptList(native[2]) };
   const radix = /^(?:Omit<)?ComponentProps<typeof (\w+)Primitive\.(\w+)>(?:, (.+)>)?$/.exec(
     typeText,
   );
   if (radix) {
-    const except = radix[3] ? `, exceto ${radix[3].replaceAll('"', "`")}` : "";
-    return `as props de \`${radix[1]}.${radix[2]}\` do Radix (https://www.radix-ui.com/primitives/docs/components/${toKebab(radix[1])})${except}`;
+    return {
+      kind: "radix",
+      primitive: radix[1],
+      part: radix[2],
+      href: `https://www.radix-ui.com/primitives/docs/components/${toKebab(radix[1])}`,
+      except: exceptList(radix[3]),
+    };
   }
-  return `as props de \`${typeText}\``;
+  // Props de outro componente da lib (ex.: FieldLabel aceita as do Label).
+  const component = /^ComponentProps<typeof (\w+)>$/.exec(typeText);
+  return { kind: "type", name: component ? component[1] : typeText };
+}
+
+/** A base em texto corrido (Markdown), para o guia. */
+function baseText(base) {
+  const except = base.except?.length
+    ? `, exceto ${base.except.map((name) => `\`${name}\``).join(", ")}`
+    : "";
+  if (base.kind === "native") return `as props nativas de \`<${base.element}>\`${except}`;
+  if (base.kind === "radix")
+    return `as props de [\`${base.primitive}.${base.part}\`](${base.href}) do Radix${except}`;
+  return `as props de \`${base.name}\``;
 }
 
 /** Tipo declarado do primeiro parâmetro, seguindo interfaces/aliases da própria lib até a base. */
@@ -76,12 +96,17 @@ function describeBase(param) {
   if (!typeNode) return [];
   const bases = [];
   const visit = (node) => {
-    if (ts.isIntersectionTypeNode(node)) {
-      node.types.filter((part) => !ts.isTypeLiteralNode(part)).forEach(visit);
+    // Props escritas no próprio tipo ({ alt: string }) já entram na tabela.
+    if (ts.isTypeLiteralNode(node)) return;
+    if (ts.isIntersectionTypeNode(node) || ts.isUnionTypeNode(node)) {
+      node.types.forEach(visit);
       return;
     }
-    if (ts.isTypeReferenceNode(node)) {
-      const symbol = checker.getSymbolAtLocation(node.typeName);
+    // `extends` de interface (ExpressionWithTypeArguments) ou referência de tipo comum.
+    if (ts.isTypeReferenceNode(node) || ts.isExpressionWithTypeArguments(node)) {
+      const symbol = checker.getSymbolAtLocation(
+        ts.isTypeReferenceNode(node) ? node.typeName : node.expression,
+      );
       const target =
         symbol && symbol.flags & ts.SymbolFlags.Alias ? checker.getAliasedSymbol(symbol) : symbol;
       const declaration = target?.declarations?.[0];
@@ -103,52 +128,62 @@ function describeBase(param) {
     bases.push(baseProps(typeText));
   };
   visit(typeNode);
-  return bases;
+  // Uniões (ex.: NewsCard com e sem capa) repetem a mesma base.
+  return [...new Map(bases.map((base) => [JSON.stringify(base), base])).values()];
 }
 
-function describeFunction({ name, symbol, declaration }) {
-  const lines = [`#### \`${name}\``, ""];
-  const doc = text(symbol.getDocumentationComment(checker));
-  if (doc) lines.push(doc, "");
-
+/** Dados de uma peça exportada: descrição, bases, props próprias e exemplos. */
+function extract({ name, symbol, declaration }) {
+  const part = {
+    name,
+    description: text(symbol.getDocumentationComment(checker)),
+    bases: [],
+    props: [],
+    examples: symbol
+      .getJsDocTags(checker)
+      .filter((tag) => tag.name === "example")
+      .map((tag) => text(tag.text ?? [])),
+  };
   const param = declaration.parameters[0];
-  if (param && name !== "cn" && !name.startsWith("use")) {
-    const type = checker.getTypeAtLocation(param);
-    const own = type
-      .getProperties()
-      .filter((prop) => prop.declarations?.some(isOurs))
-      .map((prop) => {
-        const propType = checker.typeToString(
-          checker.getTypeOfSymbolAtLocation(prop, param),
-          undefined,
-          ts.TypeFormatFlags.NoTruncation | ts.TypeFormatFlags.UseAliasDefinedOutsideCurrentScope,
-        );
-        const tags = prop.getJsDocTags(checker);
-        const defaultValue = tags.find((tag) => tag.name === "default");
-        return {
-          name: prop.getName(),
-          required: !(prop.flags & ts.SymbolFlags.Optional),
-          type: propType.replace(/( \| null| \| undefined)+$/, ""),
-          defaultValue: defaultValue ? text(defaultValue.text ?? []) : "",
-          doc: text(prop.getDocumentationComment(checker)),
-        };
-      });
-    const bases = describeBase(param);
-    if (bases.length > 0) lines.push(`Aceita ${bases.join(" e ")}.`, "");
-    if (own.length > 0) {
-      lines.push("| Prop | Tipo | Padrão | Descrição |", "| --- | --- | --- | --- |");
-      for (const prop of own) {
-        const label = `\`${prop.name}\`${prop.required ? " (obrigatória)" : ""}`;
-        const fallback = prop.defaultValue ? `\`${prop.defaultValue}\`` : "—";
-        lines.push(`| ${label} | \`${cell(prop.type)}\` | ${fallback} | ${cell(prop.doc)} |`);
-      }
-      lines.push("");
-    }
-  }
+  if (!param || name === "cn" || name.startsWith("use")) return part;
 
-  for (const tag of symbol.getJsDocTags(checker).filter((item) => item.name === "example")) {
-    lines.push(text(tag.text ?? []), "");
+  part.bases = describeBase(param);
+  part.props = checker
+    .getTypeAtLocation(param)
+    .getProperties()
+    .filter((prop) => prop.declarations?.some(isOurs))
+    .map((prop) => {
+      const propType = checker.typeToString(
+        checker.getTypeOfSymbolAtLocation(prop, param),
+        undefined,
+        ts.TypeFormatFlags.NoTruncation | ts.TypeFormatFlags.UseAliasDefinedOutsideCurrentScope,
+      );
+      const defaultTag = prop.getJsDocTags(checker).find((tag) => tag.name === "default");
+      return {
+        name: prop.getName(),
+        type: propType.replace(/( \| null| \| undefined)+$/, ""),
+        required: !(prop.flags & ts.SymbolFlags.Optional),
+        defaultValue: defaultTag ? text(defaultTag.text ?? []) : "",
+        description: text(prop.getDocumentationComment(checker)),
+      };
+    });
+  return part;
+}
+
+function partMarkdown(part) {
+  const lines = [`#### \`${part.name}\``, ""];
+  if (part.description) lines.push(part.description, "");
+  if (part.bases.length > 0) lines.push(`Aceita ${part.bases.map(baseText).join(" e ")}.`, "");
+  if (part.props.length > 0) {
+    lines.push("| Prop | Tipo | Padrão | Descrição |", "| --- | --- | --- | --- |");
+    for (const prop of part.props) {
+      const label = `\`${prop.name}\`${prop.required ? " (obrigatória)" : ""}`;
+      const fallback = prop.defaultValue ? `\`${prop.defaultValue}\`` : "—";
+      lines.push(`| ${label} | \`${cell(prop.type)}\` | ${fallback} | ${cell(prop.description)} |`);
+    }
+    lines.push("");
   }
+  for (const example of part.examples) lines.push(example, "");
   return lines;
 }
 
@@ -166,6 +201,12 @@ const title = (group) => {
   return main?.name ?? group;
 };
 const componentGroups = [...groups.keys()].filter((group) => group !== "utilitarios").sort();
+const components = componentGroups.map((group) => ({
+  id: group,
+  title: title(group),
+  parts: groups.get(group).map(extract),
+}));
+const utilities = (groups.get("utilitarios") ?? []).map(extract);
 
 const lines = [
   `# ${pkg.name}: guia para agentes`,
@@ -216,34 +257,85 @@ const lines = [
   "## Componentes",
   "",
 ];
-for (const group of componentGroups) {
-  const items = groups.get(group);
-  lines.push(`### ${title(group)}`, "");
-  if (items.length > 1)
-    lines.push(`Peças: ${items.map((item) => `\`${item.name}\``).join(", ")}.`, "");
-  for (const item of items) lines.push(...describeFunction(item));
+for (const component of components) {
+  lines.push(`### ${component.title}`, "");
+  if (component.parts.length > 1)
+    lines.push(`Peças: ${component.parts.map((part) => `\`${part.name}\``).join(", ")}.`, "");
+  for (const part of component.parts) lines.push(...partMarkdown(part));
 }
 lines.push("## Utilitários", "");
-for (const item of groups.get("utilitarios") ?? []) lines.push(...describeFunction(item));
+for (const part of utilities) lines.push(...partMarkdown(part));
 
-const prettierConfig = (await prettier.resolveConfig(outputPath)) ?? {};
-const content = await prettier.format(lines.join("\n"), {
-  ...prettierConfig,
-  filepath: outputPath,
-});
+// Para o playground: sem os exemplos (cada página já mostra os componentes funcionando).
+const playgroundApi = Object.fromEntries(
+  components.map((component) => [
+    component.id,
+    {
+      title: component.title,
+      parts: component.parts.map((part) => ({
+        name: part.name,
+        description: part.description,
+        bases: part.bases,
+        props: part.props,
+      })),
+    },
+  ]),
+);
+const apiModule = `// Gerado por scripts/generate-guide.mjs a partir de src/ (tipos e JSDoc). Não edite à mão:
+// rode \`npm run guide\`.
+
+export interface PropApi {
+  name: string;
+  type: string;
+  required: boolean;
+  defaultValue: string;
+  description: string;
+}
+
+export type BaseApi =
+  | { kind: "native"; element: string; except: string[] }
+  | { kind: "radix"; primitive: string; part: string; href: string; except: string[] }
+  | { kind: "type"; name: string };
+
+export interface PartApi {
+  name: string;
+  description: string;
+  bases: BaseApi[];
+  props: PropApi[];
+}
+
+export interface ComponentApi {
+  title: string;
+  parts: PartApi[];
+}
+
+export const api: Record<string, ComponentApi> = ${JSON.stringify(playgroundApi)};
+`;
+
+const format = async (source, filepath) =>
+  prettier.format(source, { ...((await prettier.resolveConfig(filepath)) ?? {}), filepath });
+const outputs = [
+  [outputPath, await format(lines.join("\n"), outputPath)],
+  [apiPath, await format(apiModule, apiPath)],
+];
 
 if (checkOnly) {
-  const current = await readFile(outputPath, "utf8").catch(() => "");
-  if (current !== content) {
-    console.error(
-      `✗ ${relative(root, outputPath)} está desatualizado. Rode \`npm run guide\` e commite o resultado.`,
-    );
-    process.exit(1);
+  let stale = false;
+  for (const [path, content] of outputs) {
+    const current = await readFile(path, "utf8").catch(() => "");
+    if (current === content) {
+      console.log(`✓ ${relative(root, path)} em dia`);
+    } else {
+      stale = true;
+      console.error(
+        `✗ ${relative(root, path)} está desatualizado. Rode \`npm run guide\` e commite.`,
+      );
+    }
   }
-  console.log(`✓ ${relative(root, outputPath)} em dia`);
+  if (stale) process.exit(1);
 } else {
-  await writeFile(outputPath, content);
+  for (const [path, content] of outputs) await writeFile(path, content);
   console.log(
-    `✓ ${relative(root, outputPath)} gerado (${String(componentGroups.length)} componentes)`,
+    `✓ guia e propriedades do playground gerados (${String(components.length)} componentes)`,
   );
 }

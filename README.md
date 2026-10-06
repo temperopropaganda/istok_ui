@@ -109,6 +109,7 @@ import {
 
 | Componente                                                                                                                                                                                  | Variações                                                                                                           |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `Accordion`, `AccordionItem`, `AccordionTrigger`, `AccordionContent`                                                                                                                        | `type`: single, multiple · `collapsible` · setas/Home/End entre os títulos                                          |
 | `Alert`, `AlertTitle`, `AlertDescription`                                                                                                                                                   | `variant`: default, success, warning, destructive · ícone SVG opcional como primeiro filho                          |
 | `AlertDialog`, `AlertDialogTrigger`, `AlertDialogContent`, `AlertDialogHeader`, `AlertDialogTitle`, `AlertDialogDescription`, `AlertDialogFooter`, `AlertDialogAction`, `AlertDialogCancel` | `size`: sm, md, lg · ações são `Button` (`variant`, `loading`) · não fecha com clique fora                          |
 | `Avatar`, `AvatarImage`, `AvatarFallback`                                                                                                                                                   | `size`: sm, md, lg · fallback com iniciais quando não há foto                                                       |
@@ -120,6 +121,8 @@ import {
 | `Field`, `FieldLabel`, `FieldDescription`, `FieldError`, `FieldContent`, `FieldSet`, `FieldLegend`                                                                                          | `orientation`: vertical, horizontal · `invalid`, `required`, `disabled` · hook `useFieldControl`                    |
 | `Input`                                                                                                                                                                                     | `size`: sm, md, lg (alturas do Button) · tipos nativos                                                              |
 | `Label`                                                                                                                                                                                     | Rótulo ligado por `htmlFor` (num `Field`, use `FieldLabel`)                                                         |
+| `NewsCard`                                                                                                                                                                                  | `variant`: default (com capa), simple (só texto) · `date` em `<time>` · card inteiro clicável                       |
+| `ProductCard`                                                                                                                                                                               | preço de/por, `badge`, `options` (ex.: 600 ml, 1 L), `rating`, `action` · card inteiro clicável                     |
 | `RadioGroup`, `RadioGroupItem`                                                                                                                                                              | `orientation`: vertical, horizontal · setas trocam a opção                                                          |
 | `Separator`                                                                                                                                                                                 | `orientation`: horizontal, vertical · `decorative`                                                                  |
 | `Skeleton`                                                                                                                                                                                  | Tamanho por classes · decorativo, respeita redução de movimento                                                     |
@@ -179,7 +182,13 @@ npx playwright install firefox webkit   # opcional: para o npm run test:browsers
 npm run storybook
 ```
 
-O Storybook (http://localhost:6006) é o ambiente principal: documentação, stories de cada componente e alternância entre tema claro e escuro. O `npm run dev` abre o playground (`playground/`), a vitrine no estilo da documentação do shadcn: sidebar à esquerda, uma página por componente com todas as variações, e tema escuro por padrão (botão sol/lua no topo).
+O Storybook (http://localhost:6006) é o ambiente principal: documentação, stories de cada componente e alternância entre tema claro e escuro. O `npm run dev` abre o playground (`playground/`), a vitrine no estilo da documentação do shadcn: sidebar à esquerda, uma página por componente com todas as variações e, no fim, a seção **Propriedades** (gerada do código), e tema
+escuro por padrão (botão sol/lua no topo).
+
+A vitrine usa a identidade **Istok — Tempero Design System**: logo original, azul-marinho, azul-claro e ondas
+na abertura. O tema de marca fica em `playground/index.css`, com versões clara e escura; os tokens publicados
+em `src/styles/theme.css` continuam independentes da marca. A arte em `playground/assets/istok-brand.png` é
+enquadrada por `playground/brand.tsx`, preservando o símbolo e a tipografia recebidos.
 
 ### VS Code
 

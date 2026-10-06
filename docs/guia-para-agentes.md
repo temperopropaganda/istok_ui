@@ -1,6 +1,6 @@
 # istok-ui: guia para agentes
 
-> Gerado de `src/` (tipos e JSDoc) por `npm run guide` na versão 0.0.0. Não edite à mão.
+> Gerado de `src/` (tipos e JSDoc) por `npm run guide` na versão 0.1.0. Não edite à mão.
 
 Biblioteca de componentes React 19 + Tailwind CSS 4, acessível (WCAG AA), com tema claro/escuro e tokens
 trocáveis por projeto. Use este guia para montar telas com a API certa.
